@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "J1NMO7UJowLAZLNFoc16uU8lpPayzNh4M6rKTnwGt51fqiEQlaJQt7Se2pI/dgR324d5iqG9Q8fd5E6XbCe4bQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\mikke\\OneDrive\\Documents\\UCLL\\Semester 5\\Project\\gms\\GMS\\GMS - Data Access Layer\\GMS - Data Access Layer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mikke\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\mikke\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
