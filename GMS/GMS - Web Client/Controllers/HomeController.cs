@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GMS___Business_Layer;
+using GMS___Web_Client.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -26,10 +28,24 @@ namespace GMS___Web_Client.Controllers
 
             return View();
         }
-
         public ActionResult SignUp()
         {
             ViewBag.Message = "Your sign-up page.";
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SignUp(UserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                UserProcessor userProcessor = new UserProcessor();
+                bool isCreated = userProcessor.InsertNewUser(model.UserName,
+                    model.EmailAddress,model.Password);
+                return RedirectToAction("Index");
+            }
 
             return View();
         }

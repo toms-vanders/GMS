@@ -8,31 +8,29 @@ namespace GMS___Model
     {
         public User(string userName, string password, string email, string apiKey, ArrayList characters)
         {
-            this.UserName = userName;
+            this.UserName = UserName;
             Password = password;
             this.EmailAddress = email;
             this.ApiKey = apiKey;
             this.Characters = characters;
         }
-        public User(int userID, string userName, string email, string password, string apiKey)
+        public User(string userName, string email, string password, string apiKey)
         {
-            this.userID = userID;
-            this.userName = userName;
+            this.UserName = userName;
             Password = password;
             this.EmailAddress = email;
             this.ApiKey = apiKey;
             this.Characters = new ArrayList();
         }
 
-        public User(int userID, string userName, string email, string password)
+        public User(string userName, string email, string password)
         {
-            this.userID = userID;
-            this.userName = userName;
-            this.email = email;
-            this.password = password;
-            this.characters = new ArrayList();
+            this.UserName = userName;
+            this.EmailAddress = email;
+            this.Password = password;
+            this.Characters = new ArrayList();
         }
-        public string userName { get; set; }
+        public string UserName { get; set; }
         private string password;
         public string Password
         {
@@ -43,8 +41,8 @@ namespace GMS___Model
                 password = temp.GetHashCode().ToString();
             }
         }
-        public string email { get; set; }
-        public string apiKey { get; set; }
-        public ArrayList characters { get; set; }
+        public string EmailAddress { get; set; }
+        public string ApiKey { get; set; }
+        public ArrayList Characters { get; set; }
     }
 }
