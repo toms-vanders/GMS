@@ -27,7 +27,7 @@ namespace GMS___Desktop_Client
             InitializeComponent();
             UserAccess dataAccessLayer = new UserAccess();
             List<User> users = dataAccessLayer.GetUsersFromDatabase().ToList();
-            userName.Content = users[0].userName;
+            userName.Content = users[0].UserName;
         }
     }
 }
