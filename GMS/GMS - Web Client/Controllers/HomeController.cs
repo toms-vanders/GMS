@@ -46,7 +46,6 @@ namespace GMS___Web_Client.Controllers
                     model.EmailAddress,model.Password);
                 return RedirectToAction("Index");
             }
-
             return View();
         }
     }

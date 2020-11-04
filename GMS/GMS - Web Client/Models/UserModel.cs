@@ -9,7 +9,6 @@ namespace GMS___Web_Client.Models
     public class UserModel
     {
         [Display(Name = "Username")]
-        [Range(100000, 999999, ErrorMessage = "You need to enter a valid EmployeeId")]
         public string UserName { get; set; }
 
         [DataType(DataType.EmailAddress)]
