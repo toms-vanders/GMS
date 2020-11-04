@@ -1,9 +1,0 @@
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Data Access Layer\bin\Debug\netstandard2.0\GMS - Data Access Layer.deps.json
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Data Access Layer\bin\Debug\netstandard2.0\GMS - Data Access Layer.dll
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Data Access Layer\bin\Debug\netstandard2.0\GMS - Data Access Layer.pdb
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Data Access Layer\obj\Debug\netstandard2.0\GMS - Data Access Layer.csprojAssemblyReference.cache
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Data Access Layer\obj\Debug\netstandard2.0\GMS - Data Access Layer.AssemblyInfoInputs.cache
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Data Access Layer\obj\Debug\netstandard2.0\GMS - Data Access Layer.AssemblyInfo.cs
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Data Access Layer\obj\Debug\netstandard2.0\GMS - Data Access Layer.csproj.CoreCompileInputs.cache
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Data Access Layer\obj\Debug\netstandard2.0\GMS - Data Access Layer.dll
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Data Access Layer\obj\Debug\netstandard2.0\GMS - Data Access Layer.pdb

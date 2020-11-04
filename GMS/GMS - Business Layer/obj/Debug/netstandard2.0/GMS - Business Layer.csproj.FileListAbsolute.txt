@@ -1,9 +1,0 @@
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Business Layer\bin\Debug\netstandard2.0\GMS - Business Layer.deps.json
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Business Layer\bin\Debug\netstandard2.0\GMS - Business Layer.dll
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Business Layer\bin\Debug\netstandard2.0\GMS - Business Layer.pdb
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Business Layer\obj\Debug\netstandard2.0\GMS - Business Layer.csprojAssemblyReference.cache
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Business Layer\obj\Debug\netstandard2.0\GMS - Business Layer.AssemblyInfoInputs.cache
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Business Layer\obj\Debug\netstandard2.0\GMS - Business Layer.AssemblyInfo.cs
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Business Layer\obj\Debug\netstandard2.0\GMS - Business Layer.csproj.CoreCompileInputs.cache
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Business Layer\obj\Debug\netstandard2.0\GMS - Business Layer.dll
-C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Business Layer\obj\Debug\netstandard2.0\GMS - Business Layer.pdb
