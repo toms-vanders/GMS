@@ -26,5 +26,12 @@ namespace GMS___Web_Client.Controllers
 
             return View();
         }
+
+        public ActionResult SignUp()
+        {
+            ViewBag.Message = "Your sign-up page.";
+
+            return View();
+        }
     }
 }
