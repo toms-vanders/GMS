@@ -8,9 +8,9 @@ namespace GMS___Business_Layer
     {
         private UserAccess userAccess = new UserAccess();
 
-        public Boolean InsertNewUser(int userID, string userName, string email, string password)
+        public Boolean InsertNewUser(string userName, string email, string password)
         {
-            User userToBeAdded = new User(userID, userName, email, password);
+            User userToBeAdded = new User(userName, email, password);
             return userAccess.InsertUser(userToBeAdded) == 1 ? true : false; 
         }
     }
