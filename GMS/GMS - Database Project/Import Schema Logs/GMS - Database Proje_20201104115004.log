@@ -1,0 +1,86 @@
+04-11-2020 12:50:04	This log contains information about the import schema operation into project 'GMS - Database Project' on computer 'DESKTOP-S7IQBN9' by user 'dymus'.
+04-11-2020 12:50:04	Import of database schema has started.
+04-11-2020 12:50:15	Gathering database credentials
+04-11-2020 12:50:15	Gathering database options
+04-11-2020 12:50:15	Gathering generic database scoped configuration option
+04-11-2020 12:50:15	Gathering users
+04-11-2020 12:50:15	Gathering roles
+04-11-2020 12:50:15	Gathering application roles
+04-11-2020 12:50:15	Gathering role memberships
+04-11-2020 12:50:15	Gathering filegroups
+04-11-2020 12:50:15	Gathering full-text catalogs
+04-11-2020 12:50:15	Gathering assemblies
+04-11-2020 12:50:15	Gathering certificates
+04-11-2020 12:50:15	Gathering asymmetric keys
+04-11-2020 12:50:15	Gathering symmetric keys
+04-11-2020 12:50:15	Gathering encrypted symmetric keys
+04-11-2020 12:50:15	Gathering schemas
+04-11-2020 12:50:15	Gathering XML schema collections
+04-11-2020 12:50:15	Gathering user-defined data types
+04-11-2020 12:50:16	Gathering user-defined types
+04-11-2020 12:50:16	Gathering table types
+04-11-2020 12:50:16	Gathering unique keys for table types
+04-11-2020 12:50:16	Gathering primary keys for table types
+04-11-2020 12:50:16	Gathering indexes for table types
+04-11-2020 12:50:16	Gathering check constraints for table types
+04-11-2020 12:50:16	Gathering default constraints for table types
+04-11-2020 12:50:16	Gathering partition functions
+04-11-2020 12:50:16	Gathering partition schemes
+04-11-2020 12:50:16	Gathering functions
+04-11-2020 12:50:16	Gathering encrypted functions
+04-11-2020 12:50:16	Gathering aggregates
+04-11-2020 12:50:16	Gathering procedures
+04-11-2020 12:50:16	Gathering encrypted procedures
+04-11-2020 12:50:16	Gathering tables
+04-11-2020 12:50:16	Gathering primary keys
+04-11-2020 12:50:16	Gathering unique constraints
+04-11-2020 12:50:16	Gathering foreign keys
+04-11-2020 12:50:16	Gathering default constraints
+04-11-2020 12:50:16	Gathering check constraints
+04-11-2020 12:50:16	Gathering views
+04-11-2020 12:50:16	Gathering encrypted views
+04-11-2020 12:50:16	Gathering indexes
+04-11-2020 12:50:16	Gathering statistics
+04-11-2020 12:50:16	Gathering full-text index stoplists
+04-11-2020 12:50:16	Gathering search property lists
+04-11-2020 12:50:16	Gathering search properties
+04-11-2020 12:50:16	Gathering full-text indexes
+04-11-2020 12:50:16	Gathering column store indexes
+04-11-2020 12:50:16	Gathering spatial indexes
+04-11-2020 12:50:16	Gathering XML indexes
+04-11-2020 12:50:16	Gathering Selective XML indexes
+04-11-2020 12:50:16	Gathering encrypted triggers
+04-11-2020 12:50:16	Gathering triggers
+04-11-2020 12:50:16	Gathering encrypted and clr ddl triggers
+04-11-2020 12:50:16	Gathering ddl triggers
+04-11-2020 12:50:16	Creating edge constraints
+04-11-2020 12:50:16	Gathering synonyms
+04-11-2020 12:50:16	Gathering defaults
+04-11-2020 12:50:16	Gathering data constraint uddt bindings
+04-11-2020 12:50:16	Gathering rules
+04-11-2020 12:50:16	Gathering data constraint uddt bindings
+04-11-2020 12:50:16	Gathering message types
+04-11-2020 12:50:16	Gathering queues
+04-11-2020 12:50:16	Gathering contracts
+04-11-2020 12:50:16	Gathering services
+04-11-2020 12:50:16	Gathering event notifications
+04-11-2020 12:50:16	Gathering remote service bindings
+04-11-2020 12:50:16	Gathering broker priorities
+04-11-2020 12:50:16	Gathering signatures
+04-11-2020 12:50:16	Gathering data compression options
+04-11-2020 12:50:16	Gathering sequence types
+04-11-2020 12:50:16	Gathering security policies
+04-11-2020 12:50:16	Gather column encryption keys
+04-11-2020 12:50:16	Gathering column master keys
+04-11-2020 12:50:16	Gathering external data sources
+04-11-2020 12:50:16	Gathering external file formats
+04-11-2020 12:50:16	Gathering external tables
+04-11-2020 12:50:16	Gathering extended properties
+04-11-2020 12:50:17	Gathering credentials
+04-11-2020 12:50:17	Gathering logins
+04-11-2020 12:50:17	Gathering server audits
+04-11-2020 12:50:19	Scanning project for duplicate elements
+04-11-2020 12:50:19	Finished duplicate element processing
+04-11-2020 12:50:19	Finished importing database.
+04-11-2020 12:50:19	A summary of the import was saved to the following location: C:\Users\dymus\Developer\githubDamiana\gms\GMS\GMS - Database Project\Import Schema Logs\GMS - Database Proje_20201104115004.log
+04-11-2020 12:50:19	Click Finish to continue...

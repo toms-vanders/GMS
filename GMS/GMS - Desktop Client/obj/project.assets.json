@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\mikke\\.nuget\\packages\\": {}
+    "C:\\Users\\dymus\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mikke\\OneDrive\\Documents\\UCLL\\Semester 5\\Project\\gms\\GMS\\GMS - Desktop Client\\GMS - Desktop Client.csproj",
+      "projectUniqueName": "C:\\Users\\dymus\\Developer\\githubDamiana\\gms\\GMS\\GMS - Desktop Client\\GMS - Desktop Client.csproj",
       "projectName": "GMS - Desktop Client",
-      "projectPath": "C:\\Users\\mikke\\OneDrive\\Documents\\UCLL\\Semester 5\\Project\\gms\\GMS\\GMS - Desktop Client\\GMS - Desktop Client.csproj",
-      "packagesPath": "C:\\Users\\mikke\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mikke\\OneDrive\\Documents\\UCLL\\Semester 5\\Project\\gms\\GMS\\GMS - Desktop Client\\obj\\",
+      "projectPath": "C:\\Users\\dymus\\Developer\\githubDamiana\\gms\\GMS\\GMS - Desktop Client\\GMS - Desktop Client.csproj",
+      "packagesPath": "C:\\Users\\dymus\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dymus\\Developer\\githubDamiana\\gms\\GMS\\GMS - Desktop Client\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\mikke\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dymus\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -61,7 +61,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
       }
     }
   }

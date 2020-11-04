@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMS - API", "GMS - API\GMS 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMS - Business Layer", "GMS - Business Layer\GMS - Business Layer.csproj", "{98279411-5836-455F-9C06-87A86C2A2591}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "GMS - Database Project", "GMS - Database Project\GMS - Database Project.sqlproj", "{83276896-0823-46C4-845D-CEA51D00ABCF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,12 +45,6 @@ Global
 		{98279411-5836-455F-9C06-87A86C2A2591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98279411-5836-455F-9C06-87A86C2A2591}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98279411-5836-455F-9C06-87A86C2A2591}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83276896-0823-46C4-845D-CEA51D00ABCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83276896-0823-46C4-845D-CEA51D00ABCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83276896-0823-46C4-845D-CEA51D00ABCF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{83276896-0823-46C4-845D-CEA51D00ABCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83276896-0823-46C4-845D-CEA51D00ABCF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83276896-0823-46C4-845D-CEA51D00ABCF}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

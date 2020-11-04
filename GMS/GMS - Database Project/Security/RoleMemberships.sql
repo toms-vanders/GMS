@@ -1,0 +1,2 @@
+﻿ALTER ROLE [db_owner] ADD MEMBER [dmaj0919_1081496];
+
