@@ -25,6 +25,22 @@ namespace GMS___Data_Access_Layer
             }
         }
 
+        public User GetUserFromDatabase(String emailAddress)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                IEnumerable<User> users = conn.Query<User>("SELECT * FROM Users");
+                foreach(User user in users)
+                {
+                    if(user.EmailAddress == emailAddress)
+                    {
+                        return user;
+                    }
+                }
+                return null;
+            }
+        }
+
         public int InsertUser(User user)
         {
             int affectedRows = -1;

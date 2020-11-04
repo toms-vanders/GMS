@@ -1,4 +1,5 @@
 ﻿using GMS___Business_Layer;
+using GMS___Model;
 using GMS___Web_Client.Models;
 using System;
 using System.Collections.Generic;
@@ -14,14 +15,12 @@ namespace GMS___Web_Client.Controllers
         {
             return View();
         }
-
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
-
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
@@ -34,6 +33,18 @@ namespace GMS___Web_Client.Controllers
 
             return View();
         }
+        public ActionResult LogIn()
+        {
+            ViewBag.Message = "Your login page.";
+
+            return View();
+        }
+        public ActionResult UserPage()
+        {
+            ViewBag.Message = "Your user page.";
+
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -42,10 +53,35 @@ namespace GMS___Web_Client.Controllers
             if (ModelState.IsValid)
             {
                 UserProcessor userProcessor = new UserProcessor();
-                bool isCreated = userProcessor.InsertNewUser(model.UserName,
-                    model.EmailAddress,model.Password);
+                bool isCreated = userProcessor.InsertNewUser(model.UserName,model.EmailAddress,model.Password);
                 return RedirectToAction("Index");
             }
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogIn(LogInModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                UserProcessor userProcessor = new UserProcessor();
+                User user = userProcessor.LogInUser(model.EmailAddress, model.Password);
+                if (!(user is null))
+                {
+                    this.Session["Username"] = user.UserName;
+                    return RedirectToAction("UserPage");
+                }
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOut()
+        {
+            this.Session.Clear();
             return View();
         }
     }
