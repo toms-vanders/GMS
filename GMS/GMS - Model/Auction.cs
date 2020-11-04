@@ -6,6 +6,6 @@ namespace GMS___Model
 {
     class Auction
     {
-        //todo
+        //todo enjoy this shitfest mother fuckers!
     }
 }
