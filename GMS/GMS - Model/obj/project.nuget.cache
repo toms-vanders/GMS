@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "kRTjEet+QHEYxbhmLWAu68uYUXDWiYxCFx2OnK8jgaNX3Nc0NI3THcZBEIy9S1NUYE5ad5S04FTctKA3So0b0g==",
+  "dgSpecHash": "LVxSKUdkqFRhVzwl4bW/iriQobtPF1QaHef1FIVgleIu5tBvci+144lrEmF7e0P5F5LAte1wcK7v4iATitonYg==",
   "success": true,
   "projectFilePath": "C:\\Users\\mikke\\OneDrive\\Documents\\UCLL\\Semester 5\\Project\\gms\\GMS\\GMS - Model\\GMS - Model.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mikke\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\mikke\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+    "C:\\Users\\mikke\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\mikke\\.nuget\\packages\\nodatime\\3.0.3\\nodatime.3.0.3.nupkg.sha512",
+    "C:\\Users\\mikke\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.7.1\\system.runtime.compilerservices.unsafe.4.7.1.nupkg.sha512"
   ],
   "logs": []
 }

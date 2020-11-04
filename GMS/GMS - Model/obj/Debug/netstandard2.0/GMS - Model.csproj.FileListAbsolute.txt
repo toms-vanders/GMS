@@ -1,0 +1,9 @@
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Model\bin\Debug\netstandard2.0\GMS - Model.deps.json
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Model\bin\Debug\netstandard2.0\GMS - Model.dll
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Model\obj\Debug\netstandard2.0\GMS - Model.csprojAssemblyReference.cache
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Model\obj\Debug\netstandard2.0\GMS - Model.AssemblyInfoInputs.cache
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Model\obj\Debug\netstandard2.0\GMS - Model.AssemblyInfo.cs
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Model\bin\Debug\netstandard2.0\GMS - Model.pdb
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Model\obj\Debug\netstandard2.0\GMS - Model.csproj.CoreCompileInputs.cache
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Model\obj\Debug\netstandard2.0\GMS - Model.dll
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Model\obj\Debug\netstandard2.0\GMS - Model.pdb

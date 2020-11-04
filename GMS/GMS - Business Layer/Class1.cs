@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GMS___Model
+namespace GMS___Business_Layer
 {
     public class Class1
     {

@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Label Content="HELLO WORLD" HorizontalAlignment="Left" Margin="321,141,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

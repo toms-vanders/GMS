@@ -17,3 +17,22 @@ C:\Users\mikke\source\repos\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS
 C:\Users\mikke\source\repos\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client.dll
 C:\Users\mikke\source\repos\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client.pdb
 C:\Users\mikke\source\repos\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client.genruntimeconfig.cache
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\bin\Debug\netcoreapp3.1\GMS - Desktop Client.exe
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\bin\Debug\netcoreapp3.1\GMS - Desktop Client.deps.json
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\bin\Debug\netcoreapp3.1\GMS - Desktop Client.runtimeconfig.json
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\bin\Debug\netcoreapp3.1\GMS - Desktop Client.runtimeconfig.dev.json
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\bin\Debug\netcoreapp3.1\GMS - Desktop Client.dll
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\bin\Debug\netcoreapp3.1\GMS - Desktop Client.pdb
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client.csprojAssemblyReference.cache
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\MainWindow.g.cs
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\App.g.cs
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client_MarkupCompile.cache
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client_MarkupCompile.lref
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\MainWindow.baml
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client.g.resources
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client.AssemblyInfoInputs.cache
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client.AssemblyInfo.cs
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client.csproj.CoreCompileInputs.cache
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client.dll
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client.pdb
+C:\Users\mikke\OneDrive\Documents\UCLL\Semester 5\Project\gms\GMS\GMS - Desktop Client\obj\Debug\netcoreapp3.1\GMS - Desktop Client.genruntimeconfig.cache
