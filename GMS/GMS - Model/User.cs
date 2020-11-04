@@ -14,12 +14,22 @@ namespace GMS___Model
             this.apiKey = apiKey;
             this.characters = characters;
         }
-        public User(string userName, string password, string email, string apiKey)
+        public User(int userID, string userName, string email, string password, string apiKey)
         {
+            this.userID = userID;
             this.userName = userName;
             Password = password;
             this.email = email;
             this.apiKey = apiKey;
+            this.characters = new ArrayList();
+        }
+
+        public User(int userID, string userName, string email, string password)
+        {
+            this.userID = userID;
+            this.userName = userName;
+            this.email = email;
+            this.password = password;
             this.characters = new ArrayList();
         }
         public string userName { get; set; }
@@ -35,6 +45,7 @@ namespace GMS___Model
         }
         public string email { get; set; }
         public string apiKey { get; set; }
+        public int userID { get; set; }
         public ArrayList characters { get; set; }
     }
 }

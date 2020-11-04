@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GMS___Data_Access_Layer;
+using GMS___Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,9 @@ namespace GMS___Desktop_Client
         public MainWindow()
         {
             InitializeComponent();
+            UserAccess dataAccessLayer = new UserAccess();
+            List<User> users = dataAccessLayer.GetUsersFromDatabase().ToList();
+            userName.Content = users[0].userName;
         }
     }
 }

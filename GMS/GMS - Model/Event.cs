@@ -8,10 +8,10 @@ namespace GMS___Model
 {
     class Event
     {
-        public Event(string name, EventType eventType, string location, LocalDate date, string description, int maxNumberOfCharacters)
+        public Event(string name, string eventType, string location, LocalDate date, string description, int maxNumberOfCharacters)
         {
             this.name = name;
-            this.eventType = eventType.ToString();
+            this.eventType = eventType;
             this.location = location;
             this.date = date;
             this.description = description;
