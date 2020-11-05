@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace GMS___Web_Client.Controllers
 {
@@ -13,6 +14,10 @@ namespace GMS___Web_Client.Controllers
     {
         public ActionResult Index()
         {
+            if(this.Session["Username"] != null)
+            {
+                return RedirectToAction("UserPage");
+            }
             return View();
         }
         public ActionResult About()
@@ -39,11 +44,21 @@ namespace GMS___Web_Client.Controllers
 
             return View();
         }
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            this.Session.Abandon();
+            return RedirectToAction("LogIn");
+        }
         public ActionResult UserPage()
         {
-            ViewBag.Message = "Your user page.";
-
-            return View();
+            if (this.Session["Username"] != null)
+            {
+                ViewBag.Message = "Your user page.";
+                return View();
+            }
+            ViewBag.Error = "You aren't authorized to access this page.";
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -53,9 +68,12 @@ namespace GMS___Web_Client.Controllers
             if (ModelState.IsValid)
             {
                 UserProcessor userProcessor = new UserProcessor();
-                bool isCreated = userProcessor.InsertNewUser(model.UserName,model.EmailAddress,model.Password);
-                return RedirectToAction("Index");
+                if (userProcessor.InsertNewUser(model.UserName, model.EmailAddress, model.Password))
+                {
+                    return RedirectToAction("Index");
+                }
             }
+            ViewBag.Error = "Invalid information was given.";
             return View();
         }
 
@@ -67,21 +85,14 @@ namespace GMS___Web_Client.Controllers
             {
                 UserProcessor userProcessor = new UserProcessor();
                 User user = userProcessor.LogInUser(model.EmailAddress, model.Password);
-                if (!(user is null))
+                if (user != null)
                 {
+                    FormsAuthentication.SetAuthCookie(user.EmailAddress, false);
                     this.Session["Username"] = user.UserName;
                     return RedirectToAction("UserPage");
                 }
             }
-
-            return View();
-        }
-
-        [HttpGet]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOut()
-        {
-            this.Session.Clear();
+            ViewBag.Error = "Invalid information was given.";
             return View();
         }
     }

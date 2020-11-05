@@ -19,14 +19,25 @@
                     <li class="nav-item nav-link active">@Html.ActionLink("Home", "Index", "Home") <span class="sr-only">(current)</span></li>
                     <li class="nav-item nav-link">@Html.ActionLink("About", "About", "Home")</li>
                     <li class="nav-item nav-link">@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li class="nav-item nav-link">@Html.ActionLink("Sign Up", "SignUp", "Home")</li>
+                    @if (HttpContext.Current.Session["Username"] == null)
+                    {
                     <li class="nav-item nav-link">@Html.ActionLink("Log In", "LogIn", "Home")</li>
-                    <li class="nav-item nav-link">@Html.ActionLink("Log Out", "Index", "Home")</li>
+                    <li class="nav-item nav-link">@Html.ActionLink("Sign Up", "SignUp", "Home")</li>
+                    }
+                    else
+                    {
+                    <li class="nav-item nav-link">@Html.ActionLink("Log Out", "LogOut", "Home")</li>
+                    }
                 </ul>
             </div>
         </nav>
     </div>
     <div class="container body-content">
+
+        <div class="col-md-10">
+            <h2 class="text-danger">@ViewBag.Error</h2>
+        </div>
+
         @RenderBody()
         <hr />
         <footer>
