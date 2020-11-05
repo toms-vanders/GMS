@@ -6,7 +6,7 @@ namespace GMS___Model
 {
     public class User
     {
-        public User(int userID, string userName, string email, string password, string apiKey)
+        public User(int userID, string userName, string email, string password, string apiKey, string userRole)
         {
             userID = userID;
             this.UserName = userName;
@@ -14,6 +14,7 @@ namespace GMS___Model
             this.EmailAddress = email;
             this.ApiKey = apiKey;
             this.Characters = new ArrayList();
+            this.UserRole = userRole;
         }
         public User(string userName, string password, string email, string apiKey, ArrayList characters)
         {
@@ -23,13 +24,14 @@ namespace GMS___Model
             this.ApiKey = apiKey;
             this.Characters = characters;
         }
-        public User(string userName, string email, string password, string apiKey)
+        public User(string userName, string email, string password, string apiKey, string userRole)
         {
             this.UserName = userName;
             Password = password;
             this.EmailAddress = email;
             this.ApiKey = apiKey;
             this.Characters = new ArrayList();
+            this.UserRole = userRole;
         }
 
         public User(string userName, string email, string password)
@@ -39,6 +41,7 @@ namespace GMS___Model
             this.Password = password;
             this.Characters = new ArrayList();
             this.ApiKey = "";
+            this.UserRole = "BASIC_USER";
         }
         public string UserName { get; set; }
         private string password;
@@ -55,5 +58,6 @@ namespace GMS___Model
         public string EmailAddress { get; set; }
         public string ApiKey { get; set; }
         public ArrayList Characters { get; set; }
+        public string UserRole { get; set; }
     }
 }

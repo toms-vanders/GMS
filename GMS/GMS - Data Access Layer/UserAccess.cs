@@ -48,8 +48,8 @@ namespace GMS___Data_Access_Layer
             {
                 try
                 {
-                    string sqlCommand = "INSERT INTO Users (userName, email, password, ApiKey)";
-                    sqlCommand += " VALUES (@UserName, @EmailAddress, @Password, @ApiKey)";
+                    string sqlCommand = "INSERT INTO Users (userName, email, password, ApiKey, userRole)";
+                    sqlCommand += " VALUES (@UserName, @EmailAddress, @Password, @ApiKey, @UserRole)";
                     affectedRows = conn.Execute(sqlCommand, user);
                 }
                 catch (SqlException ex)
