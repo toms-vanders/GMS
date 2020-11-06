@@ -1,22 +1,12 @@
 ﻿using GMS___Data_Access_Layer;
 using GMS___Model;
-using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace GMS___Desktop_Client
-{
+namespace GMS___Desktop_Client {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -28,6 +18,18 @@ namespace GMS___Desktop_Client
             UserAccess dataAccessLayer = new UserAccess();
             List<User> users = dataAccessLayer.GetUsersFromDatabase().ToList();
             userName.Content = users[0].UserName;
+
+        }
+
+        private void requestAccount_Click(object sender, RoutedEventArgs e) {
+
+            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(requestURL.Text);
+            httpRequest.Accept = "application/json";
+            HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+
+            using var streamReader = new StreamReader(httpResponse.GetResponseStream());
+            string response = streamReader.ReadToEnd();
+            requestResponse.Text = response;
         }
     }
 }
