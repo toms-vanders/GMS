@@ -6,7 +6,7 @@ using GMS___Model;
 
 namespace GMS___Business_Layer
 {
-    class AuctionProcessor
+    class AuctionProcessor : AuctionProcessorIF
     {
         private AuctionAccess auctionAccess = new AuctionAccess();
 

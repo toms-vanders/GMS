@@ -9,7 +9,7 @@ using System.Text;
 
 namespace GMS___Data_Access_Layer
 {
-    public class AuctionAccess
+    public class AuctionAccess : AuctionAccessIF
     {
         IDbConnection GetConnection()
         {

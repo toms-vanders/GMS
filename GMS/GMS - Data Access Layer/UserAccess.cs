@@ -9,7 +9,7 @@ using System.Data.SqlClient;
 
 namespace GMS___Data_Access_Layer
 {
-    public class UserAccess
+    public class UserAccess : UserAccessIF
     {
         IDbConnection GetConnection()
         {

@@ -4,7 +4,7 @@ using System;
 
 namespace GMS___Business_Layer
 {
-    public class UserProcessor
+    public class UserProcessor : UserProcessorIF
     {
         private UserAccess userAccess = new UserAccess();
 
