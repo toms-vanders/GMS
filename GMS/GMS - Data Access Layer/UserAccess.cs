@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using GMS___Model;
 using System;
 using System.Collections;
@@ -70,7 +70,7 @@ namespace GMS___Data_Access_Layer
                         UPDATE Users SET userName = @UserName
                         , email = @EmailAddress
                         , password = @Password
-                        , apiKey = @ApiKey,
+                        , apiKey = @ApiKey
                         , userRole = @UserRole
                         WHERE userID = @UserID";
                     affectedRows = conn.Execute(sqlCommand, user);
@@ -83,7 +83,4 @@ namespace GMS___Data_Access_Layer
             return affectedRows;
         }
     }
-
-    
-
 }

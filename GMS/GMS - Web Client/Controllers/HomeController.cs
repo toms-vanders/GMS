@@ -60,6 +60,16 @@ namespace GMS___Web_Client.Controllers
             ViewBag.Error = "You aren't authorized to access this page.";
             return RedirectToAction("Index");
         }
+        public ActionResult ApiForm()
+        {
+            if (this.Session["Username"] != null)
+            {
+                ViewBag.Message = "Your API form.";
+                return View();
+            }
+            ViewBag.Error = "You aren't authorized to access this page.";
+            return RedirectToAction("Index");
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -88,8 +98,25 @@ namespace GMS___Web_Client.Controllers
                 if (user != null)
                 {
                     FormsAuthentication.SetAuthCookie(user.EmailAddress, false);
+                    this.Session["EmailAddress"] = user.EmailAddress;
                     this.Session["Username"] = user.UserName;
                     return RedirectToAction("UserPage");
+                }
+            }
+            ViewBag.Error = "Invalid information was given.";
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ApiForm(ApiModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                UserProcessor userProcessor = new UserProcessor();
+                if (userProcessor.InsertApiKey(this.Session["EmailAddress"].ToString(), model.ApiKey))
+                {
+                    return RedirectToAction("Index");
                 }
             }
             ViewBag.Error = "Invalid information was given.";
