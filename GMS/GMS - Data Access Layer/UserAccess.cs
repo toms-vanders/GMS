@@ -58,6 +58,30 @@ namespace GMS___Data_Access_Layer
             }
             return affectedRows;
         }
+
+        public int UpdateUser(User user)
+        {
+            int affectedRows = -1;
+            using (IDbConnection conn = GetConnection())
+            {
+                try
+                {
+                    string sqlCommand = @"
+                        UPDATE Users SET userName = @UserName
+                        , email = @EmailAddress
+                        , password = @Password
+                        , apiKey = @ApiKey,
+                        , userRole = @UserRole
+                        WHERE userID = @UserID";
+                    affectedRows = conn.Execute(sqlCommand, user);
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.ToString()); // TODO change exception handling
+                }
+            }
+            return affectedRows;
+        }
     }
 
     
