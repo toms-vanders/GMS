@@ -8,7 +8,7 @@ namespace GMS___Model
     {
         public User(int userID, string userName, string email, string password, string apiKey, string userRole)
         {
-            userID = userID;
+            this.UserID = userID;
             this.UserName = userName;
             Password = password;
             this.EmailAddress = email;
@@ -54,7 +54,7 @@ namespace GMS___Model
                 password = temp.GetHashCode().ToString();
             }
         }
-        public int userID { get; set; }
+        public int UserID { get; set; }
         public string EmailAddress { get; set; }
         public string ApiKey { get; set; }
         public ArrayList Characters { get; set; }
