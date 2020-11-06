@@ -29,7 +29,7 @@ namespace GMS___Data_Access_Layer
         {
             using (IDbConnection conn = GetConnection())
             {
-                IEnumerable<User> users = conn.Query<User>("SELECT * FROM Users");
+                IEnumerable<User> users = conn.Query<User>("SELECT userID, userName, email, password, apiKey, userRole FROM Users");
                 foreach(User user in users)
                 {
                     if(user.EmailAddress == emailAddress)

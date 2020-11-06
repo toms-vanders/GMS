@@ -6,10 +6,6 @@ namespace GMS___Model
 {
     public class User
     {
-        public User()
-        {
-
-        }
         public User(int userID, string userName, string email, string password, string apiKey, string userRole)
         {
             userID = userID;
