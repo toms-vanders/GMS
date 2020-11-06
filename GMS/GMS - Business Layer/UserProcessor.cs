@@ -4,29 +4,40 @@ using System;
 
 namespace GMS___Business_Layer
 {
-    public class UserProcessor
+    public class UserProcessor : UserProcessorIF
     {
         private UserAccess userAccess = new UserAccess();
 
         public Boolean InsertNewUser(string userName, string email, string password)
         {
-            User userToBeAdded = new User(userName, email, HashPassword(password));
+            User userToBeAdded = new User(userName, email, GetHashedPassword(password));
             return userAccess.InsertUser(userToBeAdded) == 1 ? true : false;
         }
         public User LogInUser(string emailAddress, string password)
         {
             User user = userAccess.GetUserFromDatabase(emailAddress);
-            if (user.Password == HashPassword(password))
+            if (user.Password == GetHashedPassword(password))
             {
                 return user;
             }
             return null;
         }
 
-        public string HashPassword(string password)
+        public string GetHashedPassword(string password)
         {
             password += "salt";
-            return password.GetHashCode().ToString();
+            return GetHashCode(password).ToString();
+        }
+
+        public int GetHashCode(string original)
+        {
+            long sum = 0, mul = 1;
+            for (int i = 0; i < original.Length; i++)
+            {
+                mul = (i % 4 == 0) ? 1 : mul * 256;
+                sum += original[i] * mul;
+            }
+            return (int)(Math.Abs(sum) % 2147483647);
         }
     }
 }
