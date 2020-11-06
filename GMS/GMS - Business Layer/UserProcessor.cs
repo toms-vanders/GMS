@@ -10,20 +10,23 @@ namespace GMS___Business_Layer
 
         public Boolean InsertNewUser(string userName, string email, string password)
         {
-            User userToBeAdded = new User(userName, email, password);
+            User userToBeAdded = new User(userName, email, HashPassword(password));
             return userAccess.InsertUser(userToBeAdded) == 1 ? true : false;
         }
         public User LogInUser(string emailAddress, string password)
         {
             User user = userAccess.GetUserFromDatabase(emailAddress);
-            string saltedPassword = password + "salt";
-            string hashedPassword = saltedPassword.GetHashCode() + "salt";
-            string realPassword = hashedPassword.GetHashCode().ToString();
-            if (user.Password == realPassword)
+            if (user.Password == HashPassword(password))
             {
                 return user;
             }
             return null;
+        }
+
+        public string HashPassword(string password)
+        {
+            password += "salt";
+            return password.GetHashCode().ToString();
         }
     }
 }
