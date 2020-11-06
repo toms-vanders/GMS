@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-
+using System.Linq;
 
 namespace GMS___Data_Access_Layer
 {
@@ -29,15 +29,14 @@ namespace GMS___Data_Access_Layer
         {
             using (IDbConnection conn = GetConnection())
             {
-                IEnumerable<User> users = conn.Query<User>("SELECT userID, userName, email, password, apiKey, userRole FROM Users");
-                foreach(User user in users)
+                List<User> users = conn.Query<User>("SELECT userID, userName, email, password, apiKey, userRole FROM Users where email in @emails", new { emails = new[] { emailAddress } }).ToList();
+                if (users.Count != 1)
                 {
-                    if(user.EmailAddress == emailAddress)
-                    {
-                        return user;
-                    }
+                    return (User) null;
+                } else
+                {
+                    return users[0];
                 }
-                return null;
             }
         }
 
