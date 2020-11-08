@@ -1,7 +1,9 @@
-﻿using GMS___Data_Access_Layer;
+﻿using GMS___Business_Layer;
+using GMS___Data_Access_Layer;
 using GMS___Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,12 +24,10 @@ namespace GMS___Desktop_Client
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
-            UserAccess dataAccessLayer = new UserAccess();
-            List<User> users = dataAccessLayer.GetUsersFromDatabase().ToList();
-            userName.Content = users[0].UserName;
         }
     }
 }

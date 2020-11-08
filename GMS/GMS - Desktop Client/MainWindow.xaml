@@ -7,7 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Label Name="userName" Content="HELLO WORLD" HorizontalAlignment="Left" Margin="321,141,0,0" VerticalAlignment="Top"/>
-
+        <TextBlock>
+            Hello User!
+        </TextBlock>
     </Grid>
+    
+
 </Window>
