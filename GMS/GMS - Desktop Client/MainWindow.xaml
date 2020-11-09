@@ -12,5 +12,9 @@
         </TextBlock>
     </Grid>
     
+        <Label Name="userName" Content="HELLO WORLD" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Button Name="requestAccount" Content="Request info" HorizontalAlignment="Left" Margin="104,10,0,0" VerticalAlignment="Top" Click="RequestAccount_Click" Width="105" Height="26"/>
+        <TextBlock Name="requestResponse" HorizontalAlignment="Center" Margin="0,41,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Height="383" Width="780"/>
+        <TextBox Name="requestURL" HorizontalAlignment="Left" Margin="214,10,0,0" Text="https://localhost:44377/api/account" TextWrapping="Wrap" VerticalAlignment="Top" Width="576" Height="26"/>
 
 </Window>
