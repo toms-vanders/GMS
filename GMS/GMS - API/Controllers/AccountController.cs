@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -19,14 +22,13 @@ namespace GMS___API.Controllers {
         [HttpGet]
         public async Task<string> GetAllAccountInformation() {
 
-            var request = WebRequest.Create(_clientSettings.Value.ApiURL + "account") as HttpWebRequest;
-            request.Accept = "application/json";
-            request.Headers["Authorization"] = "Bearer " + _clientSettings.Value.ApiToken;
-            WebResponse responseObject = await Task<WebResponse>.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, request);
-            var responseStream = responseObject.GetResponseStream();
-            using var streamReader = new StreamReader(responseObject.GetResponseStream());
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",_clientSettings.Value.ApiToken);
+            HttpResponseMessage response = await client.GetAsync(_clientSettings.Value.ApiURL + "account");
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
 
-            return streamReader.ReadToEnd();
+            return responseBody;
         }
 
     }

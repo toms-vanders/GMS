@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Windows;
 
 namespace GMS___Desktop_Client {
@@ -21,15 +23,14 @@ namespace GMS___Desktop_Client {
 
         }
 
-        private void requestAccount_Click(object sender, RoutedEventArgs e) {
+        private async void requestAccount_Click(object sender, RoutedEventArgs e) {
 
-            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(requestURL.Text);
-            httpRequest.Accept = "application/json";
-            HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync(requestURL.Text);
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
 
-            using var streamReader = new StreamReader(httpResponse.GetResponseStream());
-            string response = streamReader.ReadToEnd();
-            requestResponse.Text = response;
+            requestResponse.Text = responseBody;
         }
     }
 }
