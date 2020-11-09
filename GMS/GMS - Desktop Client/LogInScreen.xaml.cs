@@ -32,7 +32,7 @@ namespace GMS___Desktop_Client
         private void logInButton_Click(object sender, RoutedEventArgs e)
         {
             string email = userEmailText.Text;
-            string password = passwordText.Text;
+            string password = passwordText.Password;
 
 
             User user = userProcessor.LogInUser(email, password);
