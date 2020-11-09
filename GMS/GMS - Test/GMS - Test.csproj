@@ -110,15 +110,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccesTest.cs" />
     <Compile Include="ModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserProcessorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GMS - Business Layer\GMS - Business Layer.csproj">
+      <Project>{98279411-5836-455f-9c06-87a86c2a2591}</Project>
+      <Name>GMS - Business Layer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GMS - Data Access Layer\GMS - Data Access Layer.csproj">
       <Project>{a9f64e88-6ac3-4204-8f9a-fb2d2d035962}</Project>
       <Name>GMS - Data Access Layer</Name>

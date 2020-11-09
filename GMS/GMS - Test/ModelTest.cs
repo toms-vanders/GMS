@@ -19,12 +19,11 @@ namespace GMS___Test
             string userRole = "role";
 
             User user = new User(userID, userName, email, password, apiKey, userRole);
-            string hashedPassword = "password12345salt".GetHashCode().ToString();
 
-            Assert.AreEqual(43, user.userID);
+            Assert.AreEqual(43, user.UserID);
             Assert.AreEqual("Lemon", user.UserName);
             Assert.AreEqual("lemon88@ucn.dk", user.EmailAddress);
-            Assert.AreEqual(hashedPassword, user.Password);
+            Assert.AreEqual("password12345", user.Password);
             Assert.AreEqual("apiKey12345", user.ApiKey);
             Assert.AreEqual("role", user.UserRole);
         }

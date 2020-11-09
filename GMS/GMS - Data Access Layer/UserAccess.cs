@@ -83,15 +83,15 @@ namespace GMS___Data_Access_Layer
             return affectedRows;
         }
 
-        public int DeleteByName(string name)
+        public int DeleteByName(string UserName)
         {
             int affectedRows = -1;
             using (IDbConnection conn = GetConnection())
             {
                 try
                 {
-                    string sqlCommand = "DELETE FROM Users WHERE userName = @UserName";
-                    affectedRows = conn.Execute(sqlCommand, name);
+                    string sqlCommand = @"DELETE FROM Users WHERE userName = @name";
+                    affectedRows = conn.Execute(@"DELETE FROM Users WHERE userName = @name", new { name = new[] { UserName } });
                 }
                 catch (SqlException ex)
                 {

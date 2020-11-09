@@ -16,6 +16,10 @@ namespace GMS___Business_Layer
         public User LogInUser(string emailAddress, string password)
         {
             User user = userAccess.GetUserFromDatabase(emailAddress);
+            if (user is null)
+            {
+                return null;
+            }
             if (user.Password == GetHashedPassword(password))
             {
                 return user;
@@ -25,6 +29,10 @@ namespace GMS___Business_Layer
         public bool InsertApiKey(string emailAddress, string apiKey)
         {
             User user = userAccess.GetUserFromDatabase(emailAddress);
+            if (user is null)
+            {
+                return false;
+            } 
             user.ApiKey = apiKey;
             return userAccess.UpdateUser(user) == 1 ? true : false;
         }
