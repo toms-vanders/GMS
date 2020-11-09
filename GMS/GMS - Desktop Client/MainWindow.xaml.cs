@@ -23,7 +23,7 @@ namespace GMS___Desktop_Client {
 
         }
 
-        private async void requestAccount_Click(object sender, RoutedEventArgs e) {
+        private async void RequestAccount_Click(object sender, RoutedEventArgs e) {
 
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(requestURL.Text);
