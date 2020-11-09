@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GMS - API\GMS - API.csproj" />
     <ProjectReference Include="..\GMS - Business Layer\GMS - Business Layer.csproj" />
     <ProjectReference Include="..\GMS - Data Access Layer\GMS - Data Access Layer.csproj" />
   </ItemGroup>

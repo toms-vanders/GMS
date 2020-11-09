@@ -40,7 +40,7 @@
         <TextBlock Text="Password" Grid.Column="1" Grid.Row="3"  />
 
         <!-- Row 4-->
-        <TextBox x:Name="passwordText" Grid.Column="1" Grid.Row="4" />
+        <PasswordBox x:Name="passwordText" Grid.Column="1" Grid.Row="4" />
 
         <!-- Row 5-->
         <Button x:Name="logInButton" Content="Log In" Grid.Column="1" Grid.Row="5" Click="logInButton_Click"/>
