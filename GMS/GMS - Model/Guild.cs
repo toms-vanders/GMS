@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GMS___Model
 {
-    class Guild
+    public class Guild
     {
         public Guild(string name)
         {

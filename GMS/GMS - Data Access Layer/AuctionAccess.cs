@@ -49,5 +49,21 @@ namespace GMS___Data_Access_Layer
                 }
             }
         }
+        public int DeleteByCreatorID(int CreatorID)
+        {
+            int affectedRows = -1;
+            using (IDbConnection conn = GetConnection())
+            {
+                try
+                {
+                    affectedRows = conn.Execute(@"DELETE FROM Auction WHERE creatorID = @id", new { id = new[] { CreatorID } });
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.ToString()); // TODO change exception handling
+                }
+            }
+            return affectedRows;
+        }
     }
 }

@@ -27,6 +27,7 @@ namespace GMS___Model
         // For fetching from DB
         public Auction(int auctionID, int creatorID, int eventID, DateTime dateAndTimeOfCreation, int itemID, decimal currentPrice, int highestBidderID)
         {
+            AuctionID = auctionID;
             CreatorID = creatorID;
             EventID = eventID;
             DateAndTimeOfCreation = dateAndTimeOfCreation;

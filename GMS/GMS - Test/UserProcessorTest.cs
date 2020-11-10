@@ -16,6 +16,7 @@ namespace GMS___Test
             Boolean test1 = false;
             Boolean test2 = true;
             Boolean test3 = true;
+            Boolean noExceptionWasThrown = true;
             try
             {
                 UserProcessor up = new UserProcessor();
@@ -26,7 +27,7 @@ namespace GMS___Test
             }
             catch(Exception e)
             {
-                Assert.AreEqual(1, 2,"Test threw exception");
+                noExceptionWasThrown = false;
             }
             finally
             {
@@ -35,9 +36,10 @@ namespace GMS___Test
                 userAccess.DeleteByName("name1");
                 userAccess.DeleteByName("name2");
             }
-            Assert.AreEqual(true, test1);
-            Assert.AreEqual(false, test2);
-            Assert.AreEqual(false, test3);
+            Assert.IsTrue(test1);
+            Assert.IsFalse(test2);
+            Assert.IsFalse(test3);
+            Assert.IsTrue(noExceptionWasThrown);
         }
         [TestMethod]
         public void TestLogInUser()
@@ -46,10 +48,12 @@ namespace GMS___Test
             User user2 = null;
             User user3 = null;
             User user4 = null;
+            Boolean noExceptionWasThrown = true;
             try
             {
                 UserProcessor up = new UserProcessor();
                 up.InsertNewUser("name", "mail@mail.com", "password");
+                up.InsertNewUser("name", "Non existing email address", "password");
 
                 user1 = up.LogInUser("mail@mail.com", "password");
                 user2 = up.LogInUser("Non existing email address", "password");
@@ -58,7 +62,7 @@ namespace GMS___Test
             }
             catch(Exception e)
             {
-                Assert.AreEqual(1, 2, "Test threw exception");
+                noExceptionWasThrown = false;
             }
             finally
             {
@@ -70,13 +74,16 @@ namespace GMS___Test
             Assert.IsNull(user2);
             Assert.IsNull(user3);
             Assert.IsNull(user4);
+            Assert.IsTrue(noExceptionWasThrown);
         }
 
         [TestMethod]
         public void TestInsertApiKey()
         {
-            bool test1 = false;
-            bool test2 = true;
+            Boolean test1 = false;
+            Boolean test2 = true;
+            Boolean noExceptionWasThrown = true;
+            String apikey = "";
             try
             {
                 UserProcessor up = new UserProcessor();
@@ -84,10 +91,12 @@ namespace GMS___Test
 
                 test1 = up.InsertApiKey("mail@mail.com", "key");
                 test2 = up.InsertApiKey("Non existing email address", "key");
+                User user = up.LogInUser("mail@mail.com", "password");
+                apikey = user.ApiKey;
             }
             catch(Exception e)
             {
-                Assert.AreEqual(1, 2, "Test threw exception");
+                noExceptionWasThrown = false;
             }
             finally
             {
@@ -95,8 +104,10 @@ namespace GMS___Test
                 UserAccess userAccess = new UserAccess();
                 userAccess.DeleteByName("name");
             }
-            Assert.AreEqual(true, test1);
-            Assert.AreEqual(false, test2);
+            Assert.IsTrue(test1);
+            Assert.IsFalse(test2);
+            Assert.AreEqual("key", apikey);
+            Assert.IsTrue(noExceptionWasThrown);
         }
     }
 }

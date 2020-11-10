@@ -90,7 +90,6 @@ namespace GMS___Data_Access_Layer
             {
                 try
                 {
-                    string sqlCommand = @"DELETE FROM Users WHERE userName = @name";
                     affectedRows = conn.Execute(@"DELETE FROM Users WHERE userName = @name", new { name = new[] { UserName } });
                 }
                 catch (SqlException ex)

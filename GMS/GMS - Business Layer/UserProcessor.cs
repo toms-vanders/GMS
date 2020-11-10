@@ -26,7 +26,7 @@ namespace GMS___Business_Layer
             }
             return null;
         }
-        public bool InsertApiKey(string emailAddress, string apiKey)
+        public Boolean InsertApiKey(string emailAddress, string apiKey)
         {
             User user = userAccess.GetUserFromDatabase(emailAddress);
             if (user is null)

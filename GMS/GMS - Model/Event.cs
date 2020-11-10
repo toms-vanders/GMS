@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GMS___Model
 {
-    class Event
+    public class Event
     {
         public Event(string name, string eventType, string location, LocalDate date, string description, int maxNumberOfCharacters)
         {

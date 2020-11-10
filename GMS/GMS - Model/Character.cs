@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GMS___Model
 {
-    class Character
+    public class Character
     {
         public Character(string characterName, string characterClass, string email, int level, string guildRank)
         {

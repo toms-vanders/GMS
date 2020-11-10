@@ -10,6 +10,8 @@ namespace GMS___Data_Access_Layer
         IEnumerable<User> GetUsersFromDatabase();
         User GetUserFromDatabase(String emailAddress);
         int InsertUser(User user);
+        int UpdateUser(User user);
+        int DeleteByName(string UserName);
 
     }
 }

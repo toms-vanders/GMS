@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GMS___Model
 {
-    class Item
+    public class Item
     {
         public Item(string name, int value, int quantity, string description)
         {
