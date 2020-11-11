@@ -14,7 +14,7 @@ namespace GMS___Business_Layer
 
         public IEnumerable<Event> GetEventByID(string eventID)
         {
-            throw new NotImplementedException();
+            return eventAccess.GetEventByID(eventID);
         }
         public IEnumerable<Event> GetAllGuildEvents(string guildID)
         {
