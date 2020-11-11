@@ -132,6 +132,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ApiModel.cs" />
+    <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\LogInModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -279,6 +280,7 @@
     <Content Include="Views\Home\LogIn.cshtml" />
     <Content Include="Views\Home\UserPage.cshtml" />
     <Content Include="Views\Home\ApiForm.cshtml" />
+    <Content Include="Views\Home\CreateEventForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

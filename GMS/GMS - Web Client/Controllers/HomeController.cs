@@ -71,6 +71,17 @@ namespace GMS___Web_Client.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult CreateEventForm()
+        {
+            if (this.Session["Username"] != null)
+            {
+                ViewBag.Message = "Creating event.";
+                return View();
+            }
+            ViewBag.Error = "You aren't authorized to access this page.";
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SignUp(UserModel model)
@@ -115,6 +126,26 @@ namespace GMS___Web_Client.Controllers
             {
                 UserProcessor userProcessor = new UserProcessor();
                 if (userProcessor.InsertApiKey(this.Session["EmailAddress"].ToString(), model.ApiKey))
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            ViewBag.Error = "Invalid information was given.";
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateEventForm(EventModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                EventProcessor eventProcessor = new EventProcessor();
+                Boolean wasSuccessful = eventProcessor.InsertEvent(model.EventName, model.EventType,
+                    model.EventLocation, model.EventDateTime, model.EventDescription,
+                    model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5");
+
+                if (wasSuccessful)
                 {
                     return RedirectToAction("Index");
                 }
