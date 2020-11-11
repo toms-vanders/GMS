@@ -11,8 +11,8 @@ namespace GMS___Business_Layer
         IEnumerable<Event> GetEventByID(string eventID);
         IEnumerable<Event> GetAllGuildEvents(string guildID);
         IEnumerable<Event> GetAllGuildEventsByEventType(string guidlID, string eventType);
-        bool InsertEvent(string name, string eventType, string location, LocalDate date, string description, int maxNumberOfCharacters, string guildI);
-        bool UpdateEvent(int eventID, string name, string eventType, string location, LocalDate date, string description, int maxNumberOfCharacters, string guildI);
+        bool InsertEvent(string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildI);
+        bool UpdateEvent(int eventID, string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildI);
         bool DeleteEventByID(int eventID);
      
     }

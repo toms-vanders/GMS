@@ -85,7 +85,7 @@ namespace GMS___Test
             string name = "Random raid";
             string eventType = "Raid";
             string location = "37°14′0″N 115°48′30″W";
-            LocalDate date = new LocalDate(2020,12,10);
+            DateTime date = new DateTime(2020,12,10);
             string description = "Raid description";
             int maxNumberOfCharacters = 20;
             string guildID = "116E0C0E-0035-44A9-BB22-4AE3E23127E5";

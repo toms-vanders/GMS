@@ -25,13 +25,13 @@ namespace GMS___Business_Layer
             return eventAccess.GetAllGuildEventsByEventType(guidlID, eventType);
         }
         
-        public bool InsertEvent(string name, string eventType, string location, LocalDate date, string description, int maxNumberOfCharacters, string guildID)
+        public bool InsertEvent(string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildID)
         {
             Event eventToBeAdded = new Event(name, eventType, location, date, description, maxNumberOfCharacters, guildID);
             return eventAccess.InsertEvent(eventToBeAdded);
         }
         
-        public bool UpdateEvent(int eventID, string name, string eventType, string location, LocalDate date, string description, int maxNumberOfCharacters, string guildID)
+        public bool UpdateEvent(int eventID, string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildID)
         {
             throw new NotImplementedException ();
         }

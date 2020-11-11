@@ -8,7 +8,7 @@ namespace GMS___Model
 {
     public class Event
     {
-        public Event(string name, string eventType, string location, LocalDate date, string description, int maxNumberOfCharacters, string guildId)
+        public Event(string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildId)
         {
             this.Name = name;
             this.EventType = eventType;
@@ -21,7 +21,7 @@ namespace GMS___Model
             this.WaitingList = new ArrayList();
         }
 
-        public Event(int eventID, string name, string eventType, string location, LocalDate date, string description, int maxNumberOfCharacters, string guildId)
+        public Event(int eventID, string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildId)
         {
             this.EventID = eventID;
             this.Name = name;
@@ -39,7 +39,7 @@ namespace GMS___Model
         public string Name { get; set; }
         public string EventType { get; set; }
         public string Location { get; set; }
-        public LocalDate Date { get; set; }
+        public DateTime Date { get; set; }
         public string Description { get; set; }
         public int MaxNumberOfCharacters { get; set; }
         public string GuildID { get; set; }

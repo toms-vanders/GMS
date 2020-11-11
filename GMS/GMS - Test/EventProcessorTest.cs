@@ -27,7 +27,7 @@ namespace GMS___Test
         {
             //EventProcessor ep = new EventProcessor();
             // Arrange
-            Assert.IsTrue(ep.InsertEvent("Super Raid", "Raid", "266,070", new LocalDate(2020, 12, 10),
+            Assert.IsTrue(ep.InsertEvent("Super Raid", "Raid", "266,070", new DateTime(2020, 12, 10),
                 "Doing a full raid. Be available for at least 2 hours", 25, "116E0C0E-0035-44A9-BB22-4AE3E23127E5"));
 
             // Act
