@@ -8,25 +8,43 @@ namespace GMS___Model
 {
     public class Event
     {
-        public Event(string name, string eventType, string location, LocalDate date, string description, int maxNumberOfCharacters)
+        public Event(string name, string eventType, string location, LocalDate date, string description, int maxNumberOfCharacters, string guildId)
         {
-            this.name = name;
-            this.eventType = eventType;
-            this.location = location;
-            this.date = date;
-            this.description = description;
-            this.maxNumberOfCharacters = maxNumberOfCharacters;
-            this.participants = new ArrayList();
-            this.waitingList = new ArrayList();
+            this.Name = name;
+            this.EventType = eventType;
+            this.Location = location;
+            this.Date = date;
+            this.Description = description;
+            this.MaxNumberOfCharacters = maxNumberOfCharacters;
+            this.GuildID = guildId;
+            this.Participants = new ArrayList();
+            this.WaitingList = new ArrayList();
         }
-        public string name { get; set; }
-        public string eventType { get; set; }
-        public string location { get; set; }
-        public LocalDate date { get; set; }
-        public string description { get; set; }
-        public int maxNumberOfCharacters { get; set; }
-        public ArrayList participants { get; set; }
-        public ArrayList waitingList { get; set; }
+
+        public Event(int eventID, string name, string eventType, string location, LocalDate date, string description, int maxNumberOfCharacters, string guildId)
+        {
+            this.EventID = eventID;
+            this.Name = name;
+            this.EventType = eventType;
+            this.Location = location;
+            this.Date = date;
+            this.Description = description;
+            this.MaxNumberOfCharacters = maxNumberOfCharacters;
+            this.GuildID = guildId;
+            this.Participants = new ArrayList();
+            this.WaitingList = new ArrayList();
+        }
+
+        public int EventID { get; set; }
+        public string Name { get; set; }
+        public string EventType { get; set; }
+        public string Location { get; set; }
+        public LocalDate Date { get; set; }
+        public string Description { get; set; }
+        public int MaxNumberOfCharacters { get; set; }
+        public string GuildID { get; set; }
+        public ArrayList Participants { get; set; }
+        public ArrayList WaitingList { get; set; }
 
     }
 }

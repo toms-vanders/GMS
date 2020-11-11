@@ -68,36 +68,43 @@ namespace GMS___Test
         [TestMethod]
         public void TestGuild()
         {
+            string id = "116E0C0E-0035-44A9-BB22-4AE3E23127E5";
             string name = "GuildName";
 
-            Guild guild = new Guild(name);
+            Guild guild = new Guild(id, name);
 
-            Assert.AreEqual("GuildName", guild.name);
+            Assert.AreEqual("116E0C0E-0035-44A9-BB22-4AE3E23127E5", guild.GuildID);
+            Assert.AreEqual("GuildName", guild.Name);
+           
         }
 
         [TestMethod]
         public void TestEvent()
         {
+            int eventID = 50;
             string name = "Random raid";
-            string eventType = "Raids";
+            string eventType = "Raid";
             string location = "37°14′0″N 115°48′30″W";
             LocalDate date = new LocalDate(2020,12,10);
             string description = "Raid description";
             int maxNumberOfCharacters = 20;
+            string guildID = "116E0C0E-0035-44A9-BB22-4AE3E23127E5";
 
-            Event event1 = new Event(name, eventType, location, date, description, maxNumberOfCharacters);
-            int year = event1.date.Year;
-            int month = event1.date.Month;
-            int day = event1.date.Day;
+            Event event1 = new Event(eventID, name, eventType, location, date, description, maxNumberOfCharacters, guildID);
+            int year = event1.Date.Year;
+            int month = event1.Date.Month;
+            int day = event1.Date.Day;
 
-            Assert.AreEqual("Random raid", event1.name);
-            Assert.AreEqual("Raids", event1.eventType);
-            Assert.AreEqual("37°14′0″N 115°48′30″W", event1.location);
+            Assert.AreEqual(50, event1.EventID);
+            Assert.AreEqual("Random raid", event1.Name);
+            Assert.AreEqual("Raid", event1.EventType);
+            Assert.AreEqual("37°14′0″N 115°48′30″W", event1.Location);
             Assert.AreEqual(2020, year);
             Assert.AreEqual(12, month);
             Assert.AreEqual(10, day);
-            Assert.AreEqual("Raid description", event1.description);
-            Assert.AreEqual(20, event1.maxNumberOfCharacters);
+            Assert.AreEqual("Raid description", event1.Description);
+            Assert.AreEqual(20, event1.MaxNumberOfCharacters);
+            Assert.AreEqual("116E0C0E-0035-44A9-BB22-4AE3E23127E5", event1.GuildID);
         }
 
         [TestMethod]
