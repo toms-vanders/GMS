@@ -25,6 +25,23 @@ namespace GMS___Web_Client
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+
+            // Bundles for datepicker using JQuery
+            bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
+                        "~/Scripts/jquery-3.5.1.min.js",
+                        "~/Scripts/jquery-ui-1.12.1.min.js"));
+
+            bundles.Add(new StyleBundle("~/Content/css/jquery-ui").Include(
+                      "~/Content/themes/base/jquery-ui.min.css"));
+
+            // Bundles for tiempicker using JQuery
+            bundles.Add(new ScriptBundle("~/bundles/jquery-ui-timepicker-addon").Include(
+                        "~/Scripts/jquery-ui-timepicker-addon.min.js"));
+
+            bundles.Add(new StyleBundle("~/Content/css/jquery-ui-timepicker-addon").Include(
+                      "~/Content/jquery-ui-timepicker-addon.min.css"));
+
         }
     }
 }

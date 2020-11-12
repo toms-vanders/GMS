@@ -25,6 +25,7 @@ namespace GMS___Web_Client.Models
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Event date and time")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-mm-dd hh:mm}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Event date and time are required.")]
         public DateTime EventDateTime { get; set; }
 
@@ -33,7 +34,7 @@ namespace GMS___Web_Client.Models
         [Required(ErrorMessage = "Event descriptipon is required.")]
         public string EventDescription { get; set; }
 
-        [DataType(DataType.Text)]
+        [DataType("number")]
         [Display(Name = "Max. number of characters in event")]
         [Required(ErrorMessage = "Max. character number is required.")]
         public int EventMaxNumberOfCharacters { get; set; }
