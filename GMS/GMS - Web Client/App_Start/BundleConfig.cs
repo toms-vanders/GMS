@@ -42,6 +42,13 @@ namespace GMS___Web_Client
             bundles.Add(new StyleBundle("~/Content/css/jquery-ui-timepicker-addon").Include(
                       "~/Content/jquery-ui-timepicker-addon.min.css"));
 
+            // Bundles for fontawesome
+            bundles.Add(new StyleBundle("~/Content/css/fontawesome").Include(
+                          "~/Content/bootstrap.css",
+                          "~/Content/ekimba.css",
+                          "~/Content/w3.css",
+                          "~/Content/font-awesome.min.css",
+                          "~/Content/site.css"));
         }
     }
 }
