@@ -16,7 +16,7 @@ namespace GMS___Data_Access_Layer
             return new SqlConnection("Server=hildur.ucn.dk;Database=dmaj0919_1081496;User Id=dmaj0919_1081496;Password=Password1!;");
         }
 
-        public IEnumerable<Event> GetEventByID(string eventID)
+        public IEnumerable<Event> GetEventByID(int eventID)
         {
             using (IDbConnection conn = GetConnection())
             {
@@ -38,7 +38,7 @@ namespace GMS___Data_Access_Layer
         {
             using (IDbConnection conn = GetConnection())
             {
-                IEnumerable<Event> events = conn.Query<Event>("SELECT * FROM Event WHERE guildID = @GuildID AND eventTyp = @EventType", 
+                IEnumerable<Event> events = conn.Query<Event>("SELECT * FROM Event WHERE guildID = @GuildID AND eventType = @EventType", 
                     new { GuildID = guildID, EventType = eventType }).ToList();
                 return events;
             }

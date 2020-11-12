@@ -90,7 +90,7 @@ namespace GMS___Test
             int maxNumberOfCharacters = 20;
             string guildID = "116E0C0E-0035-44A9-BB22-4AE3E23127E5";
 
-            Event event1 = new Event(eventID, name, eventType, location, date, description, maxNumberOfCharacters, guildID);
+            Event event1 = new Event(eventID, guildID, name, description, eventType, location, date, maxNumberOfCharacters);
             int year = event1.Date.Year;
             int month = event1.Date.Month;
             int day = event1.Date.Day;

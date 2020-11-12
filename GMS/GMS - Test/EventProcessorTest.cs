@@ -6,6 +6,7 @@ using GMS___Model;
 using GMS___Data_Access_Layer;
 using GMS___Business_Layer;
 using NodaTime;
+using System.Linq;
 
 namespace GMS___Test
 {
@@ -36,6 +37,15 @@ namespace GMS___Test
         }
 
         [TestMethod]
+        public void EventProcessorIntegrationTest()
+        {
+            CreateValidEvent();
+            GetAllGuildEventListFromDatabase();
+            GetAllGuildEventsByEventTypeFromDatabase();
+            GetGuildEventByEventIDFromDatabase();
+            DeleteExistingEvent();
+        }
+
         public void CreateValidEvent()
         {
 
@@ -44,59 +54,54 @@ namespace GMS___Test
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID));
         }
 
-        //[TestMethod]
-        //public void GetGuildEventByEventIDFromDatabase()
-        //{
-
-        //    // Arrange
-        //    List<Event> testEvents = new List<Event>();
-        //    testEvents.Add(testEvent);
-
-        //    // Act
-        //    List<Event> returnList = (List<Event>)ep.GetAllGuildEvents(testEvent.GuildID);
-        //    // Assert
-        //    CollectionAssert.AreEqual(testEvents, returnList);
-        //}
-
-        [TestMethod]
         public void GetAllGuildEventListFromDatabase()
         {
 
             // Arrange
-            List<Event> testEvents = new List<Event>();
-            testEvents.Add(testEvent);
 
             // Act
             List<Event> returnList = (List<Event>)ep.GetAllGuildEvents(testEvent.GuildID);
+            Event returnedEvent = returnList.FirstOrDefault();
             // Assert
-            CollectionAssert.AreEqual(testEvents, returnList);
+            Assert.AreEqual(testEvent.GuildID, returnedEvent.GuildID);
         }
 
-        [TestMethod]
         public void GetAllGuildEventsByEventTypeFromDatabase()
         {
 
             // Arrange
-            List<Event> testEvents = new List<Event>();
-            testEvents.Add(testEvent);
+
             // Act
             List<Event> returnList = (List<Event>)ep.GetAllGuildEventsByEventType(testEvent.GuildID, testEvent.EventType);
+            Event returnedEvent = returnList.FirstOrDefault();
             // Assert
-            CollectionAssert.AreEqual(testEvents, returnList);
+            Assert.AreEqual(testEvent.EventType, returnedEvent.EventType);
+        }
+
+        public void GetGuildEventByEventIDFromDatabase()
+        {
+            // Assert
+            List<Event> returnListByGuild = (List<Event>)ep.GetAllGuildEvents(testEvent.GuildID);
+            Event testEventWithID = returnListByGuild.FirstOrDefault();
+
+            // Act
+            List<Event> returnListByID = (List<Event>)ep.GetEventByID(testEventWithID.EventID);
+            Event returnedEvent = returnListByID.FirstOrDefault();
+            // Assert
+            Assert.AreEqual(returnedEvent.EventID, testEventWithID.EventID);
         }
 
 
-        [TestMethod]
         public void DeleteExistingEvent()
         {
 
             // Arrange
-            
+            List<Event> returnListByGuild = (List<Event>)ep.GetAllGuildEvents(testEvent.GuildID);
+            Event testEventWithID = returnListByGuild.FirstOrDefault();
 
-            // Act
+            // Act and Assert
 
-            // Assert
-            Assert.IsTrue(ep.DeleteEventByID(2));
+            Assert.IsTrue(ep.DeleteEventByID(testEventWithID.EventID));
         }
 
         [TestCleanup]

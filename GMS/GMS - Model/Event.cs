@@ -21,7 +21,7 @@ namespace GMS___Model
             this.WaitingList = new ArrayList();
         }
 
-        public Event(int eventID, string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildId)
+        public Event(int eventID, string guildId, string name, string description, string eventType, string location, DateTime date,  int maxNumberOfCharacters)
         {
             this.EventID = eventID;
             this.Name = name;

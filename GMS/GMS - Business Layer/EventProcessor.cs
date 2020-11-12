@@ -12,7 +12,7 @@ namespace GMS___Business_Layer
 
         private EventAccess eventAccess = new EventAccess();
 
-        public IEnumerable<Event> GetEventByID(string eventID)
+        public IEnumerable<Event> GetEventByID(int eventID)
         {
             return eventAccess.GetEventByID(eventID);
         }
