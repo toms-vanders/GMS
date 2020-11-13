@@ -4,8 +4,8 @@ using System.Text;
 
 namespace GMS___Model
 {
-    class EventType
+    public class EventType
     {
-        public enum EventTypes { Dungeon, Raids };
+        public enum EventTypes { Dungeon, Raid };
     }
 }

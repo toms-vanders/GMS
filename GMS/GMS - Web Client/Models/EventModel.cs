@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace GMS___Web_Client.Models
 {
@@ -25,8 +26,9 @@ namespace GMS___Web_Client.Models
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Event date and time")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-mm-dd hh:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Event date and time are required.")]
+        
         public DateTime EventDateTime { get; set; }
 
         [DataType(DataType.MultilineText)]
@@ -39,5 +41,8 @@ namespace GMS___Web_Client.Models
         [Required(ErrorMessage = "Max. character number is required.")]
         public int EventMaxNumberOfCharacters { get; set; }
 
+
+        // All possible event types
+        public IEnumerable<SelectListItem> EventTypes { get; set; }
     }
 }

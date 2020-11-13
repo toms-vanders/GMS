@@ -75,8 +75,13 @@ namespace GMS___Web_Client.Controllers
         {
             if (this.Session["Username"] != null)
             {
+                // Getting all event types needed for DropDownList
+                var eventTypes = GetAllEventTypes();
+                var model = new EventModel();
+                // Get list of SelectListItem(s)
+                model.EventTypes = GetOptionEventTypesList(eventTypes);
                 ViewBag.Message = "Creating event.";
-                return View();
+                return View(model);
             }
             ViewBag.Error = "You aren't authorized to access this page.";
             return RedirectToAction("Index");
@@ -138,6 +143,13 @@ namespace GMS___Web_Client.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateEventForm(EventModel model)
         {
+            // Get all eventTypes
+            var eventTypes = GetAllEventTypes();
+            // Set these eventTypes on the model. Needs to be done because
+            // only the selected value from DropDownList is posed back, not the whole
+            // list of EventType(s)
+            model.EventTypes = GetOptionEventTypesList(eventTypes);
+
             if (ModelState.IsValid)
             {
                 EventProcessor eventProcessor = new EventProcessor();
@@ -151,7 +163,26 @@ namespace GMS___Web_Client.Controllers
                 }
             }
             ViewBag.Error = "Invalid information was given.";
-            return View();
+            return View(model);
+        }
+
+        private IEnumerable<string> GetAllEventTypes()
+        {
+            return Enum.GetNames(typeof(EventType.EventTypes)).ToList();
+        }
+
+        private IEnumerable<SelectListItem> GetOptionEventTypesList(IEnumerable<string> elements)
+        {
+            var eventTypeList = new List<SelectListItem>();
+            foreach (var element in elements)
+            {
+                eventTypeList.Add(new SelectListItem
+                {
+                    Value = element,
+                    Text = element
+                });
+            }
+            return eventTypeList;
         }
     }
 }
