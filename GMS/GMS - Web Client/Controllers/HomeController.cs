@@ -143,27 +143,34 @@ namespace GMS___Web_Client.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateEventForm(EventModel model)
         {
-            // Get all eventTypes
-            var eventTypes = GetAllEventTypes();
-            // Set these eventTypes on the model. Needs to be done because
-            // only the selected value from DropDownList is posed back, not the whole
-            // list of EventType(s)
-            model.EventTypes = GetOptionEventTypesList(eventTypes);
-
-            if (ModelState.IsValid)
+            if (this.Session["Username"] != null)
             {
-                EventProcessor eventProcessor = new EventProcessor();
-                Boolean wasSuccessful = eventProcessor.InsertEvent(model.EventName, model.EventType,
-                    model.EventLocation, model.EventDateTime, model.EventDescription,
-                    model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5");
+                // Get all eventTypes
+                var eventTypes = GetAllEventTypes();
+                // Set these eventTypes on the model. Needs to be done because
+                // only the selected value from DropDownList is posed back, not the whole
+                // list of EventType(s)
+                model.EventTypes = GetOptionEventTypesList(eventTypes);
 
-                if (wasSuccessful)
+                if (ModelState.IsValid)
                 {
-                    return RedirectToAction("Index");
+                    EventProcessor eventProcessor = new EventProcessor();
+                    Boolean wasSuccessful = eventProcessor.InsertEvent(model.EventName, model.EventType,
+                        model.EventLocation, model.EventDateTime, model.EventDescription,
+                        model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5");
+
+                    if (wasSuccessful)
+                    {
+                        return RedirectToAction("Index");
+                    }
                 }
+                ViewBag.Error = "Invalid information was given.";
+                return View(model);
+            } else
+            {
+                ViewBag.Error = "You aren't authorized to access this page.";
+                return RedirectToAction("Index");
             }
-            ViewBag.Error = "Invalid information was given.";
-            return View(model);
         }
 
         private IEnumerable<string> GetAllEventTypes()
