@@ -29,7 +29,7 @@ namespace GMS___Data_Access_Layer
         {
             using (IDbConnection conn = GetConnection())
             {
-                IEnumerable<Event> events = conn.Query<Event>("SELECT * FROM Event WHERE guildID = @GuildID", new { GuildID = guildID }).ToList();
+                IEnumerable<Event> events = conn.Query<Event>("SELECT eventID, guildID, name, description, eventType, location, date, maxNumberOfCharacters FROM Event WHERE guildID = @GuildID", new { GuildID = guildID }).ToList();
                 return events;
             }
         }
