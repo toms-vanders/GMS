@@ -49,6 +49,13 @@ namespace GMS___Web_Client
                           "~/Content/w3.css",
                           "~/Content/font-awesome.min.css",
                           "~/Content/site.css"));
+
+            // Bundles for select2
+            bundles.Add(new StyleBundle("~/Content/css/select2").Include(
+                          "~/Content/css/select2.min.css"));
+            bundles.Add(new ScriptBundle("~/bundles/select2").Include(
+                        "~/Scripts/jquery-3.5.1.min.js", 
+                        "~/Scripts/select2.min.js"));
         }
     }
 }
