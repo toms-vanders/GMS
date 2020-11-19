@@ -1,4 +1,4 @@
-﻿using GMS___Business_Layer;
+using GMS___Business_Layer;
 using GMS___Model;
 using GMS___Web_Client.Models;
 using System;
@@ -81,6 +81,22 @@ namespace GMS___Web_Client.Controllers
                 // Get list of SelectListItem(s)
                 model.EventTypes = GetOptionEventTypesList(eventTypes);
                 ViewBag.Message = "Creating event.";
+                return View(model);
+            }
+            ViewBag.Error = "You aren't authorized to access this page.";
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult SearchEvents()
+        {
+            if (this.Session["Username"] != null)
+            {
+                // Getting all event types needed for DropDownList
+                var eventTypes = GetAllEventTypes();
+                var model = new EventModel();
+                // Get list of SelectListItem(s)
+                model.EventTypes = GetOptionEventTypesList(eventTypes);
+                ViewBag.Message = "Find new events";
                 return View(model);
             }
             ViewBag.Error = "You aren't authorized to access this page.";
