@@ -30,5 +30,19 @@ namespace GMS___API.Controllers
         {
             return userProcessor.InsertNewUser(user.UserName,user.EmailAddress,user.Password);
         }
+
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public User LogIn([FromBody] User user)
+        {
+            return userProcessor.LogInUser(user.EmailAddress, user.Password);
+        }
+
+        [HttpPost("signup")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public User SignUp([FromBody] User user)
+        {
+            return userProcessor.InsertNewUser(user.UserName, user.EmailAddress, user.Password);
+        }
     }
 }
