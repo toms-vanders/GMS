@@ -14,7 +14,7 @@
             var trHTML = "";
             json.forEach(obj => {
                 if ((eventTypes.includes(obj.eventType)) || (eventTypes.length === 0)) {
-                    if (keywords.some(v => obj.name.includes(v)) || keywords.some(v => obj.description.includes(v)) || (keywords.length === 0)) {
+                    if (keywords.some(v => obj.name.toLowerCase().includes(v)) || keywords.some(v => obj.description.toLowerCase().includes(v)) || (keywords.length === 0)) {
                         trHTML += "<tr>";
                         Object.entries(obj).forEach(([key, value]) => {
                             if (key === "participants" || key === "waitingList" || key === "guildID" || key === "rowId") {

@@ -16,7 +16,7 @@
         var keywordMatching = searchField.value.match(/\S+/g);
         if (keywordMatching != null) {
             for (i = 0; i < keywordMatching.length; i++) {
-                keywords.push(keywordMatching[i]);
+                keywords.push(keywordMatching[i].toLowerCase());
             }
         }
 
