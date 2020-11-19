@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GMS___Business_Layer;
+using GMS___Model;
+using Newtonsoft.Json;
 
 namespace GMS___Desktop_Client.UserControls
 {
@@ -19,17 +23,28 @@ namespace GMS___Desktop_Client.UserControls
     /// </summary>
     public partial class SearchEventUserControl : UserControl
     {
+        private readonly HttpClient client;
         public SearchEventUserControl()
         {
             InitializeComponent();
 
+            filterByEventTypeBox.ItemsSource = Enum.GetValues(typeof(EventType.EventTypes)).Cast<EventType.EventTypes>();
+
+            client = new HttpClient();
+
             FillDataGrid();
         }
 
-        private void FillDataGrid()
+        private async void FillDataGrid()
         {
-            EventProcessor ep = new EventProcessor();
-            this.eventGrid.ItemsSource = ep.GetAllGuildEvents("116E0C0E-0035-44A9-BB22-4AE3E23127E5");
+
+            var uri = $"https://localhost:44377/api/Guild/116E0C0E-0035-44A9-BB22-4AE3E23127E5";
+
+            string responseBody = await client.GetStringAsync(uri);
+
+            IEnumerable<Event> result = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
+
+            this.eventGrid.ItemsSource = result;
         }
     }
 }

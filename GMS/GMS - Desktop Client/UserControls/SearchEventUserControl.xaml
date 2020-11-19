@@ -27,10 +27,23 @@
         <wpfx:WatermarkTextBox x:Name="eventSearchBox" Grid.Column="1" Grid.Row="1" Watermark="Search Event"/>
 
         <!-- Event Filter Box -->
-        <wpfx:CheckComboBox x:Name="filterByEventTypeBox" Grid.Column="2" Grid.Row="1" Text="All event types"/>
+        <wpfx:CheckComboBox x:Name="filterByEventTypeBox" Grid.Column="2" Grid.Row="1" Delimiter="; " IsSelectAllActive="True"/>
+        
+        <TextBlock Text="Select event type" IsHitTestVisible="False" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Margin=" 5 0 0 0">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=filterByEventTypeBox,Path=SelectedItem}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
 
         <!-- Role Filter Box -->
-        <wpfx:CheckComboBox x:Name="filterByRoleBox" Grid.Column="3" Grid.Row="1" Text="All roles"/>
+        <wpfx:CheckComboBox x:Name="filterByRoleBox" Grid.Column="3" Grid.Row="1" Text="All roles" />
 
         <!-- Event DataGrid -->
         <DataGrid Name="eventGrid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="True"/>
