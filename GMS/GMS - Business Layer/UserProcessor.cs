@@ -8,10 +8,15 @@ namespace GMS___Business_Layer
     {
         private UserAccess userAccess = new UserAccess();
 
-        public Boolean InsertNewUser(string userName, string email, string password)
+        public User GetUserByEmail(string email)
+        {
+            return userAccess.GetUserFromDatabase(email);
+        }
+            public User InsertNewUser(string userName, string email, string password)
         {
             User userToBeAdded = new User(userName, email, GetHashedPassword(password));
-            return userAccess.InsertUser(userToBeAdded) == 1 ? true : false;
+            userAccess.InsertUser(userToBeAdded);
+            return userToBeAdded;
         }
         public User LogInUser(string emailAddress, string password)
         {

@@ -21,7 +21,7 @@ namespace GMS___Model
             this.WaitingList = new ArrayList();
         }
 
-        public Event(int eventID, string guildId, string name, string description, string eventType, string location, DateTime date,  int maxNumberOfCharacters)
+        public Event(int eventID, string guildId, string name, string description, string eventType, string location, DateTime date,  int maxNumberOfCharacters, Byte[] rowId)
         {
             this.EventID = eventID;
             this.Name = name;
@@ -33,6 +33,7 @@ namespace GMS___Model
             this.GuildID = guildId;
             this.Participants = new ArrayList();
             this.WaitingList = new ArrayList();
+            this.RowId = rowId;
         }
 
         public int EventID { get; set; }
@@ -45,6 +46,7 @@ namespace GMS___Model
         public string GuildID { get; set; }
         public ArrayList Participants { get; set; }
         public ArrayList WaitingList { get; set; }
+        public Byte[] RowId { get; set; }
 
     }
 }
