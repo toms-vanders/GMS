@@ -36,6 +36,20 @@ namespace GMS___Model
             this.RowId = rowId;
         }
 
+        public Event(int eventID, string guildId, string name, string description, string eventType, string location, DateTime date, int maxNumberOfCharacters)
+        {
+            this.EventID = eventID;
+            this.Name = name;
+            this.EventType = eventType;
+            this.Location = location;
+            this.Date = date;
+            this.Description = description;
+            this.MaxNumberOfCharacters = maxNumberOfCharacters;
+            this.GuildID = guildId;
+            this.Participants = new ArrayList();
+            this.WaitingList = new ArrayList();
+        }
+
         public int EventID { get; set; }
         public string Name { get; set; }
         public string EventType { get; set; }

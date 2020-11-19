@@ -14,7 +14,7 @@ namespace GMS___Web_Client.Controllers
     {
         public ActionResult Index()
         {
-            if(this.Session["Username"] != null)
+            if(InSession())
             {
                 return RedirectToAction("UserPage");
             }
@@ -46,13 +46,12 @@ namespace GMS___Web_Client.Controllers
         }
         public ActionResult LogOut()
         {
-            FormsAuthentication.SignOut();
-            this.Session.Abandon();
+            EndSession();
             return RedirectToAction("LogIn");
         }
         public ActionResult UserPage()
         {
-            if (this.Session["Username"] != null)
+            if (InSession())
             {
                 ViewBag.Message = "Your user page.";
                 return View();
@@ -62,7 +61,7 @@ namespace GMS___Web_Client.Controllers
         }
         public ActionResult ApiForm()
         {
-            if (this.Session["Username"] != null)
+            if (InSession())
             {
                 ViewBag.Message = "Your API form.";
                 return View();
@@ -73,7 +72,7 @@ namespace GMS___Web_Client.Controllers
 
         public ActionResult CreateEventForm()
         {
-            if (this.Session["Username"] != null)
+            if (InSession())
             {
                 // Getting all event types needed for DropDownList
                 var eventTypes = GetAllEventTypes();
@@ -110,7 +109,7 @@ namespace GMS___Web_Client.Controllers
             if (ModelState.IsValid)
             {
                 UserProcessor userProcessor = new UserProcessor();
-                if (userProcessor.InsertNewUser(model.UserName, model.EmailAddress, model.Password))
+                if (userProcessor.InsertNewUser(model.UserName, model.EmailAddress, model.Password)!=null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -130,8 +129,7 @@ namespace GMS___Web_Client.Controllers
                 if (user != null)
                 {
                     FormsAuthentication.SetAuthCookie(user.EmailAddress, false);
-                    this.Session["EmailAddress"] = user.EmailAddress;
-                    this.Session["Username"] = user.UserName;
+                    StartSession(user);
                     return RedirectToAction("UserPage");
                 }
             }
@@ -159,7 +157,7 @@ namespace GMS___Web_Client.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateEventForm(EventModel model)
         {
-            if (this.Session["Username"] != null)
+            if (InSession())
             {
                 // Get all eventTypes
                 var eventTypes = GetAllEventTypes();
@@ -206,6 +204,23 @@ namespace GMS___Web_Client.Controllers
                 });
             }
             return eventTypeList;
+        }
+
+        private Boolean InSession()
+        {
+            return this.Session["Username"] != null;
+        }
+
+        private void EndSession()
+        {
+            FormsAuthentication.SignOut();
+            this.Session.Abandon();
+        }
+
+        private void StartSession(User user)
+        {
+            this.Session["EmailAddress"] = user.EmailAddress;
+            this.Session["Username"] = user.UserName;
         }
     }
 }
