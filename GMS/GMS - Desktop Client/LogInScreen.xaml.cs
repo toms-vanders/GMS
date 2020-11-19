@@ -41,8 +41,8 @@ namespace GMS___Desktop_Client
             if (user != null)
             {
                 MessageBox.Show("Login Succesful", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                Window mainWindow = new MainWindow();
-                mainWindow.Show();
+                Window MainWindow = new MainWindow();
+                MainWindow.Show();
                 Close();
             }
             else

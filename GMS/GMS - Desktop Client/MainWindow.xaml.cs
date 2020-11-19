@@ -4,7 +4,6 @@ using GMS___Model;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
 using System.Windows;
 
 namespace GMS___Desktop_Client {
@@ -19,14 +18,5 @@ namespace GMS___Desktop_Client {
             InitializeComponent();
         }
 
-        private async void RequestAccount_Click(object sender, RoutedEventArgs e) {
-
-            HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(requestURL.Text);
-            response.EnsureSuccessStatusCode();
-            string responseBody = await response.Content.ReadAsStringAsync();
-
-            requestResponse.Text = responseBody;
-        }
     }
 }
