@@ -11,13 +11,12 @@
         dataType: "json",
         success: function (json) {
             clearTable();
-            var trHTML = "";
+            var trHTML = "<tbody>";
             json.forEach(obj => {
                 if ((eventTypes.includes(obj.eventType)) || (eventTypes.length === 0)) {
                     if (keywords.some(v => obj.name.toLowerCase().includes(v)) || keywords.some(v => obj.description.toLowerCase().includes(v)) || (keywords.length === 0)) {
                         trHTML += "<tr>";
                         const keys = Object.keys(obj);
-                        console.log(keys);
                         Object.entries(obj).forEach(([key, value]) => {
                             if (key === "participants" || key === "waitingList" || key === "guildID" || key === "rowId") {
                             } else if (key === "eventID") {
@@ -36,10 +35,11 @@
                                 trHTML += "</td>";
                             }
                         });
+                        trHTML += "</tr>";
                     }
                 }
             });
-            trHTML += "</tr>";
+            trHTML += "</tbody>";
             $('#events-table').append(trHTML);
         },
         error: function () {
@@ -50,5 +50,5 @@
 
 function clearTable() {
     var events = document.getElementById("events-table");
-    events.innerHTML = "<tr><th scope=\"col\">ID</th><th scope=\"col\">Name</th><th scope=\"col\">Event type</th><th scope=\"col\">Location</th><th scope=\"col\">Date</th><th scope=\"col\">Description</th><th scope=\"col\">Max. num. of character</th><th scope=\"col\" style=\"width: 12%;\">Actions</th></tr>"
+    events.innerHTML = "<thead><tr><th scope=\"col\">ID</th><th scope=\"col\">Name</th><th scope=\"col\">Event type</th><th scope=\"col\">Location</th><th scope=\"col\">Date</th><th scope=\"col\">Description</th><th scope=\"col\">Max. num. of character</th><th scope=\"col\" style=\"width: 12%;\">Actions</th></tr></thead>"
 }
