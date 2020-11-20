@@ -62,12 +62,13 @@
     /* Microsoft Edge */
 </style>
 
-<h2>Search Events</h2> <br />
+<h2>Search Events</h2>
+<br />
 <div class="form-row" style="width:60%">
     <div class="col input-group">
-            <input id="searchField" type="text" class="form-control" placeholder="Input search keyword" />
+        <input id="searchField" type="text" class="form-control" placeholder="Input search keyword" />
         <div class="input-group-append">
-            <input id="submitButton" type="submit" class="btn btn-outline-secondary" value="Search" onclick="onSearchClick()"/>
+            <input id="submitButton" type="submit" class="btn btn-outline-secondary" value="Search" onclick="onSearchClick()" />
         </div>
     </div>
     <div class="col">
@@ -78,7 +79,7 @@
 
 <br />
 <div>
-    <table id="events-table" class="table"></table>
+    <table id="events-table" class="table table-striped table-hover"></table>
 </div>
 
 <script type="text/javascript">
@@ -101,7 +102,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        getEvents([],[]);
+        getEvents([], []);
     });
 </script>
 
@@ -113,4 +114,6 @@
     <!-- select2 -->
     @Scripts.Render("~/bundles/select2")
     @Styles.Render("~/Content/css/select2")
+    <!-- font-awesome -->
+    @Styles.Render("~/Content/css/fontawesome")
 }
