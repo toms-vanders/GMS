@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -24,6 +25,9 @@ namespace GMS___Desktop_Client.UserControls
     public partial class SearchEventUserControl : UserControl
     {
         private readonly HttpClient client;
+        IEnumerable<Event> eventList;
+
+
         public SearchEventUserControl()
         {
             InitializeComponent();
@@ -35,6 +39,11 @@ namespace GMS___Desktop_Client.UserControls
             FillDataGrid();
         }
 
+        private void searchEventsbutton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        
         private async void FillDataGrid()
         {
 
@@ -42,9 +51,45 @@ namespace GMS___Desktop_Client.UserControls
 
             string responseBody = await client.GetStringAsync(uri);
 
-            IEnumerable<Event> result = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
+            eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
 
-            this.eventGrid.ItemsSource = result;
+            this.eventGrid.ItemsSource = eventList;
+        }
+
+        private void eventSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            FilterEvents();
+        }
+
+        private void filterByEventTypeBox_ItemSelectionChanged(object sender, Xceed.Wpf.Toolkit.Primitives.ItemSelectionChangedEventArgs e)
+        {
+
+            FilterEvents();
+
+        }
+
+        private void FilterEvents()
+        {
+            var filterByName = eventList.Where(ev => ev.Name.IndexOf(eventSearchBox.Text, (StringComparison)CompareOptions.IgnoreCase) >= 0);
+
+            var eventTypesSelections = filterByEventTypeBox.SelectedItems;
+            
+            if(eventTypesSelections.Count > 0)
+            {
+                List<Event> filterByEventType = new List<Event>();
+                foreach (var et in eventTypesSelections)
+                {
+                    filterByEventType.AddRange(filterByName.Where(ev => ev.EventType == et.ToString()));
+                }
+
+                this.eventGrid.ItemsSource = filterByEventType;
+            }
+            else
+            {
+                this.eventGrid.ItemsSource = filterByName;
+            }
+
         }
     }
 }
