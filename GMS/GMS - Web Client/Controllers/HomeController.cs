@@ -58,6 +58,7 @@ namespace GMS___Web_Client.Controllers
         {
             if (InSession())
             {
+                this.Session["Guild"] = "";
                 ArrayList characterList = new ArrayList();
                 ArrayList characterNameList = GetJson<ArrayList>("gw2api/characters", new ArrayList());
                 foreach(string name in characterNameList)
@@ -79,6 +80,7 @@ namespace GMS___Web_Client.Controllers
                 string urlSuffix = "gw2api/characters/" + name + "/core";
                 ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
                 ViewBag.Message = "Your character page.";
+                this.Session["Guild"] = ViewBag.Character.Guild;
                 return View();
             }
             ViewBag.Error = "You aren't authorized to access this page.";
