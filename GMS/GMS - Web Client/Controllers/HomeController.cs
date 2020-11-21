@@ -90,6 +90,22 @@ namespace GMS___Web_Client.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult SearchEvents()
+        {
+            if (this.Session["Username"] != null)
+            {
+                // Getting all event types needed for DropDownList
+                var eventTypes = GetAllEventTypes();
+                var model = new EventModel();
+                // Get list of SelectListItem(s)
+                model.EventTypes = GetOptionEventTypesList(eventTypes);
+                ViewBag.Message = "Find new events";
+                return View(model);
+            }
+            ViewBag.Error = "You aren't authorized to access this page.";
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SignUp(UserModel model)

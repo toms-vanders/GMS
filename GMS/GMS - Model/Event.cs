@@ -8,6 +8,11 @@ namespace GMS___Model
 {
     public class Event
     {
+        public Event()
+        {
+
+        }
+
         public Event(string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildId)
         {
             this.Name = name;
