@@ -130,7 +130,6 @@ namespace GMS___Web_Client.Controllers
                 User user = PostUserJson(new User(model.EmailAddress, model.Password), "user/login");
                 if (user != null)
                 {
-                    FormsAuthentication.SetAuthCookie(user.EmailAddress, false);
                     StartSession(user);
                     return RedirectToAction("UserPage");
                 }

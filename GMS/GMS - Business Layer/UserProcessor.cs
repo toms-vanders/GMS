@@ -27,6 +27,7 @@ namespace GMS___Business_Layer
             }
             if (user.Password == GetHashedPassword(password))
             {
+                user.EmailAddress = emailAddress;
                 return user;
             }
             return null;
