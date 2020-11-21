@@ -44,5 +44,14 @@ namespace GMS___API.Controllers
         {
             return userProcessor.InsertNewUser(user.UserName, user.EmailAddress, user.Password);
         }
+
+        [HttpPost("insertapi")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<User> InsertApi([FromBody] User user)
+        {
+            if (userProcessor.InsertApiKey(user.EmailAddress, user.ApiKey))
+                return user;
+            return BadRequest("Not valid information");
+        }
     }
 }

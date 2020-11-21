@@ -6,15 +6,43 @@ namespace GMS___Model
 {
     public class User
     {
-        public User(int userID, string userName, string email, string password, string apiKey, string userRole)
+        public User()
         {
-            this.UserID = userID;
-            this.UserName = userName;
-            Password = password;
-            this.EmailAddress = email;
-            this.ApiKey = apiKey;
+            this.UserName = "";
+            this.EmailAddress = "";
+            this.Password = "";
+            this.ApiKey = "";
             this.Characters = new ArrayList();
-            this.UserRole = userRole;
+            this.UserRole = "BASIC_USER";
+        }
+
+        public User(string Email, string Password)
+        {
+            this.UserName = "";
+            this.EmailAddress = Email;
+            this.Password = Password;
+            this.ApiKey = "";
+            this.Characters = new ArrayList();
+            this.UserRole = "BASIC_USER";
+        }
+        public User(int UserID, string UserName, string Email, string Password, string ApiKey, string UserRole)
+        {
+            this.UserID = UserID;
+            this.UserName = UserName;
+            this.Password = Password;
+            this.EmailAddress = Email;
+            this.ApiKey = ApiKey;
+            this.Characters = new ArrayList();
+            this.UserRole = UserRole;
+        }
+        public User(string UserName, string Email, string Password, string ApiKey, string UserRole)
+        {
+            this.UserName = UserName;
+            this.Password = Password;
+            this.EmailAddress = Email;
+            this.ApiKey = ApiKey;
+            this.Characters = new ArrayList();
+            this.UserRole = UserRole;
         }
         public User(string userName, string password, string email, string apiKey, ArrayList characters)
         {
@@ -24,16 +52,6 @@ namespace GMS___Model
             this.ApiKey = apiKey;
             this.Characters = characters;
         }
-        public User(string userName, string email, string password, string apiKey, string userRole)
-        {
-            this.UserName = userName;
-            Password = password;
-            this.EmailAddress = email;
-            this.ApiKey = apiKey;
-            this.Characters = new ArrayList();
-            this.UserRole = userRole;
-        }
-
         public User(string userName, string email, string password)
         {
             this.UserName = userName;

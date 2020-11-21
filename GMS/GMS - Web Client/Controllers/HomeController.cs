@@ -1,9 +1,11 @@
 ﻿using GMS___Business_Layer;
 using GMS___Model;
 using GMS___Web_Client.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -12,6 +14,8 @@ namespace GMS___Web_Client.Controllers
 {
     public class HomeController : Controller
     {
+        public static string EndPoint = "https://localhost:44377/api/";
+
         public ActionResult Index()
         {
             if(InSession())
@@ -92,8 +96,7 @@ namespace GMS___Web_Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserProcessor userProcessor = new UserProcessor();
-                if (userProcessor.InsertNewUser(model.UserName, model.EmailAddress, model.Password)!=null)
+                if (PostUserJson(new User(model.UserName, model.EmailAddress,model.Password), "user/signup")!=null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -108,8 +111,7 @@ namespace GMS___Web_Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserProcessor userProcessor = new UserProcessor();
-                User user = userProcessor.LogInUser(model.EmailAddress, model.Password);
+                User user = PostUserJson(new User(model.EmailAddress, model.Password), "user/login");
                 if (user != null)
                 {
                     FormsAuthentication.SetAuthCookie(user.EmailAddress, false);
@@ -127,8 +129,10 @@ namespace GMS___Web_Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserProcessor userProcessor = new UserProcessor();
-                if (userProcessor.InsertApiKey(this.Session["EmailAddress"].ToString(), model.ApiKey))
+                User user = new User();
+                user.EmailAddress = this.Session["EmailAddress"].ToString();
+                user.ApiKey = model.ApiKey;
+                if (PostUserJson(user, "user/insertapi") != null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -152,12 +156,10 @@ namespace GMS___Web_Client.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    EventProcessor eventProcessor = new EventProcessor();
-                    Boolean wasSuccessful = eventProcessor.InsertEvent(model.EventName, model.EventType,
+                    Event tempEvent = PostEventJson(new Event(model.EventName, model.EventType,
                         model.EventLocation, model.EventDateTime, model.EventDescription,
-                        model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5");
-
-                    if (wasSuccessful)
+                        model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5"), "guild/events/insert");
+                    if (tempEvent != null)
                     {
                         return RedirectToAction("Index");
                     }
@@ -205,6 +207,66 @@ namespace GMS___Web_Client.Controllers
         {
             this.Session["EmailAddress"] = user.EmailAddress;
             this.Session["Username"] = user.UserName;
+        }
+
+        //Not sure if this works
+        //T is a generic type, need to test this more
+        public T GetJson<T>(string urlSuffix, T returnType)
+        {
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.BaseAddress = EndPoint;
+                    var json = webClient.DownloadString(urlSuffix);
+                    T t = JsonConvert.DeserializeObject<T>(json);
+                    return t;
+                }
+            }
+            catch (WebException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public User PostUserJson(User user, string urlSuffix)
+        {
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.BaseAddress = EndPoint;
+                    webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    string data = JsonConvert.SerializeObject(user);
+                    var response = webClient.UploadString(urlSuffix, data);
+                    return JsonConvert.DeserializeObject<User>(response);
+                }
+            }
+            catch (WebException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public Event PostEventJson(Event guildEvent, string urlSuffix)
+        {
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.BaseAddress = EndPoint;
+                    webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    string data = JsonConvert.SerializeObject(guildEvent);
+                    var response = webClient.UploadString(urlSuffix, data);
+                    return JsonConvert.DeserializeObject<Event>(response);
+                }
+            }
+            catch (WebException ex)
+            {
+                throw ex;
+            }
         }
     }
 }
