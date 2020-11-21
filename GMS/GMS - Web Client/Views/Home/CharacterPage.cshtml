@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "CharacterPage";
+}
+
+<h2>CharacterPage</h2>
+
+<div class="row">
+    <div class="col-md-4 flex-column align-items-start list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">@ViewBag.Character.Name</h5>
+            <small>@ViewBag.Character.Level</small>
+        </div>
+        <p class="mb-1">@ViewBag.Character.Race</p>
+        <p class="mb-1">@ViewBag.Character.Profession</p>
+        <small>@ViewBag.Character.Title</small>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        @Html.ActionLink("Enter your api key", "ApiForm", "Home") <br>
+        @Html.ActionLink("Create new guild event", "CreateEventForm", "Home") <br>
+        @Html.ActionLink("Find guild events", "SearchEvents", "Home")
+    </div>
+</div>
+

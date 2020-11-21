@@ -3,6 +3,7 @@ using GMS___Model;
 using GMS___Web_Client.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,7 +15,7 @@ namespace GMS___Web_Client.Controllers
 {
     public class HomeController : Controller
     {
-        public static string EndPoint = "https://localhost:44377/api/";
+        public static string EndPoint = "https://localhost:44377/";
 
         public ActionResult Index()
         {
@@ -57,7 +58,27 @@ namespace GMS___Web_Client.Controllers
         {
             if (InSession())
             {
+                ArrayList characterList = new ArrayList();
+                ArrayList characterNameList = GetJson<ArrayList>("gw2api/characters", new ArrayList());
+                foreach(string name in characterNameList)
+                {
+                    string urlSuffix = "gw2api/characters/" + name + "/core";
+                    characterList.Add(GetJson<Character>(urlSuffix, new Character()));
+                }
+                ViewBag.Characters = characterList;
                 ViewBag.Message = "Your user page.";
+                return View();
+            }
+            ViewBag.Error = "You aren't authorized to access this page.";
+            return RedirectToAction("Index");
+        }
+        public ActionResult CharacterPage(string name)
+        {
+            if (InSession())
+            {
+                string urlSuffix = "gw2api/characters/" + name + "/core";
+                ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
+                ViewBag.Message = "Your character page.";
                 return View();
             }
             ViewBag.Error = "You aren't authorized to access this page.";
@@ -112,7 +133,7 @@ namespace GMS___Web_Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (PostUserJson(new User(model.UserName, model.EmailAddress,model.Password), "user/signup")!=null)
+                if (PostJson(new User(model.UserName, model.EmailAddress,model.Password), "api/user/signup") !=null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -127,7 +148,7 @@ namespace GMS___Web_Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = PostUserJson(new User(model.EmailAddress, model.Password), "user/login");
+                User user = PostJson(new User(model.EmailAddress, model.Password), "api/user/login");
                 if (user != null)
                 {
                     StartSession(user);
@@ -147,7 +168,7 @@ namespace GMS___Web_Client.Controllers
                 User user = new User();
                 user.EmailAddress = this.Session["EmailAddress"].ToString();
                 user.ApiKey = model.ApiKey;
-                if (PostUserJson(user, "user/insertapi") != null)
+                if (PostJson(user, "api/user/insertapi") != null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -171,9 +192,9 @@ namespace GMS___Web_Client.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Event tempEvent = PostEventJson(new Event(model.EventName, model.EventType,
+                    Event tempEvent = PostJson(new Event(model.EventName, model.EventType,
                         model.EventLocation, model.EventDateTime, model.EventDescription,
-                        model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5"), "guild/events/insert");
+                        model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5"), "api/guild/events/insert");
                     if (tempEvent != null)
                     {
                         return RedirectToAction("Index");
@@ -244,7 +265,7 @@ namespace GMS___Web_Client.Controllers
             }
         }
 
-        public User PostUserJson(User user, string urlSuffix)
+        public T PostJson<T>(T postObject, string urlSuffix)
         {
             try
             {
@@ -253,29 +274,9 @@ namespace GMS___Web_Client.Controllers
                     webClient.BaseAddress = EndPoint;
                     webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    string data = JsonConvert.SerializeObject(user);
+                    string data = JsonConvert.SerializeObject(postObject);
                     var response = webClient.UploadString(urlSuffix, data);
-                    return JsonConvert.DeserializeObject<User>(response);
-                }
-            }
-            catch (WebException ex)
-            {
-                throw ex;
-            }
-        }
-
-        public Event PostEventJson(Event guildEvent, string urlSuffix)
-        {
-            try
-            {
-                using (WebClient webClient = new WebClient())
-                {
-                    webClient.BaseAddress = EndPoint;
-                    webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
-                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    string data = JsonConvert.SerializeObject(guildEvent);
-                    var response = webClient.UploadString(urlSuffix, data);
-                    return JsonConvert.DeserializeObject<Event>(response);
+                    return JsonConvert.DeserializeObject<T>(response);
                 }
             }
             catch (WebException ex)
