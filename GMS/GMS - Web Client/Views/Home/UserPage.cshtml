@@ -6,16 +6,17 @@
     <div class="col-md-8 list-group">
         @foreach (var character in ViewBag.Characters)
         {
-        <a href="@Url.Action("CharacterPage", "Home", new { name = character.Name})" class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">@character.Name</h5>
-                <small>@character.Level</small>
-            </div>
-            <p class="mb-1">@character.Race</p>
-            <p class="mb-1">@character.Profession</p>
-            <small>@character.Gender</small>
-        </a>
+            <a href="@Url.Action("CharacterPage", "Home", new { name = character.Name})" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@character.Name</h5>
+                    <small>@character.Level</small>
+                </div>
+                <p class="mb-1">@character.Race</p>
+                <p class="mb-1">@character.Profession</p>
+                <small>@character.Gender</small>
+            </a>
         }
     </div>
+    @Html.ActionLink("Enter your api key", "ApiForm", "Home") <br>
 </div>
 

@@ -135,7 +135,7 @@ namespace GMS___Web_Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (PostJson(new User(model.UserName, model.EmailAddress,model.Password), "api/user/signup") !=null)
+                if (PostJson("api/user/signup", new User(model.UserName, model.EmailAddress, model.Password)) !=null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -150,7 +150,7 @@ namespace GMS___Web_Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = PostJson(new User(model.EmailAddress, model.Password), "api/user/login");
+                User user = PostJson("api/user/login", new User(model.EmailAddress, model.Password));
                 if (user != null)
                 {
                     StartSession(user);
@@ -170,7 +170,7 @@ namespace GMS___Web_Client.Controllers
                 User user = new User();
                 user.EmailAddress = this.Session["EmailAddress"].ToString();
                 user.ApiKey = model.ApiKey;
-                if (PostJson(user, "api/user/insertapi") != null)
+                if (PostJson("api/user/insertapi", user) != null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -194,9 +194,9 @@ namespace GMS___Web_Client.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Event tempEvent = PostJson(new Event(model.EventName, model.EventType,
+                    Event tempEvent = PostJson("api/guild/events/insert", new Event(model.EventName, model.EventType,
                         model.EventLocation, model.EventDateTime, model.EventDescription,
-                        model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5"), "api/guild/events/insert");
+                        model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5"));
                     if (tempEvent != null)
                     {
                         return RedirectToAction("Index");
@@ -267,7 +267,7 @@ namespace GMS___Web_Client.Controllers
             }
         }
 
-        public T PostJson<T>(T postObject, string urlSuffix)
+        public T PostJson<T>(string urlSuffix, T postObject)
         {
             try
             {
