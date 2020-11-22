@@ -21,12 +21,12 @@
                     <li class="nav-item nav-link">@Html.ActionLink("Contact", "Contact", "Home")</li>
                     @if (HttpContext.Current.Session["Username"] == null)
                     {
-                    <li class="nav-item nav-link">@Html.ActionLink("Log In", "LogIn", "Home")</li>
-                    <li class="nav-item nav-link">@Html.ActionLink("Sign Up", "SignUp", "Home")</li>
+                        <li class="nav-item nav-link">@Html.ActionLink("Log In", "LogIn", "Home")</li>
+                        <li class="nav-item nav-link">@Html.ActionLink("Sign Up", "SignUp", "Home")</li>
                     }
                     else
                     {
-                    <li class="nav-item nav-link">@Html.ActionLink("Log Out", "LogOut", "Home")</li>
+                        <li class="nav-item nav-link">@Html.ActionLink("Log Out", "LogOut", "Home")</li>
                     }
                 </ul>
             </div>

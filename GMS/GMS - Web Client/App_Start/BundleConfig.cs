@@ -22,6 +22,12 @@ namespace GMS___Web_Client
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-bundle").Include(
+                      "~/Scripts/bootstrap.bundle.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/popper").Include(
+                    "~/Scripts/umd/popper.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
@@ -29,7 +35,7 @@ namespace GMS___Web_Client
 
             // Bundles for datepicker using JQuery
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
-                        "~/Scripts/jquery-3.5.1.min.js",
+                        /*"~/Scripts/jquery-3.5.1.min.js",*/
                         "~/Scripts/jquery-ui-1.12.1.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css/jquery-ui").Include(
@@ -53,8 +59,9 @@ namespace GMS___Web_Client
             // Bundles for select2
             bundles.Add(new StyleBundle("~/Content/css/select2").Include(
                           "~/Content/css/select2.min.css"));
+
             bundles.Add(new ScriptBundle("~/bundles/select2").Include(
-                        "~/Scripts/jquery-3.5.1.min.js", 
+                        /*"~/Scripts/jquery-3.5.1.min.js", */
                         "~/Scripts/select2.min.js"));
         }
     }
