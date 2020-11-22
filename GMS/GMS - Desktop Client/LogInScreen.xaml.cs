@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GMS___Business_Layer;
 using GMS___Model;
+using Newtonsoft.Json;
 
 namespace GMS___Desktop_Client
 {
@@ -21,26 +24,36 @@ namespace GMS___Desktop_Client
     /// </summary>
     public partial class LogInScreen : Window
     {
-        UserProcessor userProcessor;
+        private readonly HttpClient client;
 
         public LogInScreen()
         {
             InitializeComponent();
-            userProcessor = new UserProcessor();
+            client = new HttpClient();
         }
 
-        private void logInButton_Click(object sender, RoutedEventArgs e)
+        private async void logInButton_Click(object sender, RoutedEventArgs e)
         {
-            string email = userEmailText.Text;
-            string password = passwordText.Password;
+            //string email = userEmailText.Text;
+            //string password = passwordText.Password;
 
 
-            User user = userProcessor.LogInUser(email, password);
+            //User user = userProcessor.LogInUser(email, password);
 
+            var uri = $"https://localhost:44377/api/user/login";
 
-            if (user != null)
-            {
-                MessageBox.Show("Login Succesful", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            User user = new User() { EmailAddress = userEmailText.Text, Password = passwordText.Password };
+
+            var login = await client.PostAsJsonAsync(uri, user);
+
+            //string json = JsonConvert.SerializeObject(user);
+            //var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            if (login.StatusCode == HttpStatusCode.OK)
+            {                
+                var responseContent = await login.Content.ReadAsStringAsync();
+                User returnUser = JsonConvert.DeserializeObject<User>(responseContent);
+                MessageBox.Show("Login Succesful!\n Welcome " + returnUser.UserName, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Window MainWindow = new MainWindow();
                 MainWindow.Show();
                 Close();

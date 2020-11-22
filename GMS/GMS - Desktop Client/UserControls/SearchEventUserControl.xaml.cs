@@ -37,6 +37,7 @@ namespace GMS___Desktop_Client.UserControls
             client = new HttpClient();
 
             FillDataGrid();
+
         }
 
         private void searchEventsbutton_Click(object sender, RoutedEventArgs e)
@@ -88,6 +89,34 @@ namespace GMS___Desktop_Client.UserControls
             else
             {
                 this.eventGrid.ItemsSource = filterByName;
+            }
+
+        }
+
+        /// <summary>
+        /// Formats dataset columns.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void eventGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+
+            if (e.PropertyName == "GuildID" || e.PropertyName == "RowId" ||
+                e.PropertyName == "Participants" || e.PropertyName == "WaitingList")
+            {
+                e.Column = null;
+            }
+            else if (e.PropertyName == "EventID")
+            {
+                e.Column.Header = "ID";
+            }
+            else if (e.PropertyName == "EventType")
+            {
+                e.Column.Header = "Event Type";
+            }
+            else if (e.PropertyName == "MaxNumberOfCharacters")
+            {
+                e.Column.Header = "Max num. of Players";
             }
 
         }

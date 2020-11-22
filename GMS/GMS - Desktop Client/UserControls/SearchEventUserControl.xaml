@@ -46,7 +46,9 @@
         <wpfx:CheckComboBox x:Name="filterByRoleBox" Grid.Column="3" Grid.Row="1" Text="All roles" />
 
         <!-- Event DataGrid -->
-        <DataGrid Name="eventGrid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="True"/>
+        <DataGrid Name="eventGrid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="True" AutoGeneratingColumn="eventGrid_AutoGeneratingColumn"
+                  HorizontalAlignment="Left" IsReadOnly="True">
+        </DataGrid>
 
     </Grid>
     

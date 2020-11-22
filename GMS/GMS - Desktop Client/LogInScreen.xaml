@@ -34,7 +34,6 @@
 
         <!-- Row 2-->
         <TextBox x:Name="userEmailText" Grid.Column="1" Grid.Row="2" />
-        <!--<TextBlock x:Name ="errormessage" Grid.Column="1" Grid.Row="2"  OpacityMask="Crimson" Foreground="#FFE5572C"  /> -->
 
         <!-- Row 3-->
         <TextBlock Text="Password" Grid.Column="1" Grid.Row="3"  />
