@@ -300,7 +300,13 @@ namespace GMS___Web_Client.Controllers
             ArrayList equipment = new ArrayList();
             foreach (EquipmentSlot item in jsonList.Equipment)
             {
-                equipment.Add(GetJson<Item>("gw2api/items/"+item.Id,new Item()));
+                try
+                {
+                    equipment.Add(GetJson<Item>("gw2api/items/" + item.Id, new Item()));
+                } catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
             return equipment;
         }
