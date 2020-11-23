@@ -47,7 +47,31 @@
 
         <!-- Event DataGrid -->
         <DataGrid Name="eventGrid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="True" AutoGeneratingColumn="eventGrid_AutoGeneratingColumn"
-                  HorizontalAlignment="Left" IsReadOnly="True">
+                  HorizontalAlignment="Left" IsReadOnly="True" >
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="joinEventButton" Content="Join" Click="joinEventButton_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="editEventButton" Content="Edit" Click="editEventButton_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="deleteEventButton" Content="Delete" Click="deleteEventButton_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+
         </DataGrid>
 
     </Grid>

@@ -46,7 +46,7 @@ namespace GMS___API.Controllers
             return BadRequest("Invalid data.");
         }
 
-        [HttpDelete("events/remove")]
+        [HttpDelete("events/remove/{eventId}")]
         public string DeleteEvent(string eventId) 
         {
             if(eventProcessor.DeleteEventByID(Int32.Parse(eventId)))
