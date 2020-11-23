@@ -16,6 +16,7 @@ namespace GMS___Web_Client.Controllers
     public class HomeController : Controller
     {
         public static string EndPoint = "https://localhost:44377/";
+        public static string ApiKey;
 
         public ActionResult Index()
         {
@@ -243,11 +244,15 @@ namespace GMS___Web_Client.Controllers
 
         private void StartSession(User user)
         {
+            if (user.ApiKey == "") {
+                //TODO: retrieve api Key page
+            }
+            ApiKey = user.ApiKey;
+            this.Session["ApiToken"] = ApiKey;
             this.Session["EmailAddress"] = user.EmailAddress;
             this.Session["Username"] = user.UserName;
         }
 
-        //Not sure if this works
         //T is a generic type, need to test this more
         public T GetJson<T>(string urlSuffix, T returnType)
         {
@@ -256,6 +261,8 @@ namespace GMS___Web_Client.Controllers
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.BaseAddress = EndPoint;
+                    webClient.Headers.Add("Authorization", this.Session["ApiToken"].ToString());
+                    webClient.Encoding = System.Text.Encoding.UTF8;
                     var json = webClient.DownloadString(urlSuffix);
                     T t = JsonConvert.DeserializeObject<T>(json);
                     return t;

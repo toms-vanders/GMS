@@ -19,13 +19,13 @@ namespace GMS___API.Controllers {
         public ExternalAPIControllerGW2(IOptions<ClientSettings> clientSettings) {
             _clientSettings = clientSettings;
             client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _clientSettings.Value.ApiToken);
             apiURL = _clientSettings.Value.ApiURL;
         }
 
         [Route("gw2api/{**catchAll}")]
         [HttpGet]
         public async Task<string> GetInformation(string catchAll) {
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Request.Headers["Authorization"]);
             HttpResponseMessage response = await client.GetAsync(apiURL + "/" + catchAll);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();

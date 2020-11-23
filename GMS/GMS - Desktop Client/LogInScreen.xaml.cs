@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
@@ -53,6 +55,30 @@ namespace GMS___Desktop_Client
             {                
                 var responseContent = await login.Content.ReadAsStringAsync();
                 User returnUser = JsonConvert.DeserializeObject<User>(responseContent);
+                //TODO if apikey null
+                if(returnUser.ApiKey == "") {
+                    MessageBox.Show("Account does not have an API Key", "Characters", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                if (ConfigurationManager.AppSettings["ApiToken"] == "") {
+                    UpdateAppSettings("ApiToken",returnUser.ApiKey);
+                }
+                //TODO: Get characters
+                try {
+                    using (WebClient webClient = new WebClient()) {
+                        webClient.BaseAddress = "https://localhost:44377/";
+                        webClient.Headers.Add("Authorization",ConfigurationManager.AppSettings["ApiToken"]);
+                        var json = webClient.DownloadString("gw2api/characters");
+                        ArrayList characters = JsonConvert.DeserializeObject<ArrayList>(json);
+                        string chars = "";
+                        foreach (var item in characters) {
+                            chars = chars + " " + item;
+                        }
+                        MessageBox.Show(chars, "Characters", MessageBoxButton.OK, MessageBoxImage.Information);
+                        returnUser.Characters = characters;
+                    }
+                } catch (WebException ex) {
+                    throw ex;
+                }
                 MessageBox.Show("Login Succesful!\n Welcome " + returnUser.UserName, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Window MainWindow = new MainWindow();
                 MainWindow.Show();
@@ -76,6 +102,22 @@ namespace GMS___Desktop_Client
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
             e.Handled = true;
+        }
+
+        static void UpdateAppSettings(string key, string value) {
+            try {
+                var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                var settings = configFile.AppSettings.Settings;
+                if (settings[key] == null) {
+                    settings.Add(key, value);
+                } else {
+                    settings[key].Value = value;
+                }
+                configFile.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
+            } catch (ConfigurationErrorsException) {
+                Console.WriteLine("Error writing app settings");
+            }
         }
     }
 }
