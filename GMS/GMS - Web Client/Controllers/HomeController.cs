@@ -78,9 +78,10 @@ namespace GMS___Web_Client.Controllers
         {
             if (InSession())
             {
-                string urlSuffix = "gw2api/characters/" + name + "/core";
-                ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
+                string urlSuffix = "gw2api/characters/" + name;
+                ViewBag.Character = GetJson<Character>(urlSuffix + "/core", new Character());
                 ViewBag.Message = "Your character page.";
+                ViewBag.Equipment = InitializeEquipment(GetJson<Equipments>(urlSuffix + "/equipment", new Equipments()));
                 this.Session["Guild"] = ViewBag.Character.Guild;
                 return View();
             }
@@ -292,6 +293,16 @@ namespace GMS___Web_Client.Controllers
             {
                 throw ex;
             }
+        }
+
+        public ArrayList InitializeEquipment(Equipments jsonList)
+        {
+            ArrayList equipment = new ArrayList();
+            foreach (EquipmentSlot item in jsonList.Equipment)
+            {
+                equipment.Add(GetJson<Item>("gw2api/items/"+item.Id,new Item()));
+            }
+            return equipment;
         }
     }
 }

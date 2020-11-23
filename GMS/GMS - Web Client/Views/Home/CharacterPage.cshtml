@@ -6,14 +6,32 @@
 <h2>CharacterPage</h2>
 
 <div class="row">
-    <div class="col-md-4 flex-column align-items-start list-group-item list-group-item-action">
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">@ViewBag.Character.Name</h5>
-            <small>@ViewBag.Character.Level</small>
+    <div class="col-md-8 list-group">
+        <div class="flex-column align-items-start list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">@ViewBag.Character.Name</h5>
+                <small>@ViewBag.Character.Level</small>
+            </div>
+            <p class="mb-1">@ViewBag.Character.Race</p>
+            <p class="mb-1">@ViewBag.Character.Profession</p>
+            <small>@ViewBag.Character.Title</small>
         </div>
-        <p class="mb-1">@ViewBag.Character.Race</p>
-        <p class="mb-1">@ViewBag.Character.Profession</p>
-        <small>@ViewBag.Character.Title</small>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 list-group">
+        @foreach (var equipment in ViewBag.Equipment)
+        {
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@equipment.Name</h5>
+                    <small>@equipment.Level</small>
+                </div>
+                <p class="mb-1">@equipment.Rarity</p>
+                <small>Value: @equipment.Vendor_value</small>
+                <img src="@equipment.Icon" class="img-thumbnail" alt="Responsive image"/>
+            </a>
+        }
     </div>
 </div>
 
