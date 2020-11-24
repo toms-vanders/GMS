@@ -16,6 +16,7 @@ namespace GMS___Web_Client.Controllers
     public class HomeController : Controller
     {
         public static string EndPoint = "https://localhost:44377/";
+        public static string ApiKey;
 
         public ActionResult Index()
         {
@@ -77,9 +78,10 @@ namespace GMS___Web_Client.Controllers
         {
             if (InSession())
             {
-                string urlSuffix = "gw2api/characters/" + name + "/core";
-                ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
+                string urlSuffix = "gw2api/characters/" + name;
+                ViewBag.Character = GetJson<Character>(urlSuffix + "/core", new Character());
                 ViewBag.Message = "Your character page.";
+                ViewBag.Equipment = InitializeEquipment(GetJson<Equipments>(urlSuffix + "/equipment", new Equipments()));
                 this.Session["Guild"] = ViewBag.Character.Guild;
                 return View();
             }
@@ -245,11 +247,15 @@ namespace GMS___Web_Client.Controllers
 
         private void StartSession(User user)
         {
+            if (user.ApiKey == "") {
+                //TODO: retrieve api Key page
+            }
+            ApiKey = user.ApiKey;
+            this.Session["ApiToken"] = ApiKey;
             this.Session["EmailAddress"] = user.EmailAddress;
             this.Session["Username"] = user.UserName;
         }
 
-        //Not sure if this works
         //T is a generic type, need to test this more
         public T GetJson<T>(string urlSuffix, T returnType)
         {
@@ -258,6 +264,8 @@ namespace GMS___Web_Client.Controllers
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.BaseAddress = EndPoint;
+                    webClient.Headers.Add("Authorization", this.Session["ApiToken"].ToString());
+                    webClient.Encoding = System.Text.Encoding.UTF8;
                     var json = webClient.DownloadString(urlSuffix);
                     T t = JsonConvert.DeserializeObject<T>(json);
                     return t;
@@ -287,6 +295,22 @@ namespace GMS___Web_Client.Controllers
             {
                 throw ex;
             }
+        }
+
+        public ArrayList InitializeEquipment(Equipments jsonList)
+        {
+            ArrayList equipment = new ArrayList();
+            foreach (EquipmentSlot item in jsonList.Equipment)
+            {
+                try
+                {
+                    equipment.Add(GetJson<Item>("gw2api/items/" + item.Id, new Item()));
+                } catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return equipment;
         }
     }
 }

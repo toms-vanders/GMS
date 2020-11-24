@@ -94,7 +94,7 @@ namespace GMS___Desktop_Client.UserControls
         }
 
         /// <summary>
-        /// Formats dataset columns.
+        /// Formats dataset columns and adds button columns to the datagrid
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -104,7 +104,7 @@ namespace GMS___Desktop_Client.UserControls
             if (e.PropertyName == "GuildID" || e.PropertyName == "RowId" ||
                 e.PropertyName == "Participants" || e.PropertyName == "WaitingList")
             {
-                e.Column = null;
+                e.Cancel = true;
             }
             else if (e.PropertyName == "EventID")
             {
@@ -118,6 +118,39 @@ namespace GMS___Desktop_Client.UserControls
             {
                 e.Column.Header = "Max num. of Players";
             }
+
+            eventGrid.Columns[0].DisplayIndex = eventGrid.Columns.Count - 1;
+            eventGrid.Columns[1].DisplayIndex = eventGrid.Columns.Count - 1;
+            eventGrid.Columns[2].DisplayIndex = eventGrid.Columns.Count - 1;
+
+        }
+
+        private void deleteEventButton_Click(object sender, RoutedEventArgs e)
+        {
+            var uri = $"https://localhost:44377/api/Guild/events/remove/";
+
+            Event selectedEvent = (Event)eventGrid.SelectedItem;
+
+            var response = client.DeleteAsync(uri + selectedEvent.EventID).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                MessageBox.Show("Event " + selectedEvent.EventID + " deleted!");
+                FillDataGrid();
+            }
+            else
+            {
+                MessageBox.Show("Error Code" +
+                response.StatusCode + " : Message - " + response.ReasonPhrase);
+            }
+        }
+
+        private void editEventButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void joinEventButton_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }
