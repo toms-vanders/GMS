@@ -20,7 +20,7 @@ namespace GMS___Web_Client.Controllers
 
         public ActionResult Index()
         {
-            if(InSession())
+            if (InSession())
             {
                 return RedirectToAction("UserPage");
             }
@@ -60,16 +60,25 @@ namespace GMS___Web_Client.Controllers
             if (InSession())
             {
                 this.Session["Guild"] = "";
-                ArrayList characterList = new ArrayList();
-                ArrayList characterNameList = GetJson<ArrayList>("gw2api/characters", new ArrayList());
-                foreach(string name in characterNameList)
+                try
                 {
-                    string urlSuffix = "gw2api/characters/" + name + "/core";
-                    characterList.Add(GetJson<Character>(urlSuffix, new Character()));
+                    ArrayList characterList = new ArrayList();
+                    ArrayList characterNameList = GetJson<ArrayList>("gw2api/characters", new ArrayList());
+                    foreach (string name in characterNameList)
+                    {
+                        string urlSuffix = "gw2api/characters/" + name + "/core";
+                        characterList.Add(GetJson<Character>(urlSuffix, new Character()));
+                    }
+                    ViewBag.Characters = characterList;
                 }
-                ViewBag.Characters = characterList;
+                catch (Exception ex)
+                {
+                    return RedirectToAction("ApiForm");
+                }
+
                 ViewBag.Message = "Your user page.";
                 return View();
+
             }
             ViewBag.Error = "You aren't authorized to access this page.";
             return RedirectToAction("Index");
@@ -139,7 +148,7 @@ namespace GMS___Web_Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (PostJson("api/user/signup", new User(model.UserName, model.EmailAddress, model.Password)) !=null)
+                if (PostJson("api/user/signup", new User(model.UserName, model.EmailAddress, model.Password)) != null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -208,7 +217,8 @@ namespace GMS___Web_Client.Controllers
                 }
                 ViewBag.Error = "Invalid information was given.";
                 return View(model);
-            } else
+            }
+            else
             {
                 ViewBag.Error = "You aren't authorized to access this page.";
                 return RedirectToAction("Index");
@@ -247,7 +257,8 @@ namespace GMS___Web_Client.Controllers
 
         private void StartSession(User user)
         {
-            if (user.ApiKey == "") {
+            if (user.ApiKey == "")
+            {
                 //TODO: retrieve api Key page
             }
             ApiKey = user.ApiKey;
@@ -305,7 +316,8 @@ namespace GMS___Web_Client.Controllers
                 try
                 {
                     equipment.Add(GetJson<Item>("gw2api/items/" + item.Id, new Item()));
-                } catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
