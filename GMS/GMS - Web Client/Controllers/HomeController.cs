@@ -113,10 +113,12 @@ namespace GMS___Web_Client.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult SearchEvents()
+        public ActionResult SearchEvents(string name)
         {
             if (this.Session["Username"] != null)
             {
+                string urlSuffix = "gw2api/characters/" + name + "/core";
+                ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
                 // Getting all event types needed for DropDownList
                 var eventTypes = GetAllEventTypes();
                 var model = new EventModel();

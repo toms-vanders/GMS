@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using GMS___Business_Layer;
 using GMS___Model;
@@ -16,10 +17,12 @@ namespace GMS___API.Controllers
     {
         public IOptions<ClientSettings> clientSettings;
         private EventProcessor eventProcessor;
+        private EventCharacterProcessor eventCharacterProcessor;
         public GuildController(IOptions<ClientSettings> clientSettings)
         {
             this.clientSettings = clientSettings;
             eventProcessor = new EventProcessor();
+            eventCharacterProcessor = new EventCharacterProcessor();
         }
 
         [HttpGet("{guildId}")]
@@ -42,6 +45,17 @@ namespace GMS___API.Controllers
             if (eventProcessor.InsertEvent(e.Name, e.EventType, e.Location, e.Date, e.Description, e.MaxNumberOfCharacters, e.GuildID)) 
             {
                 return e;
+            }
+            return BadRequest("Invalid data.");
+        }
+
+        [HttpPost("events/join")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<EventCharacter> Post([FromBody] EventCharacter ec)
+        {
+            if (eventCharacterProcessor.JoinEvent(ec.EventID, ec.CharacterName, ec.Role)) { 
+                return ec;
             }
             return BadRequest("Invalid data.");
         }

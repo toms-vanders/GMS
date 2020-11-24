@@ -4,7 +4,6 @@
     ViewBag.Title = "SearchEvents";
 }
 
-
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/popper")
 @Scripts.Render("~/bundles/bootstrap")
@@ -87,6 +86,35 @@
         <table id="events-table" class="table table-striped table-hover"></table>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="chooseRoleModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Pick role for event participation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label for="eventID">Event ID</label>
+                    <input type="text" id="eventIDinput" class="form-control" disabled>
+                    
+                    <label for="eventRole">Character role</label>
+                    <input type="text" id="eventRole" class="form-control" aria-describedby="eventRole">
+                    <small id="eventRole" class="form-text text-muted">
+                        Usually when you participate in guild events, you can be assigned a specific role to play on battlefield. Some suggestions include: <br />
+                        Assasin, Tank, Healer, Bruiser.
+                    </small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="registerButton">Register participation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('.mul-select-types').select2({
@@ -111,15 +139,53 @@
         });
     </script>
 
+
+    <!-- showing modal-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#chooseRoleModal').on('show.bs.modal', function (event) {
+                // Getting a reference to this modal
+                var modal = $(this);
+
+                // Resetting the characterRole input on open
+                modal.find('#eventRole').val("");
+
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var eventID = button.data('eventid'); // Extracts info from data-* attributes
+
+                // Update modal's content (eventID field)
+                
+                modal.find('#eventIDinput').val(eventID);
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#registerButton').click(function () {
+                var eventID = $("#chooseRoleModal #eventIDinput").val().trim();
+                var role = $("#chooseRoleModal #eventRole").val().trim();
+                joinEventWrap(eventID, role);
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+        function joinEventWrap(eventID, role) {
+            var characterName = '@ViewBag.Character.Name';
+            joinEvent(eventID, characterName, role);
+        }
+    </script>
+
     <div>
         @Html.ActionLink("Back to action list", "Index")
     </div>
 
     @*<script type="text/javascript">
-        $(document).ready(function () {
-            $('[data-toggle=tooltip]').tooltip();
-        });
-    </script>*@
+            $(document).ready(function () {
+                $('[data-toggle=tooltip]').tooltip();
+            });
+        </script>*@
 </body>
 
 @section Scripts {

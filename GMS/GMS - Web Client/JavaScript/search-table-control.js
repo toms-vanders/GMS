@@ -29,9 +29,9 @@
                             }
                             if (Object.is(keys.length - 1, keys.indexOf(key))) {
                                 trHTML += "<td>";
-                                trHTML += "<button type=\"button\" class=\"btn btn-success btn-sm\" data-toggle=\"joinEvent\" data-placement=\"top\" title=\"Join event or waiting list\" onclick=joinEvent("+obj.eventID+")><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i></button> ";
-                                trHTML += "<button type=\"button\" class=\"btn btn-warning btn-sm\" data-toggle=\"editEvent\" data-placement=\"top\" title=\"Edit event\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button> ";
-                                trHTML += "<button type=\"button\" class=\"btn btn-danger btn-sm\" data-toggle=\"removeEvent\" data-placement=\"top\" title=\"Remove event\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></button>";
+                                trHTML += "<button type=\"button\" class=\"btn btn-success btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" data-target=\"#chooseRoleModal\" data-eventID=\"" + obj.eventID + "\" title =\"Join event or waiting list\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i></button> ";
+                                trHTML += "<button type=\"button\" class=\"btn btn-warning btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" title=\"Edit event\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button> ";
+                                trHTML += "<button type=\"button\" class=\"btn btn-danger btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" title=\"Remove event\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></button>";
                                 trHTML += "</td>";
                             }
                         });
@@ -41,30 +41,38 @@
             });
             trHTML += "</tbody>";
             $('#events-table').append(trHTML);
-            $('[data-toggle=joinEvent]').tooltip();
-            $('[data-toggle=editEvent]').tooltip();
-            $('[data-toggle=removeEvent]').tooltip();
+            $('[data-tooltip="tooltip"]').tooltip();
+            $('[data-tooltip="tooltip"]').tooltip();
+            $('[data-tooltip="tooltip"]').tooltip();
         },
         error: function () {
-            alert("Errors connecting with the database"); // TODO might want to change this
+            alert("Errors connecting with the database.");
         }
     })
 }
 
-function joinEvent(eventID) {
-    var characterName; // TO BE FETCHED
+function joinEvent(eventID, characterName, role) {
+    var EventCharacter = {};
+    EventCharacter.eventID = parseInt(eventID);
+    EventCharacter.characterName = characterName;
+    EventCharacter.role = role;
+
+    console.log(EventCharacter);
 
     $.ajax({
-        type: "GET",
-        url: "",
-        data: {
-            charName: characterName,
-            eventID: eventID
-        },
-        dataType: "json",
-        success: function (json) {
-
-        } 
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        url: 'https://localhost:44377/api/guild/events/join/',
+        data: JSON.stringify(EventCharacter),
+        dataType: 'json',
+        success: function () {
+            alert("You successfully joined the event.");
+            $('#chooseRoleModal').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        }, error: function () {
+            alert("Error trying to join the event. You might be trying to join an event you're already a participant of.");
+        }
 
     })
 }
