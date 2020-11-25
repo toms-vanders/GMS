@@ -1,4 +1,4 @@
-﻿using GMS___Business_Layer;
+using GMS___Business_Layer;
 using GMS___Model;
 using GMS___Web_Client.Models;
 using Newtonsoft.Json;
@@ -60,14 +60,21 @@ namespace GMS___Web_Client.Controllers
             if (InSession())
             {
                 this.Session["Guild"] = "";
-                ArrayList characterList = new ArrayList();
-                ArrayList characterNameList = GetJson<ArrayList>("gw2api/characters", new ArrayList());
-                foreach(string name in characterNameList)
+                try
                 {
-                    string urlSuffix = "gw2api/characters/" + name + "/core";
-                    characterList.Add(GetJson<Character>(urlSuffix, new Character()));
+                    ArrayList characterList = new ArrayList();
+                    ArrayList characterNameList = GetJson<ArrayList>("gw2api/characters", new ArrayList());
+                    foreach (string name in characterNameList)
+                    {
+                        string urlSuffix = "gw2api/characters/" + name + "/core";
+                        characterList.Add(GetJson<Character>(urlSuffix, new Character()));
+                    }
+                    ViewBag.Characters = characterList;
                 }
-                ViewBag.Characters = characterList;
+                catch (Exception ex)
+                {
+                    return RedirectToAction("ApiForm");
+                }
                 ViewBag.Message = "Your user page.";
                 return View();
             }
@@ -133,7 +140,7 @@ namespace GMS___Web_Client.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult UpdateEventForm(int EventID)
+        public ActionResult UpdateEventForm(int EventID,bool error = false)
         {
             if (InSession())
             {
@@ -153,8 +160,10 @@ namespace GMS___Web_Client.Controllers
                 model.EventDescription = eventToBeUpdated.Description;
                 model.EventMaxNumberOfCharacters = eventToBeUpdated.MaxNumberOfCharacters;
                 model.rowID = eventToBeUpdated.RowId;
-                // Get list of SelectListItem(s)
-                ViewBag.Message = "Updating event.";
+                if(error)
+                {
+                    ViewBag.Error = "Someone else already updated this event. If you still want to update please try again";
+                }
                 return View(model);
             }
             ViewBag.Error = "You aren't authorized to access this page.";
@@ -169,8 +178,8 @@ namespace GMS___Web_Client.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    EventProcessor eventProcessor = new EventProcessor();
-                    Boolean wasSuccessful = eventProcessor.UpdateEvent(model.eventID, model.EventName,
+                    EventProcessor processor = new EventProcessor();
+                    Boolean wasSuccessful = processor.UpdateEvent(model.eventID, model.EventName,
                         model.EventType, model.EventLocation, model.EventDateTime, model.EventDescription,
                         model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5", model.rowID);
 
@@ -178,9 +187,13 @@ namespace GMS___Web_Client.Controllers
                     {
                         return RedirectToAction("Index");
                     }
+                    else
+                    {
+                        return RedirectToAction("UpdateEventForm", new { eventID = model.eventID, error = true});
+                    }
                 }
-                ViewBag.Error = "There was a problem";
-                return View(model);
+                ViewBag.Error = "There was a problem. Please try again";
+                return RedirectToAction("Index");
             }
             else
             {
