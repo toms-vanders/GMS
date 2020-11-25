@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,6 +9,9 @@ namespace GMS___Web_Client.Models
 {
     public class EventModel
     {
+        public int eventID { get; set; }
+        public byte[] rowID { get; set; }
+
         [DataType(DataType.Text)]
         [Display(Name = "Event name")]
         [Required(ErrorMessage = "Event name is required.")]

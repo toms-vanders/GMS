@@ -29,9 +29,9 @@
                             }
                             if (Object.is(keys.length - 1, keys.indexOf(key))) {
                                 trHTML += "<td>";
-                                trHTML += "<button type=\"button\" class=\"btn btn-success btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" data-target=\"#chooseRoleModal\" data-eventID=\"" + obj.eventID + "\" title =\"Join event or waiting list\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i></button> ";
-                                trHTML += "<button type=\"button\" class=\"btn btn-warning btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" title=\"Edit event\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button> ";
-                                trHTML += "<button type=\"button\" class=\"btn btn-danger btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" title=\"Remove event\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></button>";
+                                trHTML += "<button type=\"button\" class=\"btn btn-success btn-sm\" data-toggle=\"joinEvent\" data-placement=\"top\" title=\"Join event or waiting list\" onclick=joinEvent("+obj.eventID+")><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i></button> ";
+                                trHTML += "<button type=\"button\" onclick=\"location.href='https://localhost:44318/Home/UpdateEventForm?eventID="+obj.eventID+"'\" class=\"btn btn-warning btn-sm\" data-toggle=\"editEvent\" data-placement=\"top\" title=\"Edit event\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button> ";
+                                trHTML += "<button type=\"button\" class=\"btn btn-danger btn-sm\" data-toggle=\"removeEvent\" data-placement=\"top\" title=\"Remove event\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></button>";
                                 trHTML += "</td>";
                             }
                         });
