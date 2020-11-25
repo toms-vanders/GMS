@@ -54,7 +54,7 @@ namespace GMS___API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<EventCharacter> Post([FromBody] EventCharacter ec)
         {
-            if (eventCharacterProcessor.JoinEvent(ec.EventID, ec.CharacterName, ec.Role)) { 
+            if (eventCharacterProcessor.JoinEvent(ec.EventID, ec.CharacterName, ec.CharacterRole, ec.SignUpDateTime)) { 
                 return ec;
             }
             return BadRequest("Invalid data.");

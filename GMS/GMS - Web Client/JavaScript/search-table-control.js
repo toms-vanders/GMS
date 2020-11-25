@@ -29,7 +29,7 @@
                             }
                             if (Object.is(keys.length - 1, keys.indexOf(key))) {
                                 trHTML += "<td>";
-                                trHTML += "<button type=\"button\" class=\"btn btn-success btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" data-target=\"#chooseRoleModal\" data-eventID=\"" + obj.eventID + "\" title =\"Join event or waiting list\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i></button> ";
+                                trHTML += "<button type=\"button\" class=\"btn btn-success btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" data-target=\"#chooseRoleModal\" data-eventID=\"" + obj.eventID + "\" data-eName=\"" + obj.name + "\" title=\"Join event or waiting list\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i></button> ";
                                 trHTML += "<button type=\"button\" class=\"btn btn-warning btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" title=\"Edit event\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button> ";
                                 trHTML += "<button type=\"button\" class=\"btn btn-danger btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" title=\"Remove event\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></button>";
                                 trHTML += "</td>";
@@ -51,13 +51,12 @@
     })
 }
 
-function joinEvent(eventID, characterName, role) {
+function joinEvent(eventID, characterName, characterRole, signUpDateTime) {
     var EventCharacter = {};
     EventCharacter.eventID = parseInt(eventID);
     EventCharacter.characterName = characterName;
-    EventCharacter.role = role;
-
-    console.log(EventCharacter);
+    EventCharacter.characterRole = characterRole;
+    EventCharacter.signUpDateTime = signUpDateTime;
 
     $.ajax({
         type: 'POST',
@@ -73,7 +72,6 @@ function joinEvent(eventID, characterName, role) {
         }, error: function () {
             alert("Error trying to join the event. You might be trying to join an event you're already a participant of.");
         }
-
     })
 }
 
