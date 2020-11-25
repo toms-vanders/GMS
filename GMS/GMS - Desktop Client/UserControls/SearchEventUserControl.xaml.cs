@@ -39,11 +39,6 @@ namespace GMS___Desktop_Client.UserControls
             FillDataGrid();
 
         }
-
-        private void searchEventsbutton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
         
         private async void FillDataGrid()
         {
