@@ -17,17 +17,44 @@ namespace GMS___Data_Access_Layer
 
         public bool InsertEventCharacter(EventCharacter eventParticipant)
         {
+
+            // Either join participant list or the waiting list by checking if participant list reached the maximum amout of sign-ups.
             using (IDbConnection conn = GetConnection()) 
             {
-                int rowsAffected = conn.Execute(@"INSERT INTO EventCharacter (eventID, characterName, role) " +
-                    "VALUES (@EventID, @CharacterName, @Role)", eventParticipant);
-
-                if (rowsAffected > 0)
+                if (!isParticipantListFull(eventParticipant.EventID))
                 {
-                    return true;
-                }
+                    int rowsAffected = conn.Execute(@"INSERT INTO EventCharacter (eventID, characterName, characterRole, signUpDateTime) " +
+                    "VALUES (@EventID, @CharacterName, @CharacterRole, @SignUpDateTime)", eventParticipant);
 
-                return false;
+                    if (rowsAffected > 0)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                } else
+                {
+                    int rowsAffected = conn.Execute(@"INSERT INTO EventCharacterWaitingList (eventID, characterName, characterRole, signUpDateTime) " +
+                    "VALUES (@EventID, @CharacterName, @CharacterRole, @SignUpDateTime)", eventParticipant);
+
+                    if (rowsAffected > 0)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+        public bool isParticipantListFull(int eventID)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                int maxAmount = conn.ExecuteScalar<int>("SELECT maxNumberOfCharacters FROM Event WHERE eventID = " + eventID);
+                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = " + eventID);
+
+                return signedUpCount == maxAmount;
             }
         }
     }
