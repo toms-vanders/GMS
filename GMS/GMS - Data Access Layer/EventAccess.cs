@@ -65,7 +65,8 @@ namespace GMS___Data_Access_Layer
             using (IDbConnection conn = GetConnection())
             {
                 int rowsAffected = conn.Execute("UPDATE Event SET name = @Name, eventType = @EventType, location = @Location," +
-                    " date = @Date, maxNumberOfCharacters = @MaxNumberOfCharacters, guildID = @GuildID WHERE eventID = @EventID", guildEvent);
+                    " date = @Date, description = @Description, maxNumberOfCharacters = @MaxNumberOfCharacters, guildID = @GuildID WHERE eventID = @EventID" +
+                    " AND rowId = @RowId", guildEvent);
 
                 if (rowsAffected > 0)
                 {
