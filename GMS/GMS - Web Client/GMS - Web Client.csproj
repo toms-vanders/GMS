@@ -465,6 +465,7 @@
     <Content Include="Views\Home\CreateEventForm.cshtml" />
     <Content Include="Views\Home\SearchEvents.cshtml" />
     <Content Include="Views\Home\CharacterPage.cshtml" />
+    <Content Include="Views\Home\UpdateEventForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -47,6 +47,21 @@ namespace GMS___Data_Access_Layer
             }
         }
 
+        //TODO: Check if user is on the participants list or waiting list
+        public bool DeleteEventCharacterByEventIDAndCharacterName(int eventID, string characterName)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                int rowsAffected = conn.Execute(@"DELETE FROM EventCharacter WHERE eventID = @EventID AND characterName = @CharacterName", new { EventID = eventID, CharacterName = characterName });
+
+                if (rowsAffected > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
         public bool isParticipantListFull(int eventID)
         {
             using (IDbConnection conn = GetConnection())

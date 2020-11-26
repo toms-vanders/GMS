@@ -24,24 +24,27 @@ namespace GMS___Business_Layer
         {
             return eventAccess.GetAllGuildEventsByEventType(guidlID, eventType);
         }
-        
+        public IEnumerable<Event> GetGuildEventsByCharacterName(string guildID, string characterName)
+        {
+            return eventAccess.GetGuildEventsByCharacterName(guildID, characterName);
+        }
+
         public bool InsertEvent(string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildID)
         {
             Event eventToBeAdded = new Event(name, eventType, location, date, description, maxNumberOfCharacters, guildID);
             return eventAccess.InsertEvent(eventToBeAdded);
         }
-        
-        public bool UpdateEvent(int eventID, string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildID)
+
+        public bool UpdateEvent(int eventID, string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildID, byte[] rowId)
         {
-            throw new NotImplementedException ();
+            Event eventToBeUpdated = new Event(eventID, guildID, name, description, eventType, location, date, maxNumberOfCharacters, rowId);
+            bool wasUpdateSuccessful = eventAccess.UpdateEvent(eventToBeUpdated);
+            return wasUpdateSuccessful;
         }
 
         public bool DeleteEventByID(int eventID)
         {
             return eventAccess.DeleteEventByID(eventID);
         }
-
-
-
     }
 }

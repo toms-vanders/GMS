@@ -32,7 +32,7 @@ namespace GMS___API
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins("https://localhost:44318").AllowAnyHeader();
+                                      builder.WithOrigins("https://localhost:44318").AllowAnyHeader().AllowAnyMethod();
                                   });
             });
             services.AddControllers();

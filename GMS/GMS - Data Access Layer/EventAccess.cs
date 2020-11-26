@@ -33,7 +33,7 @@ namespace GMS___Data_Access_Layer
                 return events;
             }
         }
-        
+
         public IEnumerable<Event> GetAllGuildEventsByEventType(string guildID, string eventType)
         {
             using (IDbConnection conn = GetConnection())
@@ -43,7 +43,18 @@ namespace GMS___Data_Access_Layer
                 return events;
             }
         }
-        
+
+        public IEnumerable<Event> GetGuildEventsByCharacterName(string guildID, string characterName)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                IEnumerable<Event> events = conn.Query<Event>("select e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters from Event e right join EventCharacter ec on e.eventID = ec.eventID where ec.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName}).ToList();
+                return events;
+            }
+
+            throw new NotImplementedException(); // todo delete after implemented
+        }
+
         public bool InsertEvent(Event guildEvent)
         {
             using (IDbConnection conn = GetConnection())
@@ -65,7 +76,8 @@ namespace GMS___Data_Access_Layer
             using (IDbConnection conn = GetConnection())
             {
                 int rowsAffected = conn.Execute("UPDATE Event SET name = @Name, eventType = @EventType, location = @Location," +
-                    " date = @Date, maxNumberOfCharacters = @MaxNumberOfCharacters, guildID = @GuildID WHERE eventID = @EventID", guildEvent);
+                    " date = @Date, description = @Description, maxNumberOfCharacters = @MaxNumberOfCharacters, guildID = @GuildID WHERE eventID = @EventID" +
+                    " AND rowId = @RowId", guildEvent);
 
                 if (rowsAffected > 0)
                 {

@@ -31,7 +31,8 @@
             selections.push(eventTypesSelections[i].text);
         }
 
-        getEvents(selections, keywords);
+        var characterName = '@ViewBag.Character.Name';
+        getAndDisplayEventsCaller(selections, keywords, characterName);
     }
 </script>
 
@@ -140,10 +141,13 @@
             });
         });
     </script>
+    
+    <!-- loading the events on page load -->
 
     <script type="text/javascript">
         $(document).ready(function () {
-            getEvents([], []);
+            var characterName = '@ViewBag.Character.Name';
+            getAndDisplayEventsCaller([], [], characterName);
         });
     </script>
 
@@ -169,6 +173,8 @@
         });
     </script>
 
+    <!-- joining events -->
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('#registerButton').click(function () {
@@ -176,6 +182,7 @@
                 var characterRole = $("#chooseRoleModal #eventRole").val().trim();
                 var signUpDateTime = new Date(new Date().toString() + 'Z').toISOString();
                 joinEventWrap(eventID, characterRole, signUpDateTime);
+                refreshPage();
             })
         })
     </script>
@@ -184,6 +191,31 @@
         function joinEventWrap(eventID, characterRole, signUpDateTime) {
             var characterName = '@ViewBag.Character.Name';
             joinEvent(eventID, characterName, characterRole, signUpDateTime);
+        }
+    </script>
+
+    <!-- cancelling participation -->
+    <script type="text/javascript">
+        function cancelParticipationCaller(eventID) {
+            var characterName = '@ViewBag.Character.Name';
+            cancelParticipation(eventID, characterName);
+            refreshPage();
+        }
+    </script>
+
+    <!-- end joining events -->
+
+    <script type="text/javascript">
+        function removeEventWrapper(eventID) {
+            removeEvent(eventID);
+            refreshPage();
+        }
+    </script>
+
+    <!-- refresh page function -->
+    <script type="text/javascript">
+        function refreshPage() {
+            window.location.reload();
         }
     </script>
 

@@ -37,6 +37,10 @@ namespace GMS___API.Controllers
         /*[HttpGet("{guildId}/Name/{name}")]
         public IEnumerable<Event> GetByName(string guildId, string name) => eventProcessor.GetAllGuildEventsByName(guildId, name);*/
 
+        //Get all the events a user participates in (takes guildID and characterName)
+        [HttpGet("{guildId}/character/{characterName}")]
+        public IEnumerable<Event> GetByCharacterName(string guildID, string characterName) => eventProcessor.GetGuildEventsByCharacterName(guildID, characterName);
+
         [HttpPost("events/insert")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -58,6 +62,19 @@ namespace GMS___API.Controllers
                 return ec;
             }
             return BadRequest("Invalid data.");
+        }
+
+        [HttpDelete("events/{eventId}/withdraw/{characterName}")]
+        public string DeleteEventCharacter(string eventId, string characterName)
+        {
+            if (eventCharacterProcessor.DeleteEventCharacterByEventIDAndCharacterName(Int32.Parse(eventId), characterName))
+            {
+                return "Succesfully deleted";
+            }
+            else
+            {
+                return "Not succesfully deleted";
+            }
         }
 
         [HttpDelete("events/remove/{eventId}")]
