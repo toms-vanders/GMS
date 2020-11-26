@@ -16,5 +16,6 @@ namespace GMS___Web_Client.Controllers
 
             return View();
         }
+
     }
 }

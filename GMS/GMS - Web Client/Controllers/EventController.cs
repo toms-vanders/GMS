@@ -1,4 +1,5 @@
-﻿using GMS___Model;
+﻿using GMS___Business_Layer;
+using GMS___Model;
 using GMS___Web_Client.Models;
 using System;
 using System.Collections.Generic;
@@ -94,6 +95,66 @@ namespace GMS___Web_Client.Controllers
                 });
             }
             return eventTypeList;
+        }
+
+        public ActionResult UpdateEventForm(int EventID, bool error = false)
+        {
+            if (InSession())
+            {
+                // Getting all event types needed for DropDownList
+                var eventTypes = GetAllEventTypes();
+                var model = new EventModel();
+                model.EventTypes = GetOptionEventTypesList(eventTypes);
+                // Get info about event
+                EventProcessor processor = new EventProcessor();
+                List<Event> events = (List<Event>)processor.GetEventByID(EventID);
+                Event eventToBeUpdated = events[0];
+                model.eventID = eventToBeUpdated.EventID;
+                model.EventName = eventToBeUpdated.Name;
+                model.EventType = eventToBeUpdated.EventType;
+                model.EventLocation = eventToBeUpdated.Location;
+                model.EventDateTime = eventToBeUpdated.Date;
+                model.EventDescription = eventToBeUpdated.Description;
+                model.EventMaxNumberOfCharacters = eventToBeUpdated.MaxNumberOfCharacters;
+                model.rowID = eventToBeUpdated.RowId;
+                if (error)
+                {
+                    ViewBag.Error = "Someone else already updated this event. If you still want to update please try again";
+                }
+                return View(model);
+            }
+            ViewBag.Error = "You aren't authorized to access this page.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateEventForm(EventModel model)
+        {
+            if (InSession())
+            {
+                if (ModelState.IsValid)
+                {
+                    EventProcessor processor = new EventProcessor();
+                    Boolean wasSuccessful = processor.UpdateEvent(model.eventID, model.EventName,
+                        model.EventType, model.EventLocation, model.EventDateTime, model.EventDescription,
+                        model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5", model.rowID);
+
+                    if (wasSuccessful)
+                    {
+                        return RedirectToAction("Index","Home");
+                    } else
+                    {
+                        return RedirectToAction("UpdateEventForm","Event", new { eventID = model.eventID, error = true });
+                    }
+                }
+                ViewBag.Error = "There was a problem. Please try again";
+                return RedirectToAction("Index", "Home");
+            } else
+            {
+                ViewBag.Error = "You aren't authorized to access this page.";
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }
