@@ -6,7 +6,7 @@
     <div class="col-md-8 list-group">
         @foreach (var character in ViewBag.Characters)
         {
-            <a href="@Url.Action("CharacterPage", "Home", new { name = character.Name})" class="list-group-item list-group-item-action flex-column align-items-start">
+            <a href="@Url.Action("CharacterPage", "User", new { name = character.Name})" class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">@character.Name</h5>
                     <small>@character.Level</small>
@@ -17,6 +17,6 @@
             </a>
         }
     </div>
-    @Html.ActionLink("Enter your api key", "ApiForm", "Home") <br>
+    @Html.ActionLink("Enter your api key", "ApiForm", "User") <br>
 </div>
 
