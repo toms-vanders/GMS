@@ -23,37 +23,28 @@ namespace GMS___Desktop_Client.UserControls
     /// </summary>
     public partial class CharacterSelectorControl : UserControl
     {
-        private readonly HttpClient client;
 
         public CharacterSelectorControl()
         {
             InitializeComponent();
-
-            client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44377/");
 
             LoadCharactersInComboBox();
         }
 
         private void LoadCharactersInComboBox()
         {
-            try
+            
+            ArrayList characters = (ArrayList)App.Current.Properties["Characters"];
+            foreach (var item in characters)
             {
-                using (client)
-                {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(ConfigurationManager.AppSettings["ApiToken"]);
-                    var json = client.GetStringAsync("gw2api/characters").Result;
-                    ArrayList characters = JsonConvert.DeserializeObject<ArrayList>(json);
-                    foreach (var item in characters)
-                    {
-                        characterSelectionBox.Items.Add(item);
-                    }
-                }
+                characterSelectionBox.Items.Add(item);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+
+        }
+
+        private void characterSelectionBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            App.Current.Properties["SelectedCharacter"] = characterSelectionBox.SelectedItem;
         }
     }
 }

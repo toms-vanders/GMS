@@ -32,7 +32,7 @@
             </TabItem>
             <TabItem Header="Events">
                 <TabControl>
-                    <TabItem Header="Search">
+                    <TabItem x:Name="searchEventTab" Header="Search">
                         <local1:SearchEventUserControl/>
                     </TabItem>
                     <TabItem Header="Create">

@@ -7,6 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="150">
     <Grid>
-        <ComboBox x:Name="characterSelectionBox" SelectedIndex="0"/>
+        <ComboBox x:Name="characterSelectionBox" SelectedIndex="0" SelectionChanged="characterSelectionBox_SelectionChanged"/>
     </Grid>
 </UserControl>

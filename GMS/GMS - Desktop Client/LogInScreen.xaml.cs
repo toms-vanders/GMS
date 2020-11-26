@@ -48,17 +48,17 @@ namespace GMS___Desktop_Client
                 var responseContent = await login.Content.ReadAsStringAsync();
                 User returnUser = JsonConvert.DeserializeObject<User>(responseContent);
                 //TODO if apikey null
-                if(returnUser.ApiKey == "") 
+                
+                if (returnUser.ApiKey == "") 
                 {
                     MessageBox.Show("Account does not have an API Key", "Characters", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                if (ConfigurationManager.AppSettings["ApiToken"] == "") 
-                {
-                    UpdateAppSettings("ApiToken",returnUser.ApiKey);
                 }
                 
                 //Get User Characters
                 GetCharacters(returnUser);
+
+                // Set neeed properties for the scope of the application
+                SetAppProperties(returnUser);
 
                 MessageBox.Show("Login Succesful!\n Welcome " + returnUser.UserName, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Window MainWindow = new MainWindow();
@@ -85,28 +85,29 @@ namespace GMS___Desktop_Client
             e.Handled = true;
         }
 
-        static void UpdateAppSettings(string key, string value) 
-        {
-            try 
-            {
-                var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                var settings = configFile.AppSettings.Settings;
-                if (settings[key] == null) 
-                {
-                    settings.Add(key, value);
-                }
-                else 
-                {
-                    settings[key].Value = value;
-                }
-                configFile.Save(ConfigurationSaveMode.Modified);
-                ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
-            } 
-            catch (ConfigurationErrorsException) 
-            {
-                Console.WriteLine("Error writing app settings");
-            }
-        }
+        //Might be redundant now
+        //static void UpdateAppSettings(string key, string value) 
+        //{
+        //    try 
+        //    {
+        //        var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+        //        var settings = configFile.AppSettings.Settings;
+        //        if (settings[key] == null) 
+        //        {
+        //            settings.Add(key, value);
+        //        }
+        //        else 
+        //        {
+        //            settings[key].Value = value;
+        //        }
+        //        configFile.Save(ConfigurationSaveMode.Modified);
+        //        ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
+        //    } 
+        //    catch (ConfigurationErrorsException) 
+        //    {
+        //        Console.WriteLine("Error writing app settings");
+        //    }
+        //}
         private void GetCharacters(User returnUser)
         {
             try
@@ -114,21 +115,29 @@ namespace GMS___Desktop_Client
                 using (client)
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(ConfigurationManager.AppSettings["ApiToken"]);
-                    var json = client.GetStringAsync("gw2api/characters").Result;
+                    var json =  client.GetStringAsync("gw2api/characters").Result;
                     ArrayList characters = JsonConvert.DeserializeObject<ArrayList>(json);
                     string chars = "";
                     foreach (var item in characters)
                     {
                         chars = chars + " " + item;
                     }
-                    MessageBox.Show(chars, "Characters", MessageBoxButton.OK, MessageBoxImage.Information);
                     returnUser.Characters = characters;
                 }
             }
-            catch (WebException ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
+        }
+
+        private void SetAppProperties(User returnedUser)
+        {
+            App.Current.Properties["ApiKey"] = returnedUser.ApiKey;
+            App.Current.Properties["UserName"] = returnedUser.UserName;
+            App.Current.Properties["Characters"] = returnedUser.Characters;
+            App.Current.Properties["SelectedCharacter"] = "";
+
         }
     }
 }
