@@ -74,6 +74,14 @@
 
         </DataGrid>
 
+        <Popup x:Name="joinEventPopup" PlacementTarget="{Binding ElementName=MainWindow}" Placement="Center">
+            <TextBlock Name="myPopupText" 
+             Background="LightBlue" 
+             Foreground="Blue">
+    Popup Text
+            </TextBlock>
+        </Popup>
+
     </Grid>
     
 </UserControl>
