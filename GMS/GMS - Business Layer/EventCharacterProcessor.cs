@@ -19,5 +19,10 @@ namespace GMS___Business_Layer
         {
             return eventCharacterAccess.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName);
         }
+
+        public bool ContainsEntry(int eventId, string characterName)
+        {
+            return eventCharacterAccess.ContainsEntry(eventId, characterName);
+        }
     }
 }

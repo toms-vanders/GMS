@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GMS___Business_Layer;
@@ -18,11 +19,13 @@ namespace GMS___API.Controllers
         public IOptions<ClientSettings> clientSettings;
         private EventProcessor eventProcessor;
         private EventCharacterProcessor eventCharacterProcessor;
+        private EventCharacterWaitingListProcessor eventCharacterWaitingListProcessor;
         public GuildController(IOptions<ClientSettings> clientSettings)
         {
             this.clientSettings = clientSettings;
             eventProcessor = new EventProcessor();
             eventCharacterProcessor = new EventCharacterProcessor();
+            eventCharacterWaitingListProcessor = new EventCharacterWaitingListProcessor();
         }
 
         [HttpGet("{guildId}")]
@@ -64,16 +67,31 @@ namespace GMS___API.Controllers
             return BadRequest("Invalid data.");
         }
 
-        [HttpDelete("events/{eventId}/withdraw/{characterName}")]
-        public string DeleteEventCharacter(string eventId, string characterName)
+        [HttpDelete("events/withdraw/")]
+        public string DeleteEventCharacter([FromHeader(Name = "x-eventid")] int eventID, [FromHeader(Name = "x-charactername")] string characterName)
         {
-            if (eventCharacterProcessor.DeleteEventCharacterByEventIDAndCharacterName(Int32.Parse(eventId), characterName))
+            // Check if EventCharacter contains entry with given eventID and characterName,
+            // if so: delete EventCharacter from EventCharacter
+            // if not: delete EventCharacter from EventCharacterWaitingList instead
+
+            if (eventCharacterProcessor.ContainsEntry(eventID, characterName)) {
+                if (eventCharacterProcessor.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName))
+                {
+                    return "Succesfully deleted from participant's list";
+                }
+                else
+                {
+                    return "Not succesfully deleted";
+                }
+            } else
             {
-                return "Succesfully deleted";
-            }
-            else
-            {
-                return "Not succesfully deleted";
+                if (eventCharacterWaitingListProcessor.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName))
+                {
+                    return "Succesfully deleted from waiting list";
+                } else
+                {
+                    return "Not succesfully deleted from waiting list";
+                }
             }
         }
 

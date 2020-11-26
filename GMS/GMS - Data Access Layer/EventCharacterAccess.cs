@@ -47,7 +47,15 @@ namespace GMS___Data_Access_Layer
             }
         }
 
-        //TODO: Check if user is on the participants list or waiting list
+        public bool ContainsEntry(int eventId, string characterName)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                int entries = conn.ExecuteScalar<int>(@"SELECT COUNT(*) FROM EventCharacter WHERE eventID = @EventID AND characterName = @CharacterName", new { EventID = eventId, CharacterName = characterName });
+                return entries == 1;
+            }
+        }
+
         public bool DeleteEventCharacterByEventIDAndCharacterName(int eventID, string characterName)
         {
             using (IDbConnection conn = GetConnection())
