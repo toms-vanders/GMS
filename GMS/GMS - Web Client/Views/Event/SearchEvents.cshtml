@@ -60,7 +60,7 @@
         font-weight: bolder;
     }
     /* Internet Explorer 10-11 */
-    input.select2-search__field::-ms-input-placeholder {
+    input.select2-search__field:-ms-input-placeholder {
         font-weight: bolder;
     }
     /* Microsoft Edge */
@@ -97,9 +97,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <label for="eventID">Event ID</label>
-                    <input type="text" id="eventIDinput" class="form-control" disabled>
-                    
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="eventID">Event ID</label>
+                            <input type="text" id="eventIDinput" class="form-control" disabled>
+                        </div>
+                        <div class="col-9">
+                            <label for="eventName">Event Name</label>
+                            <input type="text" id="eventNameinput" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <br />
                     <label for="eventRole">Character role</label>
                     <input type="text" id="eventRole" class="form-control" aria-describedby="eventRole">
                     <small id="eventRole" class="form-text text-muted">
@@ -152,10 +160,11 @@
 
                 var button = $(event.relatedTarget); // Button that triggered the modal
                 var eventID = button.data('eventid'); // Extracts info from data-* attributes
+                var eventName = button.data('ename');
 
-                // Update modal's content (eventID field)
-                
+                // Update modal's content (eventID and name field)
                 modal.find('#eventIDinput').val(eventID);
+                modal.find('#eventNameinput').val(eventName);
             })
         });
     </script>
@@ -164,16 +173,17 @@
         $(document).ready(function () {
             $('#registerButton').click(function () {
                 var eventID = $("#chooseRoleModal #eventIDinput").val().trim();
-                var role = $("#chooseRoleModal #eventRole").val().trim();
-                joinEventWrap(eventID, role);
+                var characterRole = $("#chooseRoleModal #eventRole").val().trim();
+                var signUpDateTime = new Date(new Date().toString() + 'Z').toISOString();
+                joinEventWrap(eventID, characterRole, signUpDateTime);
             })
         })
     </script>
 
     <script type="text/javascript">
-        function joinEventWrap(eventID, role) {
+        function joinEventWrap(eventID, characterRole, signUpDateTime) {
             var characterName = '@ViewBag.Character.Name';
-            joinEvent(eventID, characterName, role);
+            joinEvent(eventID, characterName, characterRole, signUpDateTime);
         }
     </script>
 

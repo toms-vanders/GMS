@@ -142,7 +142,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -448,7 +451,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\SignUp.cshtml" />
+    <Content Include="Views\Auth\SignUp.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper.js.flow" />
@@ -459,13 +462,13 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Home\LogIn.cshtml" />
-    <Content Include="Views\Home\UserPage.cshtml" />
-    <Content Include="Views\Home\ApiForm.cshtml" />
-    <Content Include="Views\Home\CreateEventForm.cshtml" />
-    <Content Include="Views\Home\SearchEvents.cshtml" />
-    <Content Include="Views\Home\CharacterPage.cshtml" />
-    <Content Include="Views\Home\UpdateEventForm.cshtml" />
+    <Content Include="Views\Auth\LogIn.cshtml" />
+    <Content Include="Views\User\UserPage.cshtml" />
+    <Content Include="Views\User\ApiForm.cshtml" />
+    <Content Include="Views\Event\CreateEventForm.cshtml" />
+    <Content Include="Views\Event\SearchEvents.cshtml" />
+    <Content Include="Views\User\CharacterPage.cshtml" />
+    <Content Include="Views\Event\UpdateEventForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
