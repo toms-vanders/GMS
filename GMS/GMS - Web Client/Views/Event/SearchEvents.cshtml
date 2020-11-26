@@ -32,7 +32,8 @@
         }
 
         var characterName = '@ViewBag.Character.Name';
-        getAndDisplayEventsCaller(selections, keywords, characterName);
+        var guildID = '@ViewBag.Character.Guild';
+        getAndDisplayEventsCaller(selections, keywords, characterName, guildID);
     }
 </script>
 
@@ -147,7 +148,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var characterName = '@ViewBag.Character.Name';
-            getAndDisplayEventsCaller([], [], characterName);
+            var guildID = '@ViewBag.Character.Guild';
+            getAndDisplayEventsCaller([], [], characterName, guildID);
         });
     </script>
 

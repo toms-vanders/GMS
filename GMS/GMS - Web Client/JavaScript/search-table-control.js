@@ -1,5 +1,4 @@
-﻿function getAllTheEvents() {
-    var guildID = "116E0C0E-0035-44A9-BB22-4AE3E23127E5" // TODO this is to be fetched automatically
+﻿function getAllTheEvents(guildID) {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: "GET",
@@ -18,18 +17,17 @@
     })
 }
 
-function getAndDisplayEventsCaller(eventTypes, keywords, characterName) {
-    getAllTheEvents()
+function getAndDisplayEventsCaller(eventTypes, keywords, characterName, guildID) {
+    getAllTheEvents(guildID)
         .then((data) => {
-            displayEventsTable(data, characterName, eventTypes, keywords)
+            displayEventsTable(data, characterName, guildID, eventTypes, keywords)
         })
         .catch((error) => {
             alert("Failed to get any events.");
         })
 }
 
-function displayEventsTable(allEvents, characterName, eventTypes, keywords) {
-    var guildID = "116E0C0E-0035-44A9-BB22-4AE3E23127E5" // TODO this is to be fetched automatically
+function displayEventsTable(allEvents, characterName, guildID, eventTypes, keywords) {
     $.ajax({
         type: "GET",
         url: "https://localhost:44377/api/guild/" + guildID + "/character/" + characterName,

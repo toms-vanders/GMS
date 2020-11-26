@@ -9,6 +9,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.GuildID)
 
     <div class="form-horizontal">
         <h4>Enter event details </h4>
@@ -59,7 +60,7 @@
                             changeYear: true,
                             dateFormat: 'yy-mm-dd',
                             controlType: 'select',
-                            timeFormat: 'hh:mm',
+                            timeFormat: 'HH:mm',
                         });
                     });
                     @*jQuery.validator.methods.date = function (value, element) {
