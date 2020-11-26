@@ -22,13 +22,13 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
-        
+
         <!-- Search Box -->
         <wpfx:WatermarkTextBox x:Name="eventSearchBox" Grid.Column="1" Grid.Row="1" Watermark="Search Event" TextChanged="eventSearchBox_TextChanged"/>
 
         <!-- Event Filter Box -->
         <wpfx:CheckComboBox x:Name="filterByEventTypeBox" Grid.Column="2" Grid.Row="1" Delimiter="; " IsSelectAllActive="True" ItemSelectionChanged="filterByEventTypeBox_ItemSelectionChanged"/>
-        
+
         <TextBlock Text="Select event type" IsHitTestVisible="False" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Margin=" 5 0 0 0">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
@@ -73,15 +73,6 @@
             </DataGrid.Columns>
 
         </DataGrid>
-
-        <Popup x:Name="joinEventPopup" PlacementTarget="{Binding ElementName=MainWindow}" Placement="Center">
-            <TextBlock Name="myPopupText" 
-             Background="LightBlue" 
-             Foreground="Blue">
-    Popup Text
-            </TextBlock>
-        </Popup>
-
     </Grid>
-    
+
 </UserControl>

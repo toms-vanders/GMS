@@ -42,15 +42,17 @@ namespace GMS___Desktop_Client.UserControls
             FillDataGrid();
 
         }
-        
+
         public async void FillDataGrid()
         {
+            if (!String.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
+            {
+                string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
 
-            string responseBody = await client.GetStringAsync("api/Guild/" + ConfigurationManager.AppSettings["ApiToken"]);
+                eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
 
-            eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
-
-            this.eventGrid.ItemsSource = eventList;
+                this.eventGrid.ItemsSource = eventList;
+            }
         }
 
         private void eventSearchBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -145,13 +147,11 @@ namespace GMS___Desktop_Client.UserControls
 
         private void joinEventButton_Click(object sender, RoutedEventArgs e)
         {
-            //EventCharacter newJoin = new EventCharacter()
-            //{
-            //    EventID = SelectedEventID().EventID,
-            //    CharacterName = CharacterSelectorControl
-            //};
+            int eventID = SelectedEventID().EventID;
+            string eventName = SelectedEventID().Name;
 
-            //var response = await client.PostAsJsonAsync(uri, newEvent);
+            Window joinEventWindow = new JoinEventWindow(eventID, eventName);
+            joinEventWindow.ShowDialog();
         }
 
         private Event SelectedEventID()

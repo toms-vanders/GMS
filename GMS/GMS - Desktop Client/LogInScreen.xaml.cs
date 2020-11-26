@@ -36,16 +36,16 @@ namespace GMS___Desktop_Client
             client.BaseAddress = new Uri("https://localhost:44377/");
         }
 
-        private async void logInButton_Click(object sender, RoutedEventArgs e)
+        private void logInButton_Click(object sender, RoutedEventArgs e)
         {
 
             User user = new User() { EmailAddress = userEmailText.Text, Password = passwordText.Password };
 
-            var login = await client.PostAsJsonAsync("api/user/login", user);
+            var login = client.PostAsJsonAsync("api/user/login", user).Result;
 
             if (login.StatusCode == HttpStatusCode.OK)
             {                
-                var responseContent = await login.Content.ReadAsStringAsync();
+                var responseContent = login.Content.ReadAsStringAsync().Result;
                 User returnUser = JsonConvert.DeserializeObject<User>(responseContent);
                 //TODO if apikey null
                 
@@ -54,11 +54,13 @@ namespace GMS___Desktop_Client
                     MessageBox.Show("Account does not have an API Key", "Characters", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 
+                // Set neeed properties for the scope of the application
+                SetAppProperties(returnUser);
+                
                 //Get User Characters
                 GetCharacters(returnUser);
 
-                // Set neeed properties for the scope of the application
-                SetAppProperties(returnUser);
+
 
                 MessageBox.Show("Login Succesful!\n Welcome " + returnUser.UserName, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Window MainWindow = new MainWindow();
@@ -114,7 +116,7 @@ namespace GMS___Desktop_Client
             {
                 using (client)
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(ConfigurationManager.AppSettings["ApiToken"]);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue((string)App.Current.Properties["ApiKey"]);
                     var json =  client.GetStringAsync("gw2api/characters").Result;
                     ArrayList characters = JsonConvert.DeserializeObject<ArrayList>(json);
                     string chars = "";
@@ -123,6 +125,7 @@ namespace GMS___Desktop_Client
                         chars = chars + " " + item;
                     }
                     returnUser.Characters = characters;
+                    App.Current.Properties["Characters"] = characters;
                 }
             }
             catch (Exception ex)
@@ -136,7 +139,9 @@ namespace GMS___Desktop_Client
             App.Current.Properties["ApiKey"] = returnedUser.ApiKey;
             App.Current.Properties["UserName"] = returnedUser.UserName;
             App.Current.Properties["Characters"] = returnedUser.Characters;
+            //App.Current.Properties["GuildID"] = "821239B1-FE78-3742-83A4-75152E1ED7A96C18AA79-9093-490B-8B9A-F2AA6C8DAB8E";
             App.Current.Properties["SelectedCharacter"] = "";
+            
 
         }
     }
