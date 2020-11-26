@@ -12,15 +12,18 @@ namespace GMS___Web_Client.Controllers
     {
         // GET: Event
 
-        public ActionResult CreateEventForm()
+        public ActionResult CreateEventForm(string name)
         {
             if (InSession())
             {
+                string urlSuffix = "gw2api/characters/" + name + "/core";
+                ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
                 // Getting all event types needed for DropDownList
                 var eventTypes = GetAllEventTypes();
                 var model = new EventModel();
                 // Get list of SelectListItem(s)
                 model.EventTypes = GetOptionEventTypesList(eventTypes);
+                model.GuildID = ViewBag.Character.Guild;
                 ViewBag.Message = "Creating event.";
                 return View(model);
             }
@@ -63,7 +66,7 @@ namespace GMS___Web_Client.Controllers
                 {
                     Event tempEvent = PostJson("api/guild/events/insert", new Event(model.EventName, model.EventType,
                         model.EventLocation, model.EventDateTime, model.EventDescription,
-                        model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5"));
+                        model.EventMaxNumberOfCharacters, model.GuildID));
                     if (tempEvent != null)
                     {
                         return RedirectToAction("Index", "Home");
