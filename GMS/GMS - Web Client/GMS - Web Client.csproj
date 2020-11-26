@@ -468,7 +468,7 @@
     <Content Include="Views\Event\CreateEventForm.cshtml" />
     <Content Include="Views\Event\SearchEvents.cshtml" />
     <Content Include="Views\User\CharacterPage.cshtml" />
-    <Content Include="Views\Home\UpdateEventForm.cshtml" />
+    <Content Include="Views\Event\UpdateEventForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
