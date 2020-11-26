@@ -119,8 +119,8 @@ function joinEvent(eventID, characterName, characterRole, signUpDateTime) {
 function cancelParticipation(eventID, characterName) {
     $.ajax({
         type: 'DELETE',
-        contentType: 'application/json; charset=utf-8',
-        url: 'https://localhost:44377/api/guild/events/' + eventID + '/withdraw/' + characterName,
+        url: 'https://localhost:44377/api/guild/events/withdraw',
+        headers: { 'x-eventid': eventID, 'x-charactername': characterName },
         success: function () {
             alert('Event participation was cancelled');
         }, error: function () {
@@ -132,7 +132,6 @@ function cancelParticipation(eventID, characterName) {
 function removeEvent(eventID) {
     $.ajax({
         type: 'DELETE',
-        contentType: 'application/json; charset=utf-8',
         url: 'https://localhost:44377/api/guild/events/remove/' + eventID,
         success: function () {
             alert("The event was removed.");

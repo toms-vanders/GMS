@@ -19,6 +19,12 @@ namespace GMS___Model
             SignUpDateTime = signUpDateTime;
         }
 
+        public EventCharacter(int eventID, string characterName)
+        {
+            EventID = eventID;
+            CharacterName = characterName;
+        }
+
         public EventCharacter()
         {
 
