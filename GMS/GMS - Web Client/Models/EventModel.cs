@@ -29,7 +29,7 @@ namespace GMS___Web_Client.Models
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Event date and time")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Event date and time are required.")]
         
         public DateTime EventDateTime { get; set; }
