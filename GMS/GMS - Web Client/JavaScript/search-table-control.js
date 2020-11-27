@@ -75,6 +75,31 @@ function joinEvent(eventID, characterName, characterRole, signUpDateTime) {
     })
 }
 
+function cancelParticipation(eventID, characterName) {
+    $.ajax({
+        type: 'DELETE',
+        url: 'https://localhost:44377/api/guild/events/withdraw',
+        headers: { 'x-eventid': eventID, 'x-charactername': characterName },
+        success: function () {
+            alert('Event participation was cancelled');
+        }, error: function () {
+            alert('Error cancelling your event participation');
+        }
+    })
+}
+
+function removeEvent(eventID) {
+    $.ajax({
+        type: 'DELETE',
+        url: 'https://localhost:44377/api/guild/events/remove/' + eventID,
+        success: function () {
+            alert("The event was removed.");
+        }, error: function () {
+            alert("An error occurred when trying to remove event.");
+        }
+    })
+}
+
 function clearTable() {
     var events = document.getElementById("events-table");
     events.innerHTML = "<thead><tr><th scope=\"col\">ID</th><th scope=\"col\">Name</th><th scope=\"col\">Event type</th><th scope=\"col\">Location</th><th scope=\"col\">Date</th><th scope=\"col\">Description</th><th scope=\"col\">Max. num. of character</th><th scope=\"col\" style=\"width: 12%;\">Actions</th></tr></thead>"

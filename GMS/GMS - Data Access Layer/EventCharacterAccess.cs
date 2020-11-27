@@ -47,6 +47,29 @@ namespace GMS___Data_Access_Layer
             }
         }
 
+        public bool ContainsEntry(int eventId, string characterName)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                int entries = conn.ExecuteScalar<int>(@"SELECT COUNT(*) FROM EventCharacter WHERE eventID = @EventID AND characterName = @CharacterName", new { EventID = eventId, CharacterName = characterName });
+                return entries == 1;
+            }
+        }
+
+        public bool DeleteEventCharacterByEventIDAndCharacterName(int eventID, string characterName)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                int rowsAffected = conn.Execute(@"DELETE FROM EventCharacter WHERE eventID = @EventID AND characterName = @CharacterName", new { EventID = eventID, CharacterName = characterName });
+
+                if (rowsAffected > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
         public bool isParticipantListFull(int eventID)
         {
             using (IDbConnection conn = GetConnection())
