@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -30,14 +31,14 @@ namespace GMS___Desktop_Client.UserControls
 
             eventType.ItemsSource = Enum.GetValues(typeof(EventType.EventTypes)).Cast<EventType.EventTypes>();
 
-
             client = new HttpClient();
+            client.BaseAddress = new Uri("https://localhost:44377/");
+
 
         }
 
         private async void createEventButton_Click(object sender, RoutedEventArgs e)
         {
-            var uri = $"https://localhost:44377/api/Guild";
 
             Event newEvent = new Event()
             {
@@ -47,10 +48,10 @@ namespace GMS___Desktop_Client.UserControls
                 Date = (DateTime)eventDate.Value,
                 Description = eventDescription.Text,
                 MaxNumberOfCharacters = (int)eventMaxPlayers.Value,
-                GuildID = "116E0C0E-0035-44A9-BB22-4AE3E23127E5"
+                GuildID = ConfigurationManager.AppSettings["ApiToken"]
             };
            
-            var response = await client.PostAsJsonAsync(uri, newEvent);
+            var response = await client.PostAsJsonAsync("api/Guild/events/insert", newEvent);
 
             if (response.IsSuccessStatusCode)
             {
