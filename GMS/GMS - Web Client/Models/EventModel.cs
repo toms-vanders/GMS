@@ -11,6 +11,7 @@ namespace GMS___Web_Client.Models
     {
         public int eventID { get; set; }
         public byte[] rowID { get; set; }
+        public string GuildID { get; set; }
 
         [DataType(DataType.Text)]
         [Display(Name = "Event name")]

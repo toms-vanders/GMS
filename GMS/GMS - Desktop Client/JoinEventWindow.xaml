@@ -1,0 +1,56 @@
+﻿<Window x:Class="GMS___Desktop_Client.JoinEventWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GMS___Desktop_Client"
+        mc:Ignorable="d"
+        Title="Join Event" ResizeMode="NoResize" Height="300" Width="300" Background="AliceBlue"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" MinWidth="69" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Text="Choose a role" Grid.Column="1" Grid.Row="1" FontSize="30" 
+                  Margin="0,0,0,20" Padding="0 0 0 0" Grid.ColumnSpan="2" />
+
+        <!-- Event ID-->
+        <TextBlock Text="Event ID" Grid.Column="1" Grid.Row="2" Margin="0 10 5 5"
+                   />
+        <TextBox x:Name="eventIDBox" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center"
+                  HorizontalAlignment="Left" Width="50" Margin="0,0,0,30" Grid.RowSpan="2" IsReadOnly="True"/>
+
+        <!-- Event Name -->
+        <TextBlock Text="Event Name" Grid.Column="2" Grid.Row="2" Margin="0 10 5 5"/>
+        <TextBox x:Name="eventNameBox" Grid.Column="2" Grid.Row="3" VerticalContentAlignment="Center"
+                 HorizontalAlignment="Left" Width="150" Margin="0,0,0,30" Grid.RowSpan="2" IsReadOnly="True"/>
+
+        <!-- Event Role -->
+        <TextBlock Text="Character Role" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="0 30 5 5" />
+        <TextBox x:Name="characterRoleBox" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" VerticalContentAlignment="Center"
+                 HorizontalAlignment="Left" Width="220" Margin="0,0,0,15"/>
+
+        <!-- Buttons -->
+        <Button x:Name="joinEventButton" Grid.Column="2" Grid.Row="6" Content="Join"
+                Margin="30,0,0,0" Width="50" HorizontalAlignment="Left" Click="joinEventButton_Click" />
+        <Button x:Name="closeJoinEventButton" Grid.Column="2" Grid.Row="6" Content="Close"
+                Margin="0,0,0,0" Width="50" HorizontalAlignment="Right" Click="closeJoinEventButton_Click"/>
+    </Grid>
+</Window>
