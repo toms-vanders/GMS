@@ -42,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EventDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10 input-group">
-                @Html.EditorFor(model => model.EventDateTime, new { htmlAttributes = new { @class = "form-control date-picker", aria_describedby = "addon", onkeydown = "return false", onpaste = "return false", Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm") } })
+                @Html.EditorFor(model => model.EventDateTime, new { htmlAttributes = new { @class = "form-control date-picker", aria_describedby = "addon", onkeydown = "return false", onpaste = "return false"}})
                 <div class="input-group-append">
                     <span class="input-group-text rounded-right" id="addon">
                         <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -58,7 +58,7 @@
                                 changeYear: true,
                                 dateFormat: 'yy-mm-dd',
                                 controlType: 'select',
-                                timeFormat: 'hh:mm',
+                                timeFormat: 'HH:mm',
                             });
                         });
                     });

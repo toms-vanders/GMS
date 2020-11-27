@@ -111,20 +111,28 @@ namespace GMS___Web_Client.Controllers
                 // Get info about event
                 EventProcessor processor = new EventProcessor();
                 List<Event> events = (List<Event>)processor.GetEventByID(EventID);
-                Event eventToBeUpdated = events[0];
-                model.eventID = eventToBeUpdated.EventID;
-                model.EventName = eventToBeUpdated.Name;
-                model.EventType = eventToBeUpdated.EventType;
-                model.EventLocation = eventToBeUpdated.Location;
-                model.EventDateTime = eventToBeUpdated.Date;
-                model.EventDescription = eventToBeUpdated.Description;
-                model.EventMaxNumberOfCharacters = eventToBeUpdated.MaxNumberOfCharacters;
-                model.rowID = eventToBeUpdated.RowId;
-                if (error)
+                if(events.Count == 0)
                 {
-                    ViewBag.Error = "Someone else already updated this event. If you still want to update please try again";
+                    ViewBag.Error = "This Event no longer exists";
+                    return RedirectToAction("Index", "Home");
                 }
-                return View(model);
+                else
+                {
+                    Event eventToBeUpdated = events[0];
+                    model.eventID = eventToBeUpdated.EventID;
+                    model.EventName = eventToBeUpdated.Name;
+                    model.EventType = eventToBeUpdated.EventType;
+                    model.EventLocation = eventToBeUpdated.Location;
+                    model.EventDateTime = eventToBeUpdated.Date;
+                    model.EventDescription = eventToBeUpdated.Description;
+                    model.EventMaxNumberOfCharacters = eventToBeUpdated.MaxNumberOfCharacters;
+                    model.rowID = eventToBeUpdated.RowId;
+                    if (error)
+                    {
+                        ViewBag.Error = "Someone else already updated this event. If you still want to update please try again";
+                    }
+                    return View(model);
+                }
             }
             ViewBag.Error = "You aren't authorized to access this page.";
             return RedirectToAction("Index", "Home");
