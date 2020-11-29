@@ -24,7 +24,11 @@ namespace GMS___Business_Layer
         {
             return eventAccess.GetAllGuildEventsByEventType(guidlID, eventType);
         }
-        
+        public IEnumerable<Event> GetGuildEventsByCharacterName(string guildID, string characterName)
+        {
+            return eventAccess.GetGuildEventsByCharacterName(guildID, characterName);
+        }
+
         public bool InsertEvent(string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildID)
         {
             Event eventToBeAdded = new Event(name, eventType, location, date, description, maxNumberOfCharacters, guildID);
@@ -42,8 +46,5 @@ namespace GMS___Business_Layer
         {
             return eventAccess.DeleteEventByID(eventID);
         }
-
-
-
     }
 }
