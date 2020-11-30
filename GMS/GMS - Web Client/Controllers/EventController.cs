@@ -162,7 +162,7 @@ namespace GMS___Web_Client.Controllers
 
                     if (wasSuccessful)
                     {
-                        return RedirectToAction("Index","Home");
+                        return RedirectToAction("SearchEvents", "Event", new { name = this.Session["characterName"] });
                     } else
                     {
                         return RedirectToAction("UpdateEventForm","Event", new { name = this.Session["characterName"], eventID = model.eventID, error = true });
