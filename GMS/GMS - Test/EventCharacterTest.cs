@@ -36,7 +36,7 @@ namespace GMS___Test
             int maxNumberOfCharacters = 25;
             string guildID = "99999999-9999-9999-9999-999999999999";
 
-            testEvent = new Event(guildId,name,description,eventType,location,date,maxNumberOfCharacters);
+            testEvent = new Event(guildID,eventName,description,eventType,location,date,maxNumberOfCharacters);
 
             string characterName = "Bob";
             string race = "Demon";
