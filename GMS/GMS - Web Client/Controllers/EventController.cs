@@ -117,7 +117,7 @@ namespace GMS___Web_Client.Controllers
                 List<Event> events = (List<Event>)processor.GetEventByID(eventID);
                 if(events.Count == 0)
                 {
-                    ViewBag.Error = "This Event no longer exists";
+                    TempData["ErrorMessage"] = "This Event no longer exists";
                     return RedirectToAction("Index", "Home");
                 }
                 else
