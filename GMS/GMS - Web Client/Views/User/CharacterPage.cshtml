@@ -41,7 +41,7 @@
         {
             <img src="@Url.Content("~/Content/images/ezgif.com-gif-maker.gif")" />
             <small id="linkHelpBlock" class="form-text text-muted">
-                In order to create and search events, your character needs to represant a guild. 
+                In order to create and search events, your character needs to represant a guild.
                 When you become a guild representant, it can take a few minutes to process the change
                 in order to display links.
             </small>
@@ -50,6 +50,7 @@
         {
             @Html.ActionLink("Create new guild event", "CreateEventForm", "Event", new { name = ViewBag.Character.Name }, null) <br>
             @Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character.Name }, null)
+            System.Diagnostics.Debug.WriteLine(@Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character.Name }, null));
         }
     </div>
 </div>
