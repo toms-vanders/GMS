@@ -29,7 +29,7 @@ namespace GMS___Data_Access_Layer
         {
             using (IDbConnection conn = GetConnection())
             {
-                IEnumerable<Event> events = conn.Query<Event>("SELECT eventID, guildID, name, description, eventType, location, date, maxNumberOfCharacters FROM Event WHERE guildID = @GuildID", new { GuildID = guildID }).ToList();
+                IEnumerable<Event> events = conn.Query<Event>("SELECT eventID, guildID, name, description, eventType, location, date, maxNumberOfCharacters, rowId FROM Event WHERE guildID = @GuildID", new { GuildID = guildID }).ToList();
                 return events;
             }
         }
@@ -52,6 +52,21 @@ namespace GMS___Data_Access_Layer
                 IEnumerable<Event> foundEvents = conn.Query<Event>("select e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters from Event e right join EventCharacter ec on e.eventID = ec.eventID where ec.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList();
                 return foundEvents.Concat(conn.Query<Event>("select e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters from Event e right join EventCharacterWaitingList ecwl on e.eventID = ecwl.eventID where ecwl.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList());   
             }
+        }
+
+        public bool HasEventChangedRowVersion(int eventId, byte[] currentRowId)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                byte[] fetchedRowId = conn.ExecuteScalar<byte[]>("SELECT rowId FROM Event WHERE eventID = @EventID", new { EventID = eventId });
+                if (Convert.ToBase64String(fetchedRowId) != Convert.ToBase64String(currentRowId))
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }     
         }
 
         public bool InsertEvent(Event guildEvent)

@@ -207,9 +207,10 @@
 
     <!-- end joining events -->
 
+    <!-- removing events -->
     <script type="text/javascript">
-        function removeEventWrapper(eventID) {
-            removeEvent(eventID);
+        function removeEventWrapper(eventID, rowId) {
+            removeEvent(eventID, rowId);
             refreshPage();
         }
     </script>
