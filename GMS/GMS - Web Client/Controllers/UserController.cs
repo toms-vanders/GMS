@@ -14,8 +14,6 @@ namespace GMS___Web_Client.Controllers
         {
             if (InSession())
             {
-                var error = TempData["ErrorMessage"] as string;
-                ViewBag.Error = error;
                 this.Session["Guild"] = "";
                 ArrayList characterList = new ArrayList();
                 ArrayList characterNameList = GetJson<ArrayList>("gw2api/characters", new ArrayList());

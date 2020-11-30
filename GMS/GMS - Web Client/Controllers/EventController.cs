@@ -35,6 +35,8 @@ namespace GMS___Web_Client.Controllers
         {
             if (this.Session["Username"] != null)
             {
+                var error = TempData["ErrorMessage"] as string;
+                ViewBag.Error = error;
                 string urlSuffix = "gw2api/characters/" + name + "/core";
                 ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
                 // Getting all event types needed for DropDownList
@@ -118,7 +120,7 @@ namespace GMS___Web_Client.Controllers
                 if(events.Count == 0)
                 {
                     TempData["ErrorMessage"] = "This Event no longer exists";
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("SearchEvents","Event", new { name = this.Session["characterName"]});
                 }
                 else
                 {
