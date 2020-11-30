@@ -30,7 +30,7 @@ namespace GMS___Business_Layer
 
         public bool InsertEvent(string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildID)
         {
-            Event eventToBeAdded = new Event(name, eventType, location, date, description, maxNumberOfCharacters, guildID);
+            Event eventToBeAdded = new Event(guildID, name, description, eventType, location, date, maxNumberOfCharacters);
             return eventAccess.InsertEvent(eventToBeAdded);
         }
 
