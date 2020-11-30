@@ -29,12 +29,13 @@ namespace GMS___Data_Access_Layer
         {
             using (IDbConnection conn = GetConnection())
             {
-                List<User> users = conn.Query<User>("SELECT userID, userName, email, password, apiKey, userRole FROM Users where email in @emails", new { emails = new[] { emailAddress } }).ToList();
+                List<User> users = conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole FROM Users where emailAddress in @emails", new { emails = new[] { emailAddress } }).ToList();
                 if (users.Count != 1)
                 {
                     return (User) null;
                 } else
                 {
+                    //users[0].EmailAddress = emailAddress;
                     return users[0];
                 }
             }
@@ -47,7 +48,7 @@ namespace GMS___Data_Access_Layer
             {
                 try
                 {
-                    string sqlCommand = "INSERT INTO Users (userName, email, password, ApiKey, userRole)";
+                    string sqlCommand = "INSERT INTO Users (userName, emailAddress, password, ApiKey, userRole)";
                     sqlCommand += " VALUES (@UserName, @EmailAddress, @Password, @ApiKey, @UserRole)";
                     affectedRows = conn.Execute(sqlCommand, user);
                 }
@@ -68,7 +69,7 @@ namespace GMS___Data_Access_Layer
                 {
                     string sqlCommand = @"
                         UPDATE Users SET userName = @UserName
-                        , email = @EmailAddress
+                        , emailAddress = @EmailAddress
                         , password = @Password
                         , apiKey = @ApiKey
                         , userRole = @UserRole

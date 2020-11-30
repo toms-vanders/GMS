@@ -11,38 +11,7 @@ namespace GMS___Test
     public class UserProcessorTest
     {
         [TestMethod]
-        public void TestInsertNewUser()
-        {
-            Boolean test1 = false;
-            Boolean test2 = true;
-            Boolean test3 = true;
-            Boolean noExceptionWasThrown = true;
-            try
-            {
-                UserProcessor up = new UserProcessor();
-
-                test1 = up.InsertNewUser("name1", "mail1", "password");
-                test2 = up.InsertNewUser("name1", "mail2", "password");
-                test3 = up.InsertNewUser("name2", "mail1", "password"); 
-            }
-            catch(Exception e)
-            {
-                noExceptionWasThrown = false;
-            }
-            finally
-            {
-                //CleanUp
-                UserAccess userAccess = new UserAccess();
-                userAccess.DeleteByName("name1");
-                userAccess.DeleteByName("name2");
-            }
-            Assert.IsTrue(test1);
-            Assert.IsFalse(test2);
-            Assert.IsFalse(test3);
-            Assert.IsTrue(noExceptionWasThrown);
-        }
-        [TestMethod]
-        public void TestLogInUser()
+        public void TestLogIn()
         {
             User user1 = null;
             User user2 = null;
@@ -107,6 +76,37 @@ namespace GMS___Test
             Assert.IsTrue(test1);
             Assert.IsFalse(test2);
             Assert.AreEqual("key", apikey);
+            Assert.IsTrue(noExceptionWasThrown);
+        }
+
+        [TestMethod]
+        public void TestGetUserByEmail()
+        {
+            User user1 = null;
+            User user2 = null;
+            string user1name = "";
+            Boolean noExceptionWasThrown = true;
+            try
+            {
+                UserProcessor up = new UserProcessor();
+                up.InsertNewUser("name", "mail@mail.com", "password");
+
+                user1 = up.GetUserByEmail("mail@mail.com");
+                user2 = up.GetUserByEmail("asd");
+                user1name = user1.UserName;
+            }
+            catch (Exception e)
+            {
+                noExceptionWasThrown = false;
+            }
+            finally
+            {
+                //CleanUp
+                UserAccess userAccess = new UserAccess();
+                userAccess.DeleteByName("name");
+            }
+            Assert.AreEqual("name", user1name);
+            Assert.IsNull(user2);
             Assert.IsTrue(noExceptionWasThrown);
         }
     }

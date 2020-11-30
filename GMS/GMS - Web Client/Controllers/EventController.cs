@@ -64,9 +64,9 @@ namespace GMS___Web_Client.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Event tempEvent = PostJson("api/guild/events/insert", new Event(model.EventName, model.EventType,
-                        model.EventLocation, model.EventDateTime, model.EventDescription,
-                        model.EventMaxNumberOfCharacters, model.GuildID));
+                    Event tempEvent = PostJson("api/guild/events/insert", new Event(model.GuildID, model.EventName, 
+                        model.EventDescription, model.EventType, model.EventLocation, model.EventDateTime, 
+                        model.EventMaxNumberOfCharacters));
                     if (tempEvent != null)
                     {
                         return RedirectToAction("Index", "Home");
@@ -166,8 +166,11 @@ namespace GMS___Web_Client.Controllers
                         return RedirectToAction("UpdateEventForm","Event", new { name = this.Session["characterName"], eventID = model.eventID, error = true });
                     }
                 }
-                ViewBag.Error = "There was a problem. Please try again";
-                return RedirectToAction("Index", "Home");
+                else
+                {
+                    ViewBag.Error = "Invalid information was given.";
+                    return View(model);
+                }
             } else
             {
                 ViewBag.Error = "You aren't authorized to access this page.";
