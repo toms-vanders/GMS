@@ -35,6 +35,8 @@ namespace GMS___Web_Client.Controllers
         {
             if (this.Session["Username"] != null)
             {
+                var error = TempData["ErrorMessage"] as string;
+                ViewBag.Error = error;
                 string urlSuffix = "gw2api/characters/" + name + "/core";
                 ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
                 // Getting all event types needed for DropDownList
@@ -117,8 +119,8 @@ namespace GMS___Web_Client.Controllers
                 List<Event> events = (List<Event>)processor.GetEventByID(eventID);
                 if(events.Count == 0)
                 {
-                    ViewBag.Error = "This Event no longer exists";
-                    return RedirectToAction("Index", "Home");
+                    TempData["ErrorMessage"] = "This Event no longer exists";
+                    return RedirectToAction("SearchEvents","Event", new { name = this.Session["characterName"]});
                 }
                 else
                 {
@@ -160,7 +162,7 @@ namespace GMS___Web_Client.Controllers
 
                     if (wasSuccessful)
                     {
-                        return RedirectToAction("Index","Home");
+                        return RedirectToAction("SearchEvents", "Event", new { name = this.Session["characterName"] });
                     } else
                     {
                         return RedirectToAction("UpdateEventForm","Event", new { name = this.Session["characterName"], eventID = model.eventID, error = true });
@@ -169,6 +171,8 @@ namespace GMS___Web_Client.Controllers
                 else
                 {
                     ViewBag.Error = "Invalid information was given.";
+                    var eventTypes = GetAllEventTypes();
+                    model.EventTypes = GetOptionEventTypesList(eventTypes);
                     return View(model);
                 }
             } else
