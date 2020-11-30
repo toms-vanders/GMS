@@ -116,5 +116,22 @@ namespace GMS___Data_Access_Layer
             }    
         }
 
+        //This method is used by the Tests
+        public int getIdOfEvent(string name)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                List<int> ids = (List<int>)conn.Query<int>(@"Select eventID FROM Event WHERE name = @Name", new { Name = name });
+                if(ids.Count() == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return ids[0];
+                }
+            }
+        }
+
     }
 }

@@ -52,17 +52,30 @@ namespace GMS___Test
         [TestMethod]
         public void TestItem()
         {
-            string name = "Sword";
-            int value = 150;
-            int quantity = 5;
-            string description = "A sword";
+            int Id = 8;
+            string Chat_link = "Chat Link";
+            string Name = "Sword";
+            string Icon = "Icon";
+            string Description = "A sword";
+            string Type = "Weapon";
+            string Rarity = "Common";
+            int Level = 1;
+            int Vendor_value = 0;
+            ArrayList Flags = new ArrayList();
+            ArrayList Game_types = new ArrayList();
+            ArrayList Restrictions = new ArrayList();
 
-            Item item = new Item(name,value,quantity,description);
+            Item item = new Item(Id,Chat_link,Name,Icon,Description,Type,Rarity,Level,Vendor_value,Flags,Game_types,Restrictions);
 
-            Assert.AreEqual("Sword", item.name);
-            Assert.AreEqual(150, item.value);
-            Assert.AreEqual(5, item.quantity);
-            Assert.AreEqual("A sword", item.description);
+            Assert.AreEqual(8, item.Id);
+            Assert.AreEqual("Chat Link", item.Chat_link);
+            Assert.AreEqual("Sword", item.Name);
+            Assert.AreEqual("Icon", item.Icon);
+            Assert.AreEqual("A sword", item.Description);
+            Assert.AreEqual("Weapon", item.Type);
+            Assert.AreEqual("Common", item.Rarity);
+            Assert.AreEqual(1, item.Level);
+            Assert.AreEqual(0, item.Vendor_value);
         }
 
         [TestMethod]
@@ -79,18 +92,46 @@ namespace GMS___Test
         }
 
         [TestMethod]
+        public void TestEventCharacter()
+        {
+            int eventID = 10;
+            string characterName = "Something";
+            string characterRole = "Healer";
+            DateTime signUpDateTime = new DateTime(2020, 11, 1, 10, 30, 0);
+
+            EventCharacter eventCharacter = new EventCharacter(eventID, characterName, characterRole, signUpDateTime);
+            int year = eventCharacter.SignUpDateTime.Year;
+            int month = eventCharacter.SignUpDateTime.Month;
+            int day = eventCharacter.SignUpDateTime.Day;
+            int hour = eventCharacter.SignUpDateTime.Hour;
+            int minute = eventCharacter.SignUpDateTime.Minute;
+            int second = eventCharacter.SignUpDateTime.Second;
+
+            Assert.AreEqual(10, eventCharacter.EventID);
+            Assert.AreEqual("Something", eventCharacter.CharacterName);
+            Assert.AreEqual("Healer", eventCharacter.CharacterRole);
+            Assert.AreEqual(2020, year);
+            Assert.AreEqual(11, month);
+            Assert.AreEqual(1, day);
+            Assert.AreEqual(10, hour);
+            Assert.AreEqual(30, minute);
+            Assert.AreEqual(0, second);
+        }
+
+        [TestMethod]
         public void TestEvent()
         {
             int eventID = 50;
+            string guildID = "116E0C0E-0035-44A9-BB22-4AE3E23127E5";
             string name = "Random raid";
+            string description = "Raid description";
             string eventType = "Raid";
             string location = "37°14′0″N 115°48′30″W";
             DateTime date = new DateTime(2020,12,10);
-            string description = "Raid description";
             int maxNumberOfCharacters = 20;
-            string guildID = "116E0C0E-0035-44A9-BB22-4AE3E23127E5";
+            Byte[] rowId = new Byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 };
 
-            Event event1 = new Event(eventID, guildID, name, description, eventType, location, date, maxNumberOfCharacters);
+            Event event1 = new Event(eventID, guildID, name, description, eventType, location, date, maxNumberOfCharacters,rowId);
             int year = event1.Date.Year;
             int month = event1.Date.Month;
             int day = event1.Date.Day;
@@ -108,21 +149,46 @@ namespace GMS___Test
         }
 
         [TestMethod]
+        public void TestEquipmentSlot()
+        {
+            int Id = 43;
+            string Slot = "Slot";
+            string Bound_to = "Bound to";
+            ArrayList Dyes = new ArrayList();
+
+            EquipmentSlot equipmentSlot = new EquipmentSlot(Id, Slot, Bound_to, Dyes);
+
+            Assert.AreEqual(43, equipmentSlot.Id);
+            Assert.AreEqual("Slot", equipmentSlot.Slot);
+            Assert.AreEqual("Bound to", equipmentSlot.Bound_to);
+        }
+
+        [TestMethod]
         public void TestCharacter()
         {
-            string characterName = "Lime";
-            string characterClass = "Thief";
-            string email = "lime15@ucn.dk";
+            string name = "Lime";
+            string race = "Human";
+            string gender = "Male";
+            string profession = "Thief";
             int level = 29;
-            string guildRank = "Rookie";
+            string guild = "0123456789";
+            int age = 12;
+            string created = "Yes";
+            int deaths = 99999;
+            string title = "Title";
 
-            Character character = new Character(characterName,characterClass,email,level,guildRank);
+            Character character = new Character(name,race,gender,profession,level,guild,age,created,deaths,title);
 
-            Assert.AreEqual("Lime", character.characterName);
-            Assert.AreEqual("Thief", character.characterClass);
-            Assert.AreEqual("lime15@ucn.dk", character.email);
-            Assert.AreEqual(29, character.level);
-            Assert.AreEqual("Rookie", character.guildRank);
+            Assert.AreEqual("Lime", character.Name);
+            Assert.AreEqual("Human", character.Race);
+            Assert.AreEqual("Male", character.Gender);
+            Assert.AreEqual("Thief", character.Profession);
+            Assert.AreEqual(29, character.Level);
+            Assert.AreEqual("0123456789", character.Guild);
+            Assert.AreEqual(12, character.Age);
+            Assert.AreEqual("Yes", character.Created);
+            Assert.AreEqual(99999, character.Deaths);
+            Assert.AreEqual("Title", character.Title);
         }
 
         [TestMethod]

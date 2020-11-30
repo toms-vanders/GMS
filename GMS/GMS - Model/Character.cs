@@ -15,7 +15,8 @@ namespace GMS___Model
         {
             this.Name = name;
             this.Race = race;
-            this.Gender = profession;
+            this.Gender = gender;
+            this.Profession = profession;
             this.Level = level;
             this.Guild = guild;
             this.Age = age;

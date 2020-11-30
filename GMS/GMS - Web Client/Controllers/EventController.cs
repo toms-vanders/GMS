@@ -166,8 +166,11 @@ namespace GMS___Web_Client.Controllers
                         return RedirectToAction("UpdateEventForm","Event", new { name = this.Session["characterName"], eventID = model.eventID, error = true });
                     }
                 }
-                ViewBag.Error = "There was a problem. Please try again";
-                return RedirectToAction("Index", "Home");
+                else
+                {
+                    ViewBag.Error = "Invalid information was given.";
+                    return View(model);
+                }
             } else
             {
                 ViewBag.Error = "You aren't authorized to access this page.";
