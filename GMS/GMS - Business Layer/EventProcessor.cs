@@ -9,7 +9,6 @@ namespace GMS___Business_Layer
 {
     public class EventProcessor : IEventProcessor
     {
-
         private EventAccess eventAccess = new EventAccess();
 
         public IEnumerable<Event> GetEventByID(int eventID)
@@ -45,6 +44,12 @@ namespace GMS___Business_Layer
         public bool DeleteEventByID(int eventID)
         {
             return eventAccess.DeleteEventByID(eventID);
+        }
+
+
+        public bool HasEventChangedRowVersion(int eventId, byte[] rowId)
+        {
+            return eventAccess.HasEventChangedRowVersion(eventId, rowId);
         }
     }
 }
