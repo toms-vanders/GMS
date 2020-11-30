@@ -169,6 +169,8 @@ namespace GMS___Web_Client.Controllers
                 else
                 {
                     ViewBag.Error = "Invalid information was given.";
+                    var eventTypes = GetAllEventTypes();
+                    model.EventTypes = GetOptionEventTypesList(eventTypes);
                     return View(model);
                 }
             } else
