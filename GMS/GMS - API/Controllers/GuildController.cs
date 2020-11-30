@@ -95,16 +95,29 @@ namespace GMS___API.Controllers
             }
         }
 
-        [HttpDelete("events/remove/{eventId}")]
-        public string DeleteEvent(string eventId) 
+        [HttpDelete("events/remove/")]
+        public string DeleteEvent([FromHeader(Name = "x-eventid")] int eventID, [FromHeader(Name = "x-rowid")] byte[] rowId)
         {
-            if(eventProcessor.DeleteEventByID(Int32.Parse(eventId)))
-            {
-                return "Succesfully deleted";
-            } else
+
+            // Get the Event from database, and compare the rowIds
+            // If they are equal, then delete the event
+            // If not return bad response (currently string)
+            if (eventProcessor.HasEventChangedRowVersion(eventID, rowId))
             {
                 return "Not succesfully deleted";
+            } else
+            {
+                if (eventProcessor.DeleteEventByID(eventID))
+                {
+                    return "Succesfully deleted";
+                }
+                else
+                {
+                    return "Not succesfully deleted";
+                }
             }
+
+            
         }
 
     }
