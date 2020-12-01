@@ -1,22 +1,61 @@
-﻿function getEvents(eventTypes, keywords) {
-    var events = document.getElementById("events-table");
-    var guildID = "116E0C0E-0035-44A9-BB22-4AE3E23127E5" // TODO this is to be fetched automatically
+﻿function getAllTheEvents(guildID) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "GET",
+            url: "https://localhost:44377/api/guild/" + guildID,
+            data: {
 
+            },
+            dataType: "json",
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (error) {
+                reject(error)
+            },
+        })
+    })
+}
+
+function getAndDisplayEventsCaller(eventTypes, keywords, characterName, guildID) {
+    getAllTheEvents(guildID)
+        .then((data) => {
+            displayEventsTable(data, characterName, guildID, eventTypes, keywords)
+        })
+        .catch((error) => {
+            alert("Failed to get any events.");
+        })
+}
+
+function displayEventsTable(allEvents, characterName, guildID, eventTypes, keywords) {
     $.ajax({
         type: "GET",
-        url: "https://localhost:44377/api/guild/" + guildID,
+        url: "https://localhost:44377/api/guild/" + guildID + "/character/" + characterName,
         data: {
-            
+
         },
         dataType: "json",
-        success: function (json) {
+        success: function (data) {
+            // Data is only the events user participates in
+            // Render table 
+
+            // Extract id(s) of the event(s) user participates in
+            var matchingIDs = [];
+            for (i = 0; i < data.length; i++) {
+                matchingIDs.push(data[i].eventID);
+            }
+
             clearTable();
             var trHTML = "<tbody>";
-            json.forEach(obj => {
+            allEvents.forEach(obj => {
                 if ((eventTypes.includes(obj.eventType)) || (eventTypes.length === 0)) {
                     if (keywords.some(v => obj.name.toLowerCase().includes(v)) || keywords.some(v => obj.description.toLowerCase().includes(v)) || (keywords.length === 0)) {
                         trHTML += "<tr>";
                         const keys = Object.keys(obj);
+
+                        // Checking whether character participates in currently iterated event
+                        var characterParticipatesInEvent = matchingIDs.includes(obj.eventID);
+
                         Object.entries(obj).forEach(([key, value]) => {
                             if (key === "participants" || key === "waitingList" || key === "guildID" || key === "rowId") {
                             } else if (key === "eventID") {
@@ -29,9 +68,10 @@
                             }
                             if (Object.is(keys.length - 1, keys.indexOf(key))) {
                                 trHTML += "<td>";
-                                trHTML += "<button type=\"button\" class=\"btn btn-success btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" data-target=\"#chooseRoleModal\" data-eventID=\"" + obj.eventID + "\" title =\"Join event or waiting list\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i></button> ";
-                                trHTML += "<button type=\"button\" class=\"btn btn-warning btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" title=\"Edit event\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button> ";
-                                trHTML += "<button type=\"button\" class=\"btn btn-danger btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" title=\"Remove event\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></button>";
+                                if (!characterParticipatesInEvent) trHTML += "<button type=\"button\" class=\"btn btn-success btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" data-target=\"#chooseRoleModal\" data-eventID=\"" + obj.eventID + "\" data-eName=\"" + obj.name + "\" data-eRowId=\"" + obj.rowId + "\" title =\"Join event or waiting list\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i></button> ";
+                                trHTML += "<button type=\"button\" onclick=\"location.href='https://localhost:44318/Event/UpdateEventForm?name=" + characterName +"&eventID="+obj.eventID+"'\" class=\"btn btn-warning btn-sm\" data-toggle=\"editEvent\" data-placement=\"top\" title=\"Edit event\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button> ";
+                                trHTML += "<button type=\"button\" class=\"btn btn-danger btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" title=\"Remove event\" onclick=\"removeEventWrapper(" + obj.eventID + ", \'" + obj.rowId + "\') \"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></button>";
+                                if (characterParticipatesInEvent) trHTML += " <button type=\"button\" class=\"btn btn-primary btn-sm\" data-tooltip=\"tooltip\" data-placement=\"top\" title=\"Cancel your participation in event\" onclick=\"cancelParticipationCaller(" + obj.eventID + ") \"><i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i></button>";
                                 trHTML += "</td>";
                             }
                         });
@@ -44,25 +84,26 @@
             $('[data-tooltip="tooltip"]').tooltip();
             $('[data-tooltip="tooltip"]').tooltip();
             $('[data-tooltip="tooltip"]').tooltip();
+
         },
         error: function () {
-            alert("Errors connecting with the database.");
-        }
+            alert("Errors connecting with the database. Events were not fetched.");
+        },
     })
 }
 
-function joinEvent(eventID, characterName, role) {
+function joinEvent(eventID, characterName, characterRole, signUpDateTime, rowId) {
     var EventCharacter = {};
     EventCharacter.eventID = parseInt(eventID);
     EventCharacter.characterName = characterName;
-    EventCharacter.role = role;
-
-    console.log(EventCharacter);
+    EventCharacter.characterRole = characterRole;
+    EventCharacter.signUpDateTime = signUpDateTime;
 
     $.ajax({
         type: 'POST',
         contentType: 'application/json; charset=utf-8',
         url: 'https://localhost:44377/api/guild/events/join/',
+        headers: { 'x-rowid': rowId },
         data: JSON.stringify(EventCharacter),
         dataType: 'json',
         success: function () {
@@ -71,13 +112,38 @@ function joinEvent(eventID, characterName, role) {
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
         }, error: function () {
-            alert("Error trying to join the event. You might be trying to join an event you're already a participant of.");
+            alert("Error trying to join the event. The event details might have change while you were trying to join.");
         }
+    })
+}
 
+function cancelParticipation(eventID, characterName) {
+    $.ajax({
+        type: 'DELETE',
+        url: 'https://localhost:44377/api/guild/events/withdraw',
+        headers: { 'x-eventid': eventID, 'x-charactername': characterName },
+        success: function () {
+            alert('Event participation was cancelled');
+        }, error: function () {
+            alert('Error cancelling your event participation');
+        }
+    })
+}
+
+function removeEvent(eventID, rowId) {
+    $.ajax({
+        type: 'DELETE',
+        url: 'https://localhost:44377/api/guild/events/remove/',
+        headers: { 'x-eventid': eventID, 'x-rowid': rowId },
+        success: function () {
+            alert("The event was removed.");
+        }, error: function () {
+            alert("An error occurred when trying to remove event.");
+        }
     })
 }
 
 function clearTable() {
     var events = document.getElementById("events-table");
-    events.innerHTML = "<thead><tr><th scope=\"col\">ID</th><th scope=\"col\">Name</th><th scope=\"col\">Event type</th><th scope=\"col\">Location</th><th scope=\"col\">Date</th><th scope=\"col\">Description</th><th scope=\"col\">Max. num. of character</th><th scope=\"col\" style=\"width: 12%;\">Actions</th></tr></thead>"
+    events.innerHTML = "<thead><tr><th scope=\"col\">ID</th><th scope=\"col\">Name</th><th scope=\"col\">Event type</th><th scope=\"col\">Location</th><th scope=\"col\">Date</th><th scope=\"col\">Description</th><th scope=\"col\">Max. num. of character</th><th scope=\"col\" style=\"width: 14%;\">Actions</th></tr></thead>"
 }

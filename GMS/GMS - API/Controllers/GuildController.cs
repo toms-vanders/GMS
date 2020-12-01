@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GMS___Business_Layer;
@@ -18,11 +19,13 @@ namespace GMS___API.Controllers
         public IOptions<ClientSettings> clientSettings;
         private EventProcessor eventProcessor;
         private EventCharacterProcessor eventCharacterProcessor;
+        private EventCharacterWaitingListProcessor eventCharacterWaitingListProcessor;
         public GuildController(IOptions<ClientSettings> clientSettings)
         {
             this.clientSettings = clientSettings;
             eventProcessor = new EventProcessor();
             eventCharacterProcessor = new EventCharacterProcessor();
+            eventCharacterWaitingListProcessor = new EventCharacterWaitingListProcessor();
         }
 
         [HttpGet("{guildId}")]
@@ -36,6 +39,10 @@ namespace GMS___API.Controllers
 
         /*[HttpGet("{guildId}/Name/{name}")]
         public IEnumerable<Event> GetByName(string guildId, string name) => eventProcessor.GetAllGuildEventsByName(guildId, name);*/
+
+        //Get all the events a user participates in (takes guildID and characterName)
+        [HttpGet("{guildId}/character/{characterName}")]
+        public IEnumerable<Event> GetByCharacterName(string guildID, string characterName) => eventProcessor.GetGuildEventsByCharacterName(guildID, characterName);
 
         [HttpPost("events/insert")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -52,24 +59,71 @@ namespace GMS___API.Controllers
         [HttpPost("events/join")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<EventCharacter> Post([FromBody] EventCharacter ec)
+        public ActionResult<EventCharacter> Post([FromBody] EventCharacter ec, [FromHeader(Name = "x-rowid")] byte[] rowId)
         {
-            if (eventCharacterProcessor.JoinEvent(ec.EventID, ec.CharacterName, ec.Role)) { 
+            if (eventProcessor.HasEventChangedRowVersion(ec.EventID, rowId))
+            {
+                // TODO change response type
+                return BadRequest("The information about event you tried to join has changed. Joining event was unsuccessful");
+            }
+            
+            if (eventCharacterProcessor.JoinEvent(ec.EventID, ec.CharacterName, ec.CharacterRole, ec.SignUpDateTime)) { 
                 return ec;
             }
             return BadRequest("Invalid data.");
         }
 
-        [HttpDelete("events/remove/{eventId}")]
-        public string DeleteEvent(string eventId) 
+        [HttpDelete("events/withdraw/")]
+        public string DeleteEventCharacter([FromHeader(Name = "x-eventid")] int eventID, [FromHeader(Name = "x-charactername")] string characterName)
         {
-            if(eventProcessor.DeleteEventByID(Int32.Parse(eventId)))
-            {
-                return "Succesfully deleted";
+            // Check if EventCharacter contains entry with given eventID and characterName,
+            // if so: delete EventCharacter from EventCharacter
+            // if not: delete EventCharacter from EventCharacterWaitingList instead
+
+            if (eventCharacterProcessor.ContainsEntry(eventID, characterName)) {
+                if (eventCharacterProcessor.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName))
+                {
+                    return "Succesfully deleted from participant's list";
+                }
+                else
+                {
+                    return "Not succesfully deleted";
+                }
             } else
             {
-                return "Not succesfully deleted";
+                if (eventCharacterWaitingListProcessor.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName))
+                {
+                    return "Succesfully deleted from waiting list";
+                } else
+                {
+                    return "Not succesfully deleted from waiting list";
+                }
             }
+        }
+
+        [HttpDelete("events/remove/")]
+        public string DeleteEvent([FromHeader(Name = "x-eventid")] int eventID, [FromHeader(Name = "x-rowid")] byte[] rowId)
+        {
+
+            // Get the Event from database, and compare the rowIds
+            // If they are equal, then delete the event
+            // If not return bad response (currently string)
+            if (eventProcessor.HasEventChangedRowVersion(eventID, rowId))
+            {
+                return "Not succesfully deleted";
+            } else
+            {
+                if (eventProcessor.DeleteEventByID(eventID))
+                {
+                    return "Succesfully deleted";
+                }
+                else
+                {
+                    return "Not succesfully deleted";
+                }
+            }
+
+            
         }
 
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,6 +9,10 @@ namespace GMS___Web_Client.Models
 {
     public class EventModel
     {
+        public int eventID { get; set; }
+        public byte[] rowID { get; set; }
+        public string GuildID { get; set; }
+
         [DataType(DataType.Text)]
         [Display(Name = "Event name")]
         [Required(ErrorMessage = "Event name is required.")]
@@ -26,7 +30,7 @@ namespace GMS___Web_Client.Models
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Event date and time")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Event date and time are required.")]
         
         public DateTime EventDateTime { get; set; }

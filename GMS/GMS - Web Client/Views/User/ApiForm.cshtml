@@ -10,6 +10,7 @@
 
     <div class="form-horizontal">
         <h4>Enter your api key </h4>
+        <h5>This is important to get the all the features our app has to offer. </h5>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -28,7 +29,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-10">
             <ul class="list-group">
                 <li class="list-group-item">
                     1. Open the official Guild Wars 2 API Key Management.
@@ -56,10 +57,10 @@
     </div>
 }
 
-        <div>
-            @Html.ActionLink("Back to List", "Index")
-        </div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
 
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-        }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

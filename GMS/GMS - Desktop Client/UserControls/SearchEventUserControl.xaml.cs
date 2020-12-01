@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GMS___Business_Layer;
+using System.Windows.Controls.Primitives;
 using GMS___Model;
 using Newtonsoft.Json;
 
@@ -35,43 +37,38 @@ namespace GMS___Desktop_Client.UserControls
             filterByEventTypeBox.ItemsSource = Enum.GetValues(typeof(EventType.EventTypes)).Cast<EventType.EventTypes>();
 
             client = new HttpClient();
+            client.BaseAddress = new Uri("https://localhost:44377/");
 
             FillDataGrid();
 
         }
 
-        private void searchEventsbutton_Click(object sender, RoutedEventArgs e)
+        public async void FillDataGrid()
         {
+            if (!String.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
+            {
+                string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
 
-        }
-        
-        private async void FillDataGrid()
-        {
+                eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
 
-            var uri = $"https://localhost:44377/api/Guild/116E0C0E-0035-44A9-BB22-4AE3E23127E5";
-
-            string responseBody = await client.GetStringAsync(uri);
-
-            eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
-
-            this.eventGrid.ItemsSource = eventList;
+                this.eventGrid.ItemsSource = eventList;
+            }
         }
 
         private void eventSearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
             FilterEvents();
         }
 
         private void filterByEventTypeBox_ItemSelectionChanged(object sender, Xceed.Wpf.Toolkit.Primitives.ItemSelectionChangedEventArgs e)
         {
-
             FilterEvents();
 
         }
 
         private void FilterEvents()
         {
+            
             var filterByName = eventList.Where(ev => ev.Name.IndexOf(eventSearchBox.Text, (StringComparison)CompareOptions.IgnoreCase) >= 0);
 
             var eventTypesSelections = filterByEventTypeBox.SelectedItems;
@@ -127,11 +124,10 @@ namespace GMS___Desktop_Client.UserControls
 
         private void deleteEventButton_Click(object sender, RoutedEventArgs e)
         {
-            var uri = $"https://localhost:44377/api/Guild/events/remove/";
 
             Event selectedEvent = (Event)eventGrid.SelectedItem;
 
-            var response = client.DeleteAsync(uri + selectedEvent.EventID).Result;
+            var response = client.DeleteAsync("api/Guild/events/remove/" + selectedEvent.EventID).Result;
             if (response.IsSuccessStatusCode)
             {
                 MessageBox.Show("Event " + selectedEvent.EventID + " deleted!");
@@ -151,7 +147,16 @@ namespace GMS___Desktop_Client.UserControls
 
         private void joinEventButton_Click(object sender, RoutedEventArgs e)
         {
+            int eventID = SelectedEventID().EventID;
+            string eventName = SelectedEventID().Name;
 
+            Window joinEventWindow = new JoinEventWindow(eventID, eventName);
+            joinEventWindow.ShowDialog();
+        }
+
+        private Event SelectedEventID()
+        {
+            return (Event)eventGrid.SelectedItem;
         }
     }
 }

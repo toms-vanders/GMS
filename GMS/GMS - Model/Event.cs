@@ -13,7 +13,7 @@ namespace GMS___Model
 
         }
 
-        public Event(string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildId)
+        public Event(string guildId, string name, string description, string eventType, string location, DateTime date, int maxNumberOfCharacters)
         {
             this.Name = name;
             this.EventType = eventType;

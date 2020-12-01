@@ -9,10 +9,20 @@ namespace GMS___Business_Layer
     public class EventCharacterProcessor
     {
         private EventCharacterAccess eventCharacterAccess = new EventCharacterAccess();
-        public Boolean JoinEvent(int eventID, string characterName, string role)
+        public Boolean JoinEvent(int eventID, string characterName, string role, DateTime signUpDateTime)
         {
-            EventCharacter eventCharacterToBeAdded = new EventCharacter(eventID, characterName, role);
+            EventCharacter eventCharacterToBeAdded = new EventCharacter(eventID, characterName, role, signUpDateTime);
             return eventCharacterAccess.InsertEventCharacter(eventCharacterToBeAdded);
+        }
+
+        public bool DeleteEventCharacterByEventIDAndCharacterName(int eventID, string characterName)
+        {
+            return eventCharacterAccess.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName);
+        }
+
+        public bool ContainsEntry(int eventId, string characterName)
+        {
+            return eventCharacterAccess.ContainsEntry(eventId, characterName);
         }
     }
 }
