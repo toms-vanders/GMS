@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections;
 
 namespace GMS___Model
 {
@@ -26,9 +23,9 @@ namespace GMS___Model
             this.Game_types = Game_types;
             this.Restrictions = Restrictions;
         }
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string Chat_link { get; set; }
-        public string Name { get; set; } 
+        public string Name { get; set; }
         public string Icon { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }

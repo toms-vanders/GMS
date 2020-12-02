@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
 using GMS___Business_Layer;
 using GMS___Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
 
 namespace GMS___API.Controllers
 {
@@ -49,7 +45,7 @@ namespace GMS___API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Event> Post([FromBody] Event e)
         {
-            if (eventProcessor.InsertEvent(e.Name, e.EventType, e.Location, e.Date, e.Description, e.MaxNumberOfCharacters, e.GuildID)) 
+            if (eventProcessor.InsertEvent(e.Name, e.EventType, e.Location, e.Date, e.Description, e.MaxNumberOfCharacters, e.GuildID))
             {
                 return e;
             }
@@ -66,8 +62,9 @@ namespace GMS___API.Controllers
                 // TODO change response type
                 return BadRequest("The information about event you tried to join has changed. Joining event was unsuccessful");
             }
-            
-            if (eventCharacterProcessor.JoinEvent(ec.EventID, ec.CharacterName, ec.CharacterRole, ec.SignUpDateTime)) { 
+
+            if (eventCharacterProcessor.JoinEvent(ec.EventID, ec.CharacterName, ec.CharacterRole, ec.SignUpDateTime))
+            {
                 return ec;
             }
             return BadRequest("Invalid data.");
@@ -80,12 +77,12 @@ namespace GMS___API.Controllers
             // if so: delete EventCharacter from EventCharacter
             // if not: delete EventCharacter from EventCharacterWaitingList instead
 
-            if (eventCharacterProcessor.ContainsEntry(eventID, characterName)) {
+            if (eventCharacterProcessor.ContainsEntry(eventID, characterName))
+            {
                 if (eventCharacterProcessor.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName))
                 {
                     return "Succesfully deleted from participant's list";
-                }
-                else
+                } else
                 {
                     return "Not succesfully deleted";
                 }
@@ -116,14 +113,13 @@ namespace GMS___API.Controllers
                 if (eventProcessor.DeleteEventByID(eventID))
                 {
                     return "Succesfully deleted";
-                }
-                else
+                } else
                 {
                     return "Not succesfully deleted";
                 }
             }
 
-            
+
         }
 
     }

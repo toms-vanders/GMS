@@ -1,8 +1,6 @@
-﻿using System;
+﻿using GMS___Model;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using GMS___Model;
-using NodaTime;
 
 namespace GMS___Business_Layer
 {
@@ -14,6 +12,6 @@ namespace GMS___Business_Layer
         bool InsertEvent(string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildI);
         bool UpdateEvent(int eventID, string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildI, byte[] rowId);
         bool DeleteEventByID(int eventID);
-     
+
     }
 }

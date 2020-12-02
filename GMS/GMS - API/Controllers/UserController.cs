@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GMS___Business_Layer;
+﻿using GMS___Business_Layer;
 using GMS___Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +24,7 @@ namespace GMS___API.Controllers
         [HttpPost]
         public User Post([FromBody] User user)
         {
-            return userProcessor.InsertNewUser(user.UserName,user.EmailAddress,user.Password);
+            return userProcessor.InsertNewUser(user.UserName, user.EmailAddress, user.Password);
         }
 
         [HttpPost("login")]

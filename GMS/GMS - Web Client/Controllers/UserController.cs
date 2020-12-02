@@ -41,7 +41,7 @@ namespace GMS___Web_Client.Controllers
                 return View();
             }
             ViewBag.Error = "You aren't authorized to access this page.";
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult ApiForm()
         {
@@ -51,7 +51,7 @@ namespace GMS___Web_Client.Controllers
                 return View();
             }
             ViewBag.Error = "You aren't authorized to access this page.";
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

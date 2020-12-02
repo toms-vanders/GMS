@@ -1,11 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GMS___Model;
+﻿using GMS___Business_Layer;
 using GMS___Data_Access_Layer;
-using GMS___Business_Layer;
-using NodaTime;
+using GMS___Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GMS___Test
@@ -22,7 +20,7 @@ namespace GMS___Test
         {
             ea = new EventAccess();
             ep = new EventProcessor();
-            
+
             string name = "Test Raid";
             string eventType = "Raid";
             string location = "266,070";
@@ -31,7 +29,7 @@ namespace GMS___Test
             int maxNumberOfCharacters = 25;
             string guildID = "99999999-9999-9999-9999-999999999999";
 
-            testEvent = new Event(guildID,name,description,eventType,location,date,maxNumberOfCharacters);
+            testEvent = new Event(guildID, name, description, eventType, location, date, maxNumberOfCharacters);
 
         }
 
@@ -44,12 +42,10 @@ namespace GMS___Test
             {
                 InsertCompleted = ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID);
-            }
-            catch(Exception ex)
+            } catch (Exception ex)
             {
                 TestThrewException = true;
-            }
-            finally
+            } finally
             {
                 //Cleanup
                 int id = ea.getIdOfEvent(testEvent.Name);
@@ -83,12 +79,10 @@ namespace GMS___Test
                 thirdResult = thirdSearch.Count();
                 name1 = firstSearch[0].Name;
                 name2 = secondSearch[0].Name;
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 TestThrewException = true;
-            }
-            finally
+            } finally
             {
                 //Cleanup
                 int id = ea.getIdOfEvent(testEvent.Name);
@@ -117,8 +111,8 @@ namespace GMS___Test
                 int id = ea.getIdOfEvent(testEvent.Name);
                 Event eventToBeUpdated = ((List<Event>)ep.GetEventByID(id))[0];
                 eventToBeUpdated.Location = "Update";
-                test1 = ep.UpdateEvent(eventToBeUpdated.EventID, eventToBeUpdated.Name, eventToBeUpdated.EventType, 
-                    eventToBeUpdated.Location,eventToBeUpdated.Date, eventToBeUpdated.Description, 
+                test1 = ep.UpdateEvent(eventToBeUpdated.EventID, eventToBeUpdated.Name, eventToBeUpdated.EventType,
+                    eventToBeUpdated.Location, eventToBeUpdated.Date, eventToBeUpdated.Description,
                     eventToBeUpdated.MaxNumberOfCharacters, eventToBeUpdated.GuildID, eventToBeUpdated.RowId);
                 //Since the rowID wasnt updated this update should fail
                 eventToBeUpdated.Location = "Another update";
@@ -126,19 +120,17 @@ namespace GMS___Test
                     eventToBeUpdated.Location, eventToBeUpdated.Date, eventToBeUpdated.Description,
                     eventToBeUpdated.MaxNumberOfCharacters, eventToBeUpdated.GuildID, eventToBeUpdated.RowId);
                 event1 = ((List<Event>)ep.GetEventByID(id))[0];
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 TestThrewException = true;
-            }
-            finally
+            } finally
             {
                 //Cleanup
                 int id = ea.getIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 
-            Assert.AreEqual("Update",event1.Location);
+            Assert.AreEqual("Update", event1.Location);
             Assert.IsTrue(test1);
             Assert.IsFalse(test2);
             Assert.IsFalse(TestThrewException);

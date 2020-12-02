@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Dapper;
+using GMS___Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using Dapper;
-using GMS___Model;
 
 namespace GMS___Data_Access_Layer
 {
@@ -38,7 +37,7 @@ namespace GMS___Data_Access_Layer
         {
             using (IDbConnection conn = GetConnection())
             {
-                IEnumerable<Event> events = conn.Query<Event>("SELECT * FROM Event WHERE guildID = @GuildID AND eventType = @EventType", 
+                IEnumerable<Event> events = conn.Query<Event>("SELECT * FROM Event WHERE guildID = @GuildID AND eventType = @EventType",
                     new { GuildID = guildID, EventType = eventType }).ToList();
                 return events;
             }
@@ -50,7 +49,7 @@ namespace GMS___Data_Access_Layer
             using (IDbConnection conn = GetConnection())
             {
                 IEnumerable<Event> foundEvents = conn.Query<Event>("select e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters from Event e right join EventCharacter ec on e.eventID = ec.eventID where ec.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList();
-                return foundEvents.Concat(conn.Query<Event>("select e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters from Event e right join EventCharacterWaitingList ecwl on e.eventID = ecwl.eventID where ecwl.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList());   
+                return foundEvents.Concat(conn.Query<Event>("select e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters from Event e right join EventCharacterWaitingList ecwl on e.eventID = ecwl.eventID where ecwl.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList());
             }
         }
 
@@ -66,7 +65,7 @@ namespace GMS___Data_Access_Layer
                 {
                     return false;
                 }
-            }     
+            }
         }
 
         public bool InsertEvent(Event guildEvent)
@@ -113,7 +112,7 @@ namespace GMS___Data_Access_Layer
                     return true;
                 }
                 return false;
-            }    
+            }
         }
 
         //This method is used by the Tests
@@ -122,11 +121,10 @@ namespace GMS___Data_Access_Layer
             using (IDbConnection conn = GetConnection())
             {
                 List<int> ids = (List<int>)conn.Query<int>(@"Select eventID FROM Event WHERE name = @Name", new { Name = name });
-                if(ids.Count() == 0)
+                if (ids.Count() == 0)
                 {
                     return 0;
-                }
-                else
+                } else
                 {
                     return ids[0];
                 }
