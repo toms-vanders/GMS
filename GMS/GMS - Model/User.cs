@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using GMS___Model;
 
 namespace GMS___Model
@@ -13,17 +14,17 @@ namespace GMS___Model
             this.Password = "";
             this.ApiKey = "";
             this.Characters = new ArrayList();
-            this.UserRole = "BASIC_USER";
+            this.UserRole = "User";
         }
 
-        public User(string Email, string Password)
+        public User(string Username, string Password)
         {
-            this.UserName = "";
-            this.EmailAddress = Email;
+            this.UserName = Username;
+            this.EmailAddress = "";
             this.Password = Password;
             this.ApiKey = "";
             this.Characters = new ArrayList();
-            this.UserRole = "BASIC_USER";
+            this.UserRole = "User";
         }
         public User(int UserID, string UserName, string Email, string Password, string ApiKey, string UserRole)
         {
@@ -59,7 +60,7 @@ namespace GMS___Model
             this.Password = password;
             this.Characters = new ArrayList();
             this.ApiKey = "";
-            this.UserRole = "BASIC_USER";
+            this.UserRole = "User";
         }
         public string UserName { get; set; }
         public string Password { get; set; }

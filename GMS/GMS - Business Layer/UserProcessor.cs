@@ -18,16 +18,20 @@ namespace GMS___Business_Layer
             userAccess.InsertUser(userToBeAdded);
             return userToBeAdded;
         }
-        public User LogInUser(string emailAddress, string password)
+        public User GetUserByUsername(string email)
         {
-            User user = userAccess.GetUserFromDatabase(emailAddress);
+            return userAccess.GetUserFromDatabaseWithUsername(email);
+        }
+        public User LogInUser(string username, string password)
+        {
+            User user = userAccess.GetUserFromDatabaseWithUsername(username);
             if (user is null)
             {
                 return null;
             }
             if (user.Password == GetHashedPassword(password))
             {
-                user.EmailAddress = emailAddress;
+                user.UserName = username;
                 return user;
             }
             return null;
