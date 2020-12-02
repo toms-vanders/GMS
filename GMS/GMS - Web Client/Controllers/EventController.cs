@@ -156,7 +156,7 @@ namespace GMS___Web_Client.Controllers
                 if (ModelState.IsValid)
                 {
                     EventCharacterProcessor ecp = new EventCharacterProcessor();
-                    if (model.EventMaxNumberOfCharacters < ecp.participantsInEvent(model.eventID))
+                    if (model.EventMaxNumberOfCharacters < ecp.ParticipantsInEvent(model.eventID))
                     {
                         var eventTypes = GetAllEventTypes();
                         model.EventTypes = GetOptionEventTypesList(eventTypes);

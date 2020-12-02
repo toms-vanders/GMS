@@ -68,11 +68,14 @@ namespace GMS___Test
             Boolean NoReasonThisShouldBeTrue = true;
             Boolean JoinCompleted = false;
             Boolean TestThrewException = false;
+            string eventName = "";
             try
             {
                 NoReasonThisShouldBeTrue = ecp.ContainsEntry(testEvent.EventID, testCharacter.Name);
                 ecp.JoinEvent(testEvent.EventID, testCharacter.Name, "AFK", new DateTime(2020, 12, 24));
                 JoinCompleted = ecp.ContainsEntry(testEvent.EventID, testCharacter.Name);
+                List<Event> events = (List<Event>)ep.GetGuildEventsByCharacterName(testEvent.GuildID, testCharacter.Name);
+                eventName = (events[0]).Name;
             }
             catch (Exception ex)
             {
@@ -81,11 +84,38 @@ namespace GMS___Test
             finally
             {
                 //Cleanup
-                eca.DeleteEventCharacterByEventIDAndCharacterName(testEvent.EventID, testCharacter.Name);
             }
 
+            Assert.AreEqual("Test Raid", eventName);
             Assert.IsFalse(NoReasonThisShouldBeTrue);
             Assert.IsTrue(JoinCompleted);
+            Assert.IsFalse(TestThrewException);
+        }
+        [TestMethod]
+        public void TestNumberOfParticipants()
+        {
+            int beforeJoin = -1;
+            int afterJoin = -1;
+            Boolean TestThrewException = false;
+            string eventName = "";
+            try
+            {
+                beforeJoin = ecp.ParticipantsInEvent(testEvent.EventID);
+                ecp.JoinEvent(testEvent.EventID, testCharacter.Name, "AFK", new DateTime(2020, 12, 24));
+                afterJoin = ecp.ParticipantsInEvent(testEvent.EventID);
+
+            }
+            catch (Exception ex)
+            {
+                TestThrewException = true;
+            }
+            finally
+            {
+                //Cleanup
+            }
+
+            Assert.AreEqual(0,beforeJoin);
+            Assert.AreEqual(1,afterJoin);
             Assert.IsFalse(TestThrewException);
         }
     }
