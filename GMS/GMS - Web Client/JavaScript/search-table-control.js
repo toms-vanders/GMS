@@ -68,7 +68,7 @@ function displayEventsTable(allEvents, characterName, guildID, eventTypes, keywo
                             }
                             if (Object.is(keys.length - 1, keys.indexOf(key))) {
                                 trHTML += "<td>";
-                                if (!characterParticipatesInEvent) trHTML += "<button type=\"button\" class=\"btn btn-success btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" data-target=\"#chooseRoleModal\" data-eventID=\"" + obj.eventID + "\" data-eName=\"" + obj.name + "\" title=\"Join event or waiting list\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i></button> ";
+                                if (!characterParticipatesInEvent) trHTML += "<button type=\"button\" class=\"btn btn-success btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" data-target=\"#chooseRoleModal\" data-eventID=\"" + obj.eventID + "\" data-eName=\"" + obj.name + "\" data-eRowId=\"" + obj.rowId + "\" title =\"Join event or waiting list\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i></button> ";
                                 trHTML += "<button type=\"button\" onclick=\"location.href='https://localhost:44318/Event/UpdateEventForm?name=" + characterName +"&eventID="+obj.eventID+"'\" class=\"btn btn-warning btn-sm\" data-toggle=\"editEvent\" data-placement=\"top\" title=\"Edit event\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button> ";
                                 trHTML += "<button type=\"button\" class=\"btn btn-danger btn-sm\" data-tooltip=\"tooltip\" data-toggle=\"modal\" data-placement=\"top\" title=\"Remove event\" onclick=\"removeEventWrapper(" + obj.eventID + ", \'" + obj.rowId + "\') \"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></button>";
                                 if (characterParticipatesInEvent) trHTML += " <button type=\"button\" class=\"btn btn-primary btn-sm\" data-tooltip=\"tooltip\" data-placement=\"top\" title=\"Cancel your participation in event\" onclick=\"cancelParticipationCaller(" + obj.eventID + ") \"><i class=\"fa fa-minus-square-o\" aria-hidden=\"true\"></i></button>";
@@ -92,7 +92,7 @@ function displayEventsTable(allEvents, characterName, guildID, eventTypes, keywo
     })
 }
 
-function joinEvent(eventID, characterName, characterRole, signUpDateTime) {
+function joinEvent(eventID, characterName, characterRole, signUpDateTime, rowId) {
     var EventCharacter = {};
     EventCharacter.eventID = parseInt(eventID);
     EventCharacter.characterName = characterName;
@@ -103,6 +103,7 @@ function joinEvent(eventID, characterName, characterRole, signUpDateTime) {
         type: 'POST',
         contentType: 'application/json; charset=utf-8',
         url: 'https://localhost:44377/api/guild/events/join/',
+        headers: { 'x-rowid': rowId },
         data: JSON.stringify(EventCharacter),
         dataType: 'json',
         success: function () {
@@ -111,7 +112,7 @@ function joinEvent(eventID, characterName, characterRole, signUpDateTime) {
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
         }, error: function () {
-            alert("Error trying to join the event. You might be trying to join an event you're already a participant of.");
+            alert("Error trying to join the event. The event details might have change while you were trying to join.");
         }
     })
 }
