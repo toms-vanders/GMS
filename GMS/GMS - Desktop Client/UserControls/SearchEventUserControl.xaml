@@ -45,6 +45,8 @@
         <!-- Role Filter Box -->
         <wpfx:CheckComboBox x:Name="filterByRoleBox" Grid.Column="3" Grid.Row="1" Text="All roles" />
 
+        <!-- Empty DataGridLabel -->
+        <TextBox x:Name ="dataGridMessage" Text="No event data has been found" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Center" Visibility="Hidden" IsEnabled="False"/>
         <!-- Event DataGrid -->
         <DataGrid Name="eventGrid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="True" AutoGeneratingColumn="EventGrid_AutoGeneratingColumn"
                   HorizontalAlignment="Left" IsReadOnly="True" >

@@ -29,7 +29,11 @@ namespace GMS___Desktop_Client.UserControls
             {
                 BaseAddress = new Uri("https://localhost:44377/")
             };
-
+            eventSearchBox.IsReadOnly = true;
+            filterByEventTypeBox.IsEnabled = false;
+            filterByRoleBox.IsEnabled = false;
+            eventGrid.Visibility = Visibility.Hidden;
+            dataGridMessage.Visibility = Visibility.Visible;
             FillDataGrid();
 
         }
@@ -38,6 +42,12 @@ namespace GMS___Desktop_Client.UserControls
         {
             if (!string.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
             {
+                eventSearchBox.IsReadOnly = false;
+                filterByEventTypeBox.IsEnabled = true;
+                filterByRoleBox.IsEnabled = true;
+                eventGrid.Visibility = Visibility.Visible;
+                dataGridMessage.Visibility = Visibility.Hidden;
+
                 string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
 
                 eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
@@ -59,24 +69,30 @@ namespace GMS___Desktop_Client.UserControls
 
         private void FilterEvents()
         {
-                
-            var filterByName = eventList.Where(ev => ev.Name.IndexOf(eventSearchBox.Text, (StringComparison)CompareOptions.IgnoreCase) >= 0);
-
-            var eventTypesSelections = filterByEventTypeBox.SelectedItems;
-
-            if (eventTypesSelections.Count > 0)
+            if(eventList !=null)
             {
-                List<Event> filterByEventType = new List<Event>();
-                foreach (var et in eventTypesSelections)
-                {
-                    filterByEventType.AddRange(filterByName.Where(ev => ev.EventType == et.ToString()));
-                }
+                var filterByName = eventList.Where(ev => ev.Name.IndexOf(eventSearchBox.Text, (StringComparison)CompareOptions.IgnoreCase) >= 0);
 
-                eventGrid.ItemsSource = filterByEventType;
+                var eventTypesSelections = filterByEventTypeBox.SelectedItems;
+
+                if (eventTypesSelections.Count > 0)
+                {
+                    List<Event> filterByEventType = new List<Event>();
+                    foreach (var et in eventTypesSelections)
+                    {
+                        filterByEventType.AddRange(filterByName.Where(ev => ev.EventType == et.ToString()));
+                    }
+
+                    eventGrid.ItemsSource = filterByEventType;
+                } else
+                {
+                    eventGrid.ItemsSource = filterByName;
+                }
             } else
             {
-                eventGrid.ItemsSource = filterByName;
+                eventGrid.Visibility = Visibility.Hidden;
             }
+            
 
         }
 
