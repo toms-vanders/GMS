@@ -1,8 +1,6 @@
 ﻿using GMS___Data_Access_Layer;
 using GMS___Model;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GMS___Business_Layer
 {

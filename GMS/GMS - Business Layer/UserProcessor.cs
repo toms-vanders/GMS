@@ -12,7 +12,7 @@ namespace GMS___Business_Layer
         {
             return userAccess.GetUserFromDatabase(email);
         }
-            public User InsertNewUser(string userName, string email, string password)
+        public User InsertNewUser(string userName, string email, string password)
         {
             User userToBeAdded = new User(userName, email, GetHashedPassword(password));
             userAccess.InsertUser(userToBeAdded);
@@ -38,7 +38,7 @@ namespace GMS___Business_Layer
             if (user is null)
             {
                 return false;
-            } 
+            }
             user.ApiKey = apiKey;
             return userAccess.UpdateUser(user) == 1 ? true : false;
         }

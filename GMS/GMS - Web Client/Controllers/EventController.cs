@@ -66,8 +66,8 @@ namespace GMS___Web_Client.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Event tempEvent = PostJson("api/guild/events/insert", new Event(model.GuildID, model.EventName, 
-                        model.EventDescription, model.EventType, model.EventLocation, model.EventDateTime, 
+                    Event tempEvent = PostJson("api/guild/events/insert", new Event(model.GuildID, model.EventName,
+                        model.EventDescription, model.EventType, model.EventLocation, model.EventDateTime,
                         model.EventMaxNumberOfCharacters));
                     if (tempEvent != null)
                     {
@@ -117,12 +117,11 @@ namespace GMS___Web_Client.Controllers
                 // Get info about event
                 EventProcessor processor = new EventProcessor();
                 List<Event> events = (List<Event>)processor.GetEventByID(eventID);
-                if(events.Count == 0)
+                if (events.Count == 0)
                 {
                     TempData["ErrorMessage"] = "This Event no longer exists";
-                    return RedirectToAction("SearchEvents","Event", new { name = this.Session["characterName"]});
-                }
-                else
+                    return RedirectToAction("SearchEvents", "Event", new { name = this.Session["characterName"] });
+                } else
                 {
                     Event eventToBeUpdated = events[0];
                     model.eventID = eventToBeUpdated.EventID;
@@ -165,10 +164,9 @@ namespace GMS___Web_Client.Controllers
                         return RedirectToAction("SearchEvents", "Event", new { name = this.Session["characterName"] });
                     } else
                     {
-                        return RedirectToAction("UpdateEventForm","Event", new { name = this.Session["characterName"], eventID = model.eventID, error = true });
+                        return RedirectToAction("UpdateEventForm", "Event", new { name = this.Session["characterName"], eventID = model.eventID, error = true });
                     }
-                }
-                else
+                } else
                 {
                     ViewBag.Error = "Invalid information was given.";
                     var eventTypes = GetAllEventTypes();
