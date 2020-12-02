@@ -25,8 +25,10 @@ namespace GMS___Desktop_Client.UserControls
 
             filterByEventTypeBox.ItemsSource = Enum.GetValues(typeof(EventType.EventTypes)).Cast<EventType.EventTypes>();
 
-            client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44377/");
+            client = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:44377/")
+            };
 
             FillDataGrid();
 
@@ -34,22 +36,22 @@ namespace GMS___Desktop_Client.UserControls
 
         public async void FillDataGrid()
         {
-            if (!String.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
+            if (!string.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
             {
                 string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
 
                 eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
 
-                this.eventGrid.ItemsSource = eventList;
+                eventGrid.ItemsSource = eventList;
             }
         }
 
-        private void eventSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void EventSearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             FilterEvents();
         }
 
-        private void filterByEventTypeBox_ItemSelectionChanged(object sender, Xceed.Wpf.Toolkit.Primitives.ItemSelectionChangedEventArgs e)
+        private void FilterByEventTypeBox_ItemSelectionChanged(object sender, Xceed.Wpf.Toolkit.Primitives.ItemSelectionChangedEventArgs e)
         {
             FilterEvents();
 
@@ -57,7 +59,7 @@ namespace GMS___Desktop_Client.UserControls
 
         private void FilterEvents()
         {
-
+                
             var filterByName = eventList.Where(ev => ev.Name.IndexOf(eventSearchBox.Text, (StringComparison)CompareOptions.IgnoreCase) >= 0);
 
             var eventTypesSelections = filterByEventTypeBox.SelectedItems;
@@ -70,10 +72,10 @@ namespace GMS___Desktop_Client.UserControls
                     filterByEventType.AddRange(filterByName.Where(ev => ev.EventType == et.ToString()));
                 }
 
-                this.eventGrid.ItemsSource = filterByEventType;
+                eventGrid.ItemsSource = filterByEventType;
             } else
             {
-                this.eventGrid.ItemsSource = filterByName;
+                eventGrid.ItemsSource = filterByName;
             }
 
         }
@@ -83,7 +85,7 @@ namespace GMS___Desktop_Client.UserControls
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void eventGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        private void EventGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
 
             if (e.PropertyName == "GuildID" || e.PropertyName == "RowId" ||
@@ -107,7 +109,7 @@ namespace GMS___Desktop_Client.UserControls
 
         }
 
-        private void deleteEventButton_Click(object sender, RoutedEventArgs e)
+        private void DeleteEventButton_Click(object sender, RoutedEventArgs e)
         {
 
             Event selectedEvent = (Event)eventGrid.SelectedItem;
@@ -124,12 +126,12 @@ namespace GMS___Desktop_Client.UserControls
             }
         }
 
-        private void editEventButton_Click(object sender, RoutedEventArgs e)
+        private void EditEventButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void joinEventButton_Click(object sender, RoutedEventArgs e)
+        private void JoinEventButton_Click(object sender, RoutedEventArgs e)
         {
             int eventID = SelectedEventID().EventID;
             string eventName = SelectedEventID().Name;
