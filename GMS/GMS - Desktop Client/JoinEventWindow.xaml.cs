@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GMS___Model;
+using System;
 using System.Net.Http;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using GMS___Model;
 
 namespace GMS___Desktop_Client
 {
@@ -45,7 +36,7 @@ namespace GMS___Desktop_Client
                     SignUpDateTime = DateTime.Now,
 
                 };
-                
+
                 var response = client.PostAsJsonAsync("api/Guild/events/join", newEventCharacter).Result;
 
                 if (response.IsSuccessStatusCode)
@@ -53,19 +44,17 @@ namespace GMS___Desktop_Client
                     MessageBox.Show("You joined the event");
                     Close();
 
-                }
-                else
+                } else
                 {
                     MessageBox.Show("Error Code" +
                     response.StatusCode + " : Message - " + response.ReasonPhrase);
                 }
-            }
-            else
+            } else
             {
                 MessageBox.Show("Please input your role for the event");
             }
 
-            
+
         }
 
         private void closeJoinEventButton_Click(object sender, RoutedEventArgs e)

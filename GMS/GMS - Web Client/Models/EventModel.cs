@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace GMS___Web_Client.Models
@@ -32,7 +30,7 @@ namespace GMS___Web_Client.Models
         [Display(Name = "Event date and time")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Event date and time are required.")]
-        
+
         public DateTime EventDateTime { get; set; }
 
         [DataType(DataType.MultilineText)]

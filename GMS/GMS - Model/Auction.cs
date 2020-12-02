@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GMS___Model
 {
@@ -15,13 +13,13 @@ namespace GMS___Model
         public int HighestBidderID { get; set; }
 
         // For inserting data to DB
-        public Auction( int creatorID, int eventID, int itemID)
+        public Auction(int creatorID, int eventID, int itemID)
         {
             CreatorID = creatorID;
             EventID = eventID;
             ItemID = itemID;
             // Current price defaults to 0 in DB
-            HighestBidderID = 0; 
+            HighestBidderID = 0;
         }
 
         // For fetching from DB

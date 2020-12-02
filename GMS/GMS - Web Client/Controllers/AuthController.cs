@@ -50,7 +50,7 @@ namespace GMS___Web_Client.Controllers
             {
                 if (PostJson("api/user/signup", new User(model.UserName, model.EmailAddress, model.Password)) != null)
                 {
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index", "Home");
                 }
             }
             ViewBag.Error = "Invalid information was given.";
@@ -67,7 +67,7 @@ namespace GMS___Web_Client.Controllers
                 if (user != null)
                 {
                     StartSession(user);
-                    return RedirectToAction("UserPage","User");
+                    return RedirectToAction("UserPage", "User");
                 }
             }
             ViewBag.Error = "Invalid information was given.";
