@@ -23,8 +23,6 @@ namespace GMS___Desktop_Client.UserControls
             client.BaseAddress = new Uri("https://localhost:44377/");
 
             LoadCharactersInComboBox();
-            GetSelectedCharacterInfo();
-
         }
 
         private void LoadCharactersInComboBox()
@@ -40,8 +38,6 @@ namespace GMS___Desktop_Client.UserControls
 
         private void characterSelectionBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-
             GetSelectedCharacterInfo();
         }
 
@@ -49,14 +45,11 @@ namespace GMS___Desktop_Client.UserControls
         {
             try
             {
-                using (client)
-                {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue((string)App.Current.Properties["ApiKey"]);
-                    var response = await client.GetStringAsync("gw2api/characters/" + characterSelectionBox.SelectedItem + "/core");
-                    Character returnedCharacter = JsonConvert.DeserializeObject<Character>(response);
-                    App.Current.Properties["CharacterGuildID"] = returnedCharacter.Guild;
-                    App.Current.Properties["CharacterName"] = returnedCharacter.Name;
-                }
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue((string)App.Current.Properties["ApiKey"]);
+                var response = await client.GetStringAsync("gw2api/characters/" + characterSelectionBox.SelectedItem + "/core");
+                Character returnedCharacter = JsonConvert.DeserializeObject<Character>(response);
+                App.Current.Properties["CharacterGuildID"] = returnedCharacter.Guild;
+                App.Current.Properties["CharacterName"] = returnedCharacter.Name;
             } catch (Exception ex)
             {
                 throw ex;
