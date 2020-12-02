@@ -59,8 +59,14 @@ namespace GMS___API.Controllers
         [HttpPost("events/join")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<EventCharacter> Post([FromBody] EventCharacter ec)
+        public ActionResult<EventCharacter> Post([FromBody] EventCharacter ec, [FromHeader(Name = "x-rowid")] byte[] rowId)
         {
+            if (eventProcessor.HasEventChangedRowVersion(ec.EventID, rowId))
+            {
+                // TODO change response type
+                return BadRequest("The information about event you tried to join has changed. Joining event was unsuccessful");
+            }
+            
             if (eventCharacterProcessor.JoinEvent(ec.EventID, ec.CharacterName, ec.CharacterRole, ec.SignUpDateTime)) { 
                 return ec;
             }
