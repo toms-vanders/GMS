@@ -12,15 +12,18 @@ namespace GMS___Web_Client.Controllers
     {
         // GET: Event
 
-        public ActionResult CreateEventForm()
+        public ActionResult CreateEventForm(string name)
         {
             if (InSession())
             {
+                string urlSuffix = "gw2api/characters/" + name + "/core";
+                ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
                 // Getting all event types needed for DropDownList
                 var eventTypes = GetAllEventTypes();
                 var model = new EventModel();
                 // Get list of SelectListItem(s)
                 model.EventTypes = GetOptionEventTypesList(eventTypes);
+                model.GuildID = ViewBag.Character.Guild;
                 ViewBag.Message = "Creating event.";
                 return View(model);
             }
@@ -32,6 +35,8 @@ namespace GMS___Web_Client.Controllers
         {
             if (this.Session["Username"] != null)
             {
+                var error = TempData["ErrorMessage"] as string;
+                ViewBag.Error = error;
                 string urlSuffix = "gw2api/characters/" + name + "/core";
                 ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
                 // Getting all event types needed for DropDownList
@@ -61,9 +66,9 @@ namespace GMS___Web_Client.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Event tempEvent = PostJson("api/guild/events/insert", new Event(model.EventName, model.EventType,
-                        model.EventLocation, model.EventDateTime, model.EventDescription,
-                        model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5"));
+                    Event tempEvent = PostJson("api/guild/events/insert", new Event(model.GuildID, model.EventName, 
+                        model.EventDescription, model.EventType, model.EventLocation, model.EventDateTime, 
+                        model.EventMaxNumberOfCharacters));
                     if (tempEvent != null)
                     {
                         return RedirectToAction("Index", "Home");
@@ -97,31 +102,46 @@ namespace GMS___Web_Client.Controllers
             return eventTypeList;
         }
 
-        public ActionResult UpdateEventForm(int EventID, bool error = false)
+        public ActionResult UpdateEventForm(string name, int eventID, bool error = false)
         {
             if (InSession())
             {
+                this.Session["characterName"] = name;
+                string urlSuffix = "gw2api/characters/" + name + "/core";
+                ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
                 // Getting all event types needed for DropDownList
                 var eventTypes = GetAllEventTypes();
                 var model = new EventModel();
                 model.EventTypes = GetOptionEventTypesList(eventTypes);
+                model.GuildID = ViewBag.Character.Guild;
                 // Get info about event
                 EventProcessor processor = new EventProcessor();
-                List<Event> events = (List<Event>)processor.GetEventByID(EventID);
-                Event eventToBeUpdated = events[0];
-                model.eventID = eventToBeUpdated.EventID;
-                model.EventName = eventToBeUpdated.Name;
-                model.EventType = eventToBeUpdated.EventType;
-                model.EventLocation = eventToBeUpdated.Location;
-                model.EventDateTime = eventToBeUpdated.Date;
-                model.EventDescription = eventToBeUpdated.Description;
-                model.EventMaxNumberOfCharacters = eventToBeUpdated.MaxNumberOfCharacters;
-                model.rowID = eventToBeUpdated.RowId;
-                if (error)
+                List<Event> events = (List<Event>)processor.GetEventByID(eventID);
+                if(events.Count == 0)
                 {
-                    ViewBag.Error = "Someone else already updated this event. If you still want to update please try again";
+                    TempData["ErrorMessage"] = "This Event no longer exists";
+                    return RedirectToAction("SearchEvents","Event", new { name = this.Session["characterName"]});
                 }
-                return View(model);
+                else
+                {
+                    Event eventToBeUpdated = events[0];
+                    model.eventID = eventToBeUpdated.EventID;
+                    model.EventName = eventToBeUpdated.Name;
+                    model.EventType = eventToBeUpdated.EventType;
+                    model.EventLocation = eventToBeUpdated.Location;
+                    model.EventDateTime = eventToBeUpdated.Date;
+                    model.EventDescription = eventToBeUpdated.Description;
+                    model.EventMaxNumberOfCharacters = eventToBeUpdated.MaxNumberOfCharacters;
+                    model.rowID = eventToBeUpdated.RowId;
+                    model.GuildID = eventToBeUpdated.GuildID;
+                    if (error)
+                    {
+                        ViewBag.Error = "The record you attempted to edit was modified by another user after you got the original value. " +
+                            "The edit operation was cancelled and the current values in the database have been displayed. " +
+                            "If you still want to edit this record, click the Update button again. Otherwise click the Back to List hyperlink";
+                    }
+                    return View(model);
+                }
             }
             ViewBag.Error = "You aren't authorized to access this page.";
             return RedirectToAction("Index", "Home");
@@ -138,18 +158,23 @@ namespace GMS___Web_Client.Controllers
                     EventProcessor processor = new EventProcessor();
                     Boolean wasSuccessful = processor.UpdateEvent(model.eventID, model.EventName,
                         model.EventType, model.EventLocation, model.EventDateTime, model.EventDescription,
-                        model.EventMaxNumberOfCharacters, "116E0C0E-0035-44A9-BB22-4AE3E23127E5", model.rowID);
+                        model.EventMaxNumberOfCharacters, model.GuildID, model.rowID);
 
                     if (wasSuccessful)
                     {
-                        return RedirectToAction("Index","Home");
+                        return RedirectToAction("SearchEvents", "Event", new { name = this.Session["characterName"] });
                     } else
                     {
-                        return RedirectToAction("UpdateEventForm","Event", new { eventID = model.eventID, error = true });
+                        return RedirectToAction("UpdateEventForm","Event", new { name = this.Session["characterName"], eventID = model.eventID, error = true });
                     }
                 }
-                ViewBag.Error = "There was a problem. Please try again";
-                return RedirectToAction("Index", "Home");
+                else
+                {
+                    ViewBag.Error = "Invalid information was given.";
+                    var eventTypes = GetAllEventTypes();
+                    model.EventTypes = GetOptionEventTypesList(eventTypes);
+                    return View(model);
+                }
             } else
             {
                 ViewBag.Error = "You aren't authorized to access this page.";

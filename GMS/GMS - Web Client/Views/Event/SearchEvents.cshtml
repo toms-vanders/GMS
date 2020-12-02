@@ -31,7 +31,9 @@
             selections.push(eventTypesSelections[i].text);
         }
 
-        getEvents(selections, keywords);
+        var characterName = '@ViewBag.Character.Name';
+        var guildID = '@ViewBag.Character.Guild';
+        getAndDisplayEventsCaller(selections, keywords, characterName, guildID);
     }
 </script>
 
@@ -99,6 +101,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-3">
+                            <input id="eventRowIDinput" type="hidden" />
                             <label for="eventID">Event ID</label>
                             <input type="text" id="eventIDinput" class="form-control" disabled>
                         </div>
@@ -109,7 +112,7 @@
                     </div>
                     <br />
                     <label for="eventRole">Character role</label>
-                    <input type="text" id="eventRole" class="form-control" aria-describedby="eventRole">
+                    <input type="text" id="eventRole" class="form-control" aria-describedby="eventRole" required>
                     <small id="eventRole" class="form-text text-muted">
                         Usually when you participate in guild events, you can be assigned a specific role to play on battlefield. Some suggestions include: <br />
                         Assasin, Tank, Healer, Bruiser.
@@ -140,10 +143,14 @@
             });
         });
     </script>
+    
+    <!-- loading the events on page load -->
 
     <script type="text/javascript">
         $(document).ready(function () {
-            getEvents([], []);
+            var characterName = '@ViewBag.Character.Name';
+            var guildID = '@ViewBag.Character.Guild';
+            getAndDisplayEventsCaller([], [], characterName, guildID);
         });
     </script>
 
@@ -161,29 +168,65 @@
                 var button = $(event.relatedTarget); // Button that triggered the modal
                 var eventID = button.data('eventid'); // Extracts info from data-* attributes
                 var eventName = button.data('ename');
+                var eventRowId = button.data('erowid');
 
                 // Update modal's content (eventID and name field)
                 modal.find('#eventIDinput').val(eventID);
                 modal.find('#eventNameinput').val(eventName);
+                modal.find('#eventRowIDinput').val(eventRowId);
             })
         });
     </script>
+
+    <!-- joining events -->
 
     <script type="text/javascript">
         $(document).ready(function () {
             $('#registerButton').click(function () {
                 var eventID = $("#chooseRoleModal #eventIDinput").val().trim();
                 var characterRole = $("#chooseRoleModal #eventRole").val().trim();
-                var signUpDateTime = new Date(new Date().toString() + 'Z').toISOString();
-                joinEventWrap(eventID, characterRole, signUpDateTime);
+                var rowId = $("#chooseRoleModal #eventRowIDinput").val().trim();
+                if (characterRole == "") {
+                    alert("Character role must be filled out");
+                } else {
+                    var signUpDateTime = new Date(new Date().toString() + 'Z').toISOString();
+                    joinEventWrap(eventID, characterRole, signUpDateTime, rowId);
+                    refreshPage();
+                }
             })
         })
     </script>
 
     <script type="text/javascript">
-        function joinEventWrap(eventID, characterRole, signUpDateTime) {
+        function joinEventWrap(eventID, characterRole, signUpDateTime, rowId) {
             var characterName = '@ViewBag.Character.Name';
-            joinEvent(eventID, characterName, characterRole, signUpDateTime);
+            joinEvent(eventID, characterName, characterRole, signUpDateTime, rowId);
+        }
+    </script>
+
+    <!-- cancelling participation -->
+    <script type="text/javascript">
+        function cancelParticipationCaller(eventID) {
+            var characterName = '@ViewBag.Character.Name';
+            cancelParticipation(eventID, characterName);
+            refreshPage();
+        }
+    </script>
+
+    <!-- end joining events -->
+
+    <!-- removing events -->
+    <script type="text/javascript">
+        function removeEventWrapper(eventID, rowId) {
+            removeEvent(eventID, rowId);
+            refreshPage();
+        }
+    </script>
+
+    <!-- refresh page function -->
+    <script type="text/javascript">
+        function refreshPage() {
+            window.location.reload();
         }
     </script>
 
