@@ -1,6 +1,7 @@
 ﻿using GMS___Data_Access_Layer;
 using GMS___Model;
 using System;
+using BCrypt.Net;
 
 namespace GMS___Business_Layer
 {
@@ -29,7 +30,8 @@ namespace GMS___Business_Layer
             {
                 return null;
             }
-            if (user.Password == GetHashedPassword(password))
+            if (BCrypt.Net.BCrypt.Verify(password, user.Password))
+                //user.Password == GetHashedPassword(password))
             {
                 user.UserName = username;
                 return user;
@@ -48,8 +50,11 @@ namespace GMS___Business_Layer
         }
         public string GetHashedPassword(string password)
         {
-            password += "salt";
-            return GetHashCode(password).ToString();
+            //password += "salt";
+            //return GetHashCode(password).ToString();
+
+            
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
         public int GetHashCode(string original)
