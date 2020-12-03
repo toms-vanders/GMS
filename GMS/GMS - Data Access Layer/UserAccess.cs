@@ -40,6 +40,22 @@ namespace GMS___Data_Access_Layer
             }
         }
 
+        public User GetUserFromDatabaseWithUsername(String username)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                List<User> users = conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole FROM Users where userName in @usernames", new { usernames = new[] { username } }).ToList();
+                if (users.Count != 1)
+                {
+                    return (User)null;
+                }
+                else
+                {
+                    return users[0];
+                }
+            }
+        }
+
         public int InsertUser(User user)
         {
             int affectedRows = -1;

@@ -4,10 +4,10 @@ namespace GMS___Web_Client.Models
 {
     public class LogInModel
     {
-        [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email Address")]
-        [Required(ErrorMessage = "You need to give us your email address to log in.")]
-        public string EmailAddress { get; set; }
+        [DataType(DataType.Text)]
+        [Display(Name = "Username")]
+        [Required(ErrorMessage = "You need to give us your username to log in.")]
+        public string Username { get; set; }
 
         [Display(Name = "Password")]
         [Required(ErrorMessage = "You must have a password.")]
