@@ -1,10 +1,12 @@
 ﻿using GMS___Model;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -17,6 +19,7 @@ namespace GMS___Desktop_Client.UserControls
     {
         private readonly HttpClient client;
         IEnumerable<Event> eventList;
+        IEnumerable<Event> joinedEvents;
 
 
         public SearchEventUserControl()
@@ -25,31 +28,44 @@ namespace GMS___Desktop_Client.UserControls
 
             filterByEventTypeBox.ItemsSource = Enum.GetValues(typeof(EventType.EventTypes)).Cast<EventType.EventTypes>();
 
-            client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44377/");
-
+            client = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:44377/")
+            };
+            client.DefaultRequestHeaders.Add("Authorization",(string)App.Current.Properties["AuthToken"]);
+            eventSearchBox.IsReadOnly = true;
+            filterByEventTypeBox.IsEnabled = false;
+            filterByRoleBox.IsEnabled = false;
+            eventGrid.Visibility = Visibility.Hidden;
+            dataGridMessage.Visibility = Visibility.Visible;
             FillDataGrid();
 
         }
 
         public async void FillDataGrid()
         {
-            if (!String.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
+            if (!string.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
             {
+                eventSearchBox.IsReadOnly = false;
+                filterByEventTypeBox.IsEnabled = true;
+                filterByRoleBox.IsEnabled = true;
+                eventGrid.Visibility = Visibility.Visible;
+                dataGridMessage.Visibility = Visibility.Hidden;
+
                 string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
 
                 eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
-
-                this.eventGrid.ItemsSource = eventList;
+                eventGrid.ItemsSource = eventList;
+                GetJoinedEventsAsync();
             }
         }
 
-        private void eventSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void EventSearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             FilterEvents();
         }
 
-        private void filterByEventTypeBox_ItemSelectionChanged(object sender, Xceed.Wpf.Toolkit.Primitives.ItemSelectionChangedEventArgs e)
+        private void FilterByEventTypeBox_ItemSelectionChanged(object sender, Xceed.Wpf.Toolkit.Primitives.ItemSelectionChangedEventArgs e)
         {
             FilterEvents();
 
@@ -57,24 +73,30 @@ namespace GMS___Desktop_Client.UserControls
 
         private void FilterEvents()
         {
-
-            var filterByName = eventList.Where(ev => ev.Name.IndexOf(eventSearchBox.Text, (StringComparison)CompareOptions.IgnoreCase) >= 0);
-
-            var eventTypesSelections = filterByEventTypeBox.SelectedItems;
-
-            if (eventTypesSelections.Count > 0)
+            if(eventList !=null)
             {
-                List<Event> filterByEventType = new List<Event>();
-                foreach (var et in eventTypesSelections)
-                {
-                    filterByEventType.AddRange(filterByName.Where(ev => ev.EventType == et.ToString()));
-                }
+                var filterByName = eventList.Where(ev => ev.Name.IndexOf(eventSearchBox.Text, (StringComparison)CompareOptions.IgnoreCase) >= 0);
 
-                this.eventGrid.ItemsSource = filterByEventType;
+                var eventTypesSelections = filterByEventTypeBox.SelectedItems;
+
+                if (eventTypesSelections.Count > 0)
+                {
+                    List<Event> filterByEventType = new List<Event>();
+                    foreach (var et in eventTypesSelections)
+                    {
+                        filterByEventType.AddRange(filterByName.Where(ev => ev.EventType == et.ToString()));
+                    }
+
+                    eventGrid.ItemsSource = filterByEventType;
+                } else
+                {
+                    eventGrid.ItemsSource = filterByName;
+                }
             } else
             {
-                this.eventGrid.ItemsSource = filterByName;
+                eventGrid.Visibility = Visibility.Hidden;
             }
+            
 
         }
 
@@ -83,7 +105,7 @@ namespace GMS___Desktop_Client.UserControls
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void eventGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        private void EventGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
 
             if (e.PropertyName == "GuildID" || e.PropertyName == "RowId" ||
@@ -107,7 +129,7 @@ namespace GMS___Desktop_Client.UserControls
 
         }
 
-        private void deleteEventButton_Click(object sender, RoutedEventArgs e)
+        private void DeleteEventButton_Click(object sender, RoutedEventArgs e)
         {
 
             Event selectedEvent = (Event)eventGrid.SelectedItem;
@@ -124,23 +146,56 @@ namespace GMS___Desktop_Client.UserControls
             }
         }
 
-        private void editEventButton_Click(object sender, RoutedEventArgs e)
+        private void EditEventButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void joinEventButton_Click(object sender, RoutedEventArgs e)
+        private void JoinEventButton_Click(object sender, RoutedEventArgs e)
         {
-            int eventID = SelectedEventID().EventID;
-            string eventName = SelectedEventID().Name;
 
-            Window joinEventWindow = new JoinEventWindow(eventID, eventName);
-            joinEventWindow.ShowDialog();
+            if (!joinedEvents.Contains(SelectedEventID()))
+            {
+                int eventID = SelectedEventID().EventID;
+                string eventName = SelectedEventID().Name;
+                byte[] rowID = SelectedEventID().RowId;
+
+                Window joinEventWindow = new JoinEventWindow(eventID, eventName, rowID);
+                joinEventWindow.ShowDialog();
+            } else
+            {
+                if (MessageBox.Show("You are already part of this event, do you wish to cancel your participation?","Already participating",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    CancelParticipation(SelectedEventID().EventID,(string)App.Current.Properties["SelectedCharacter"]);
+                }
+            }
+
+            
         }
 
         private Event SelectedEventID()
         {
             return (Event)eventGrid.SelectedItem;
+        }
+
+        private async void GetJoinedEventsAsync()
+        {
+            var response = await client.GetStringAsync("api/guild/" + App.Current.Properties["CharacterGuildID"] + "/character/" + App.Current.Properties["SelectedCharacter"]);
+            joinedEvents = JsonConvert.DeserializeObject<IEnumerable<Event>>(response);
+        }
+
+        private async void CancelParticipation(int EventID,string characterName)
+        {
+            client.DefaultRequestHeaders.Add("x-eventid", "" + EventID);
+            client.DefaultRequestHeaders.Add("x-charactername", characterName);
+            var response = await client.DeleteAsync("api/guild/events/withdraw");
+            if (response.IsSuccessStatusCode)
+            {
+                MessageBox.Show("You have successfully cancelled your partition in the event","Cancelled participation",MessageBoxButton.OK,MessageBoxImage.Information);
+            } else
+            {
+                MessageBox.Show("There seems to have been an error cancelling your participation please try again later.", "Error cancelling participation", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

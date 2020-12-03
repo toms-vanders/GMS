@@ -19,9 +19,10 @@ namespace GMS___Desktop_Client.UserControls
         {
             InitializeComponent();
 
-            client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44377/");
-
+            client = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:44377/")
+            };
             LoadCharactersInComboBox();
         }
 
@@ -36,7 +37,7 @@ namespace GMS___Desktop_Client.UserControls
 
         }
 
-        private void characterSelectionBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CharacterSelectionBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GetSelectedCharacterInfo();
         }
