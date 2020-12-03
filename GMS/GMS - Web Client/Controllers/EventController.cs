@@ -157,6 +157,14 @@ namespace GMS___Web_Client.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    EventCharacterProcessor ecp = new EventCharacterProcessor();
+                    if (model.EventMaxNumberOfCharacters < ecp.ParticipantsInEvent(model.eventID))
+                    {
+                        var eventTypes = GetAllEventTypes();
+                        model.EventTypes = GetOptionEventTypesList(eventTypes);
+                        ViewBag.Error = "You cant set the maximum number of participants to below the current number of participants.";
+                        return View(model);
+                    }
                     EventProcessor processor = new EventProcessor();
                     Boolean wasSuccessful = processor.UpdateEvent(model.eventID, model.EventName,
                         model.EventType, model.EventLocation, model.EventDateTime, model.EventDescription,
