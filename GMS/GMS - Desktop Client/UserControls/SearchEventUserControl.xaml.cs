@@ -1,23 +1,12 @@
-﻿using System;
+﻿using GMS___Model;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using GMS___Business_Layer;
-using System.Windows.Controls.Primitives;
-using GMS___Model;
-using Newtonsoft.Json;
 
 namespace GMS___Desktop_Client.UserControls
 {
@@ -68,12 +57,12 @@ namespace GMS___Desktop_Client.UserControls
 
         private void FilterEvents()
         {
-            
+
             var filterByName = eventList.Where(ev => ev.Name.IndexOf(eventSearchBox.Text, (StringComparison)CompareOptions.IgnoreCase) >= 0);
 
             var eventTypesSelections = filterByEventTypeBox.SelectedItems;
-            
-            if(eventTypesSelections.Count > 0)
+
+            if (eventTypesSelections.Count > 0)
             {
                 List<Event> filterByEventType = new List<Event>();
                 foreach (var et in eventTypesSelections)
@@ -82,8 +71,7 @@ namespace GMS___Desktop_Client.UserControls
                 }
 
                 this.eventGrid.ItemsSource = filterByEventType;
-            }
-            else
+            } else
             {
                 this.eventGrid.ItemsSource = filterByName;
             }
@@ -102,16 +90,13 @@ namespace GMS___Desktop_Client.UserControls
                 e.PropertyName == "Participants" || e.PropertyName == "WaitingList")
             {
                 e.Cancel = true;
-            }
-            else if (e.PropertyName == "EventID")
+            } else if (e.PropertyName == "EventID")
             {
                 e.Column.Header = "ID";
-            }
-            else if (e.PropertyName == "EventType")
+            } else if (e.PropertyName == "EventType")
             {
                 e.Column.Header = "Event Type";
-            }
-            else if (e.PropertyName == "MaxNumberOfCharacters")
+            } else if (e.PropertyName == "MaxNumberOfCharacters")
             {
                 e.Column.Header = "Max num. of Players";
             }
@@ -132,8 +117,7 @@ namespace GMS___Desktop_Client.UserControls
             {
                 MessageBox.Show("Event " + selectedEvent.EventID + " deleted!");
                 FillDataGrid();
-            }
-            else
+            } else
             {
                 MessageBox.Show("Error Code" +
                 response.StatusCode + " : Message - " + response.ReasonPhrase);

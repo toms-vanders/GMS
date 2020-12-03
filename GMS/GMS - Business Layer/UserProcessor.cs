@@ -12,22 +12,26 @@ namespace GMS___Business_Layer
         {
             return userAccess.GetUserFromDatabase(email);
         }
-            public User InsertNewUser(string userName, string email, string password)
+        public User InsertNewUser(string userName, string email, string password)
         {
             User userToBeAdded = new User(userName, email, GetHashedPassword(password));
             userAccess.InsertUser(userToBeAdded);
             return userToBeAdded;
         }
-        public User LogInUser(string emailAddress, string password)
+        public User GetUserByUsername(string email)
         {
-            User user = userAccess.GetUserFromDatabase(emailAddress);
+            return userAccess.GetUserFromDatabaseWithUsername(email);
+        }
+        public User LogInUser(string username, string password)
+        {
+            User user = userAccess.GetUserFromDatabaseWithUsername(username);
             if (user is null)
             {
                 return null;
             }
             if (user.Password == GetHashedPassword(password))
             {
-                user.EmailAddress = emailAddress;
+                user.UserName = username;
                 return user;
             }
             return null;
@@ -38,7 +42,7 @@ namespace GMS___Business_Layer
             if (user is null)
             {
                 return false;
-            } 
+            }
             user.ApiKey = apiKey;
             return userAccess.UpdateUser(user) == 1 ? true : false;
         }

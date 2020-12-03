@@ -16,11 +16,11 @@ namespace GMS___Web_Client.Controllers
             {
                 this.Session["Guild"] = "";
                 ArrayList characterList = new ArrayList();
-                ArrayList characterNameList = GetJson<ArrayList>("gw2api/characters", new ArrayList());
+                ArrayList characterNameList = GetJson<ArrayList>("gw2api/characters");
                 foreach (string name in characterNameList)
                 {
                     string urlSuffix = "gw2api/characters/" + name + "/core";
-                    characterList.Add(GetJson<Character>(urlSuffix, new Character()));
+                    characterList.Add(GetJson<Character>(urlSuffix));
                 }
                 ViewBag.Characters = characterList;
                 ViewBag.Message = "Your user page.";
@@ -34,14 +34,14 @@ namespace GMS___Web_Client.Controllers
             if (InSession())
             {
                 string urlSuffix = "gw2api/characters/" + name;
-                ViewBag.Character = GetJson<Character>(urlSuffix + "/core", new Character());
+                ViewBag.Character = GetJson<Character>(urlSuffix + "/core");
                 ViewBag.Message = "Your character page.";
-                ViewBag.Equipment = InitializeEquipment(GetJson<Equipments>(urlSuffix + "/equipment", new Equipments()));
+                ViewBag.Equipment = InitializeEquipment(GetJson<Equipments>(urlSuffix + "/equipment"));
                 this.Session["Guild"] = ViewBag.Character.Guild;
                 return View();
             }
             ViewBag.Error = "You aren't authorized to access this page.";
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult ApiForm()
         {
@@ -51,7 +51,7 @@ namespace GMS___Web_Client.Controllers
                 return View();
             }
             ViewBag.Error = "You aren't authorized to access this page.";
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -79,7 +79,7 @@ namespace GMS___Web_Client.Controllers
             {
                 try
                 {
-                    equipment.Add(GetJson<Item>("gw2api/items/" + item.Id, new Item()));
+                    equipment.Add(GetJson<Item>("gw2api/items/" + item.Id));
                 } catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);

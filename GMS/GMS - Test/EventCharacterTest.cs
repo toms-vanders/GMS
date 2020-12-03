@@ -1,12 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GMS___Model;
+﻿using GMS___Business_Layer;
 using GMS___Data_Access_Layer;
-using GMS___Business_Layer;
-using NodaTime;
-using System.Linq;
+using GMS___Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace GMS___Test
 {
@@ -36,7 +32,7 @@ namespace GMS___Test
             int maxNumberOfCharacters = 25;
             string guildID = "99999999-9999-9999-9999-999999999999";
 
-            testEvent = new Event(guildID,eventName,description,eventType,location,date,maxNumberOfCharacters);
+            testEvent = new Event(guildID, eventName, description, eventType, location, date, maxNumberOfCharacters);
 
             string characterName = "Bob";
             string race = "Demon";
@@ -80,8 +76,7 @@ namespace GMS___Test
             catch (Exception ex)
             {
                 TestThrewException = true;
-            }
-            finally
+            } finally
             {
                 //Cleanup
             }
