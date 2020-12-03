@@ -27,15 +27,17 @@ namespace GMS___Desktop_Client
 
         private void logInButton_Click(object sender, RoutedEventArgs e)
         {
-
-            User user = new User() { EmailAddress = userEmailText.Text, Password = passwordText.Password };
+            User user = new User() { UserName = userEmailText.Text, Password = passwordText.Password, EmailAddress = ""};
 
             var login = client.PostAsJsonAsync("api/user/login", user).Result;
 
             if (login.StatusCode == HttpStatusCode.OK)
             {
-                var responseContent = login.Content.ReadAsStringAsync().Result;
-                User returnUser = JsonConvert.DeserializeObject<User>(responseContent);
+                string authToken = login.Content.ReadAsStringAsync().Result;
+                client.DefaultRequestHeaders.Add("Authorization", authToken);
+                var userInfo = client.GetAsync("api/user").Result;
+                User returnUser = JsonConvert.DeserializeObject<User>(userInfo.Content.ReadAsStringAsync().Result);
+                App.Current.Properties["AuthToken"] = authToken;
                 //TODO if apikey null
 
                 if (returnUser.ApiKey == "")

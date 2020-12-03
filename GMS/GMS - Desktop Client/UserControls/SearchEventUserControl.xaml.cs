@@ -29,6 +29,7 @@ namespace GMS___Desktop_Client.UserControls
             {
                 BaseAddress = new Uri("https://localhost:44377/")
             };
+            client.DefaultRequestHeaders.Add("Authorization",(string)App.Current.Properties["AuthToken"]);
             eventSearchBox.IsReadOnly = true;
             filterByEventTypeBox.IsEnabled = false;
             filterByRoleBox.IsEnabled = false;
@@ -151,8 +152,9 @@ namespace GMS___Desktop_Client.UserControls
         {
             int eventID = SelectedEventID().EventID;
             string eventName = SelectedEventID().Name;
+            byte[] rowID = SelectedEventID().RowId;
 
-            Window joinEventWindow = new JoinEventWindow(eventID, eventName);
+            Window joinEventWindow = new JoinEventWindow(eventID, eventName, rowID);
             joinEventWindow.ShowDialog();
         }
 
