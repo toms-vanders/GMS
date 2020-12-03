@@ -65,10 +65,9 @@ namespace GMS___Web_Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User(model.Username, model.Password);
                 try
                 {
-                    StartSession(user);
+                    StartSession(new User(model.Username, model.Password));
                     return RedirectToAction("UserPage", "User");
                 } catch
                 {
@@ -111,8 +110,7 @@ namespace GMS___Web_Client.Controllers
                     webClient.Encoding = System.Text.Encoding.UTF8;
                     webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    string data = JsonConvert.SerializeObject(user);
-                    return webClient.UploadString("api/user/login", data);
+                    return webClient.UploadString("api/user/login", JsonConvert.SerializeObject(user));
                 }
             }
             catch (WebException ex)
@@ -137,9 +135,7 @@ namespace GMS___Web_Client.Controllers
                         webClient.Headers.Add("Authorization", this.Session["UserToken"].ToString());
                     }
                     webClient.Encoding = System.Text.Encoding.UTF8;
-                    var json = webClient.DownloadString(urlSuffix);
-                    T t = JsonConvert.DeserializeObject<T>(json);
-                    return t;
+                    return JsonConvert.DeserializeObject<T>(webClient.DownloadString(urlSuffix)); ;
                 }
             } catch (WebException ex)
             {
@@ -156,10 +152,9 @@ namespace GMS___Web_Client.Controllers
                     webClient.BaseAddress = EndPoint;
                     webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    webClient.Headers.Add("Authorization", this.Session["UserToken"].ToString());
-                    string data = JsonConvert.SerializeObject(postObject);
-                    var response = webClient.UploadString(urlSuffix, data);
-                    return JsonConvert.DeserializeObject<T>(response);
+                    if (!(this.Session["UserToken"] is null))
+                        webClient.Headers.Add("Authorization", this.Session["UserToken"].ToString());
+                    return JsonConvert.DeserializeObject<T>(webClient.UploadString(urlSuffix, JsonConvert.SerializeObject(postObject)));
                 }
             } catch (WebException ex)
             {
