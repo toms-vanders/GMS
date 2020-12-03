@@ -106,6 +106,7 @@ namespace GMS___Desktop_Client
                 var json = client.GetStringAsync("gw2api/characters/" + ((ArrayList)App.Current.Properties["Characters"])[0].ToString() + "/core").Result;
                 var chara = JsonConvert.DeserializeObject<Character>(json);
                 App.Current.Properties["CharacterGuildID"] = chara.Guild;
+                App.Current.Properties["SelectedCharacter"] = chara.Name;
             } catch (Exception ex)
             {
                 throw ex;
@@ -117,11 +118,6 @@ namespace GMS___Desktop_Client
             App.Current.Properties["ApiKey"] = returnedUser.ApiKey;
             App.Current.Properties["UserName"] = returnedUser.UserName;
             App.Current.Properties["Characters"] = returnedUser.Characters;
-            //App.Current.Properties["CharacterGuildID"] = returnedUser.Characters[0].ToString();
-            //App.Current.Properties["GuildID"] = "821239B1-FE78-3742-83A4-75152E1ED7A96C18AA79-9093-490B-8B9A-F2AA6C8DAB8E";
-            App.Current.Properties["SelectedCharacter"] = "";
-
-
         }
     }
 }

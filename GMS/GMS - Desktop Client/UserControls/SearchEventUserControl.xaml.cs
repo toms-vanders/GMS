@@ -1,10 +1,12 @@
 ﻿using GMS___Model;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -17,6 +19,7 @@ namespace GMS___Desktop_Client.UserControls
     {
         private readonly HttpClient client;
         IEnumerable<Event> eventList;
+        IEnumerable<Event> joinedEvents;
 
 
         public SearchEventUserControl()
@@ -52,8 +55,8 @@ namespace GMS___Desktop_Client.UserControls
                 string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
 
                 eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
-
                 eventGrid.ItemsSource = eventList;
+                GetJoinedEventsAsync();
             }
         }
 
@@ -150,17 +153,49 @@ namespace GMS___Desktop_Client.UserControls
 
         private void JoinEventButton_Click(object sender, RoutedEventArgs e)
         {
-            int eventID = SelectedEventID().EventID;
-            string eventName = SelectedEventID().Name;
-            byte[] rowID = SelectedEventID().RowId;
 
-            Window joinEventWindow = new JoinEventWindow(eventID, eventName, rowID);
-            joinEventWindow.ShowDialog();
+            if (!joinedEvents.Contains(SelectedEventID()))
+            {
+                int eventID = SelectedEventID().EventID;
+                string eventName = SelectedEventID().Name;
+                byte[] rowID = SelectedEventID().RowId;
+
+                Window joinEventWindow = new JoinEventWindow(eventID, eventName, rowID);
+                joinEventWindow.ShowDialog();
+            } else
+            {
+                if (MessageBox.Show("You are already part of this event, do you wish to cancel your participation?","Already participating",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    CancelParticipation(SelectedEventID().EventID,(string)App.Current.Properties["SelectedCharacter"]);
+                }
+            }
+
+            
         }
 
         private Event SelectedEventID()
         {
             return (Event)eventGrid.SelectedItem;
+        }
+
+        private async void GetJoinedEventsAsync()
+        {
+            var response = await client.GetStringAsync("api/guild/" + App.Current.Properties["CharacterGuildID"] + "/character/" + App.Current.Properties["SelectedCharacter"]);
+            joinedEvents = JsonConvert.DeserializeObject<IEnumerable<Event>>(response);
+        }
+
+        private async void CancelParticipation(int EventID,string characterName)
+        {
+            client.DefaultRequestHeaders.Add("x-eventid", "" + EventID);
+            client.DefaultRequestHeaders.Add("x-charactername", characterName);
+            var response = await client.DeleteAsync("api/guild/events/withdraw");
+            if (response.IsSuccessStatusCode)
+            {
+                MessageBox.Show("You have successfully cancelled your partition in the event","Cancelled participation",MessageBoxButton.OK,MessageBoxImage.Information);
+            } else
+            {
+                MessageBox.Show("There seems to have been an error cancelling your participation please try again later.", "Error cancelling participation", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
