@@ -3,55 +3,79 @@
     ViewBag.Title = "CharacterPage";
 }
 
-<h2>CharacterPage</h2>
+@Scripts.Render("~/bundles/jquery")
+<script src="~/JavaScript/user.js"></script>
 
+<h2>@ViewBag.Character</h2>
+
+<div class="container">
+
+</div>
 <div class="row">
-    <div class="col-md-8 list-group">
+    <div class="col-8 list-group" id="equipment">
+
+    </div>
+    <div class="col-4 list-group" id="details">
         <div class="flex-column align-items-start list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">@ViewBag.Character.Name</h5>
-                <small>@ViewBag.Character.Level</small>
+                <p class="mb-1" id="race">??</p>
+                <small id="level">??</small>
             </div>
-            <p class="mb-1">@ViewBag.Character.Race</p>
-            <p class="mb-1">@ViewBag.Character.Profession</p>
-            <small>@ViewBag.Character.Title</small>
+            <p class="mb-1" id="profession">??</p>
+            <small id="gender">??</small>
+        </div>
+    </div>
+    <div class="row" id="events">
+        <div class="col-md-4" aria-describedby="linkHelpBlock">
+            @if (ViewBag.Guild is null)
+            {
+                <img src="@Url.Content("~/Content/images/ezgif.com-gif-maker.gif")" />
+                <small id="linkHelpBlock" class="form-text text-muted">
+                    In order to create and search events, your character needs to represant a guild.
+                    When you become a guild representant, it can take a few minutes to process the change
+                    in order to display links.
+                </small>
+            }
+            else
+            {
+                @Html.ActionLink("Create new guild event", "CreateEventForm", "Event", new { name = ViewBag.Character }, null) <br>
+                @Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character }, null)
+                System.Diagnostics.Debug.WriteLine(@Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character }, null));
+            }
+        </div>
+    </div>
+    <div class="toast" data-delay="8000" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; left: 50%; bottom: 15%; transform: translate(-50%, 0px); z-index: 9999;">
+        <div class="toast-header">
+            <strong class="mr-auto">GMS</strong>
+            <small class="text-muted">just now</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Your character details are loading.
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-8 list-group">
-        @foreach (var equipment in ViewBag.Equipment)
-        {
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">@equipment.Name</h5>
-                    <small>@equipment.Level</small>
-                </div>
-                <p class="mb-1">@equipment.Rarity</p>
-                <small>Value: @equipment.Vendor_value</small>
-                <img src="@equipment.Icon" class="img-thumbnail" alt="Responsive image"/>
-            </a>
-        }
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-4" aria-describedby="linkHelpBlock">
-        @if (ViewBag.Character.Guild is null)
-        {
-            <img src="@Url.Content("~/Content/images/ezgif.com-gif-maker.gif")" />
-            <small id="linkHelpBlock" class="form-text text-muted">
-                In order to create and search events, your character needs to represant a guild.
-                When you become a guild representant, it can take a few minutes to process the change
-                in order to display links.
-            </small>
-        }
-        else
-        {
-            @Html.ActionLink("Create new guild event", "CreateEventForm", "Event", new { name = ViewBag.Character.Name }, null) <br>
-            @Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character.Name }, null)
-            System.Diagnostics.Debug.WriteLine(@Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character.Name }, null));
-        }
-    </div>
-</div>
+<script type="text/javascript">
+        $(document).ready(function () {
+            var character = '@ViewBag.Character';
+            var apiToken = '@ViewBag.ApiToken';
+            loadCharacter(character, apiToken);
+        });
+</script>
 
+<script type="text/javascript">
+        $(document).ready(function () {
+            var character = '@ViewBag.Character';
+            var apiToken = '@ViewBag.ApiToken';
+            loadEquipmentList(character, apiToken);
+        });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.toast').toast('show');
+    });
+</script>
