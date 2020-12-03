@@ -50,7 +50,7 @@ namespace GMS___Data_Access_Layer
             using (IDbConnection conn = GetConnection())
             {
                 IEnumerable<Event> foundEvents = conn.Query<Event>("select e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters from Event e right join EventCharacter ec on e.eventID = ec.eventID where ec.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList();
-                return foundEvents.Concat(conn.Query<Event>("select e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters from Event e right join EventCharacterWaitingList ecwl on e.eventID = ecwl.eventID where ecwl.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList());   
+                return foundEvents.Concat(conn.Query<Event>("select e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters from Event e right join EventCharacterWaitingList ecwl on e.eventID = ecwl.eventID where ecwl.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList()).ToList();   
             }
         }
 

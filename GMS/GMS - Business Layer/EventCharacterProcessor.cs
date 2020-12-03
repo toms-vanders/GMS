@@ -24,5 +24,10 @@ namespace GMS___Business_Layer
         {
             return eventCharacterAccess.ContainsEntry(eventId, characterName);
         }
+        
+        public int ParticipantsInEvent(int eventID)
+        {
+            return eventCharacterAccess.participantsInEvent(eventID);
+        }
     }
 }

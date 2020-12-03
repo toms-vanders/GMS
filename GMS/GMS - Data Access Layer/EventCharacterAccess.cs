@@ -80,5 +80,15 @@ namespace GMS___Data_Access_Layer
                 return signedUpCount == maxAmount;
             }
         }
+
+        public int participantsInEvent(int eventID)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = " + eventID);
+
+                return signedUpCount;
+            }
+        }
     }
 }
