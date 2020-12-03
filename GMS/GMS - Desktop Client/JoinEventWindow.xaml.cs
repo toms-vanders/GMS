@@ -1,6 +1,7 @@
 ﻿using GMS___Model;
 using System;
 using System.Net.Http;
+using System.Text.Json;
 using System.Windows;
 
 namespace GMS___Desktop_Client
@@ -13,15 +14,18 @@ namespace GMS___Desktop_Client
 
         private readonly HttpClient client;
 
-        public JoinEventWindow(int eventID, string eventName)
+        public JoinEventWindow(int eventID, string eventName, byte[] rowID)
         {
             InitializeComponent();
 
             eventIDBox.Text = eventID.ToString();
             eventNameBox.Text = eventName;
-
-            client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44377/");
+            client = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:44377/")
+            };
+            client.DefaultRequestHeaders.Add("Authorization",(string)App.Current.Properties["AuthToken"]);
+            client.DefaultRequestHeaders.Add("x-rowid",JsonSerializer.Serialize(rowID));
         }
 
         private void joinEventButton_Click(object sender, RoutedEventArgs e)
