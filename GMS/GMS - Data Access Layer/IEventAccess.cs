@@ -1,7 +1,5 @@
-﻿using System;
+﻿using GMS___Model;
 using System.Collections.Generic;
-using System.Text;
-using GMS___Model;
 
 namespace GMS___Data_Access_Layer
 {

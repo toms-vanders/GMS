@@ -1,7 +1,6 @@
-﻿using System;
+﻿using GMS___Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GMS___Model;
-using NodaTime;
+using System;
 using System.Collections;
 
 namespace GMS___Test
@@ -65,7 +64,7 @@ namespace GMS___Test
             ArrayList Game_types = new ArrayList();
             ArrayList Restrictions = new ArrayList();
 
-            Item item = new Item(Id,Chat_link,Name,Icon,Description,Type,Rarity,Level,Vendor_value,Flags,Game_types,Restrictions);
+            Item item = new Item(Id, Chat_link, Name, Icon, Description, Type, Rarity, Level, Vendor_value, Flags, Game_types, Restrictions);
 
             Assert.AreEqual(8, item.Id);
             Assert.AreEqual("Chat Link", item.Chat_link);
@@ -88,7 +87,7 @@ namespace GMS___Test
 
             Assert.AreEqual("116E0C0E-0035-44A9-BB22-4AE3E23127E5", guild.GuildID);
             Assert.AreEqual("GuildName", guild.Name);
-           
+
         }
 
         [TestMethod]
@@ -127,11 +126,11 @@ namespace GMS___Test
             string description = "Raid description";
             string eventType = "Raid";
             string location = "37°14′0″N 115°48′30″W";
-            DateTime date = new DateTime(2020,12,10);
+            DateTime date = new DateTime(2020, 12, 10);
             int maxNumberOfCharacters = 20;
             Byte[] rowId = new Byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 };
 
-            Event event1 = new Event(eventID, guildID, name, description, eventType, location, date, maxNumberOfCharacters,rowId);
+            Event event1 = new Event(eventID, guildID, name, description, eventType, location, date, maxNumberOfCharacters, rowId);
             int year = event1.Date.Year;
             int month = event1.Date.Month;
             int day = event1.Date.Day;
@@ -177,7 +176,7 @@ namespace GMS___Test
             int deaths = 99999;
             string title = "Title";
 
-            Character character = new Character(name,race,gender,profession,level,guild,age,created,deaths,title);
+            Character character = new Character(name, race, gender, profession, level, guild, age, created, deaths, title);
 
             Assert.AreEqual("Lime", character.Name);
             Assert.AreEqual("Human", character.Race);
@@ -202,7 +201,7 @@ namespace GMS___Test
             decimal currentPrice = 150;
             int highestBidderID = 30;
 
-            Auction auction = new Auction(auctionID,creatorID,eventID,dateAndTimeOfCreation,itemID,currentPrice,highestBidderID);
+            Auction auction = new Auction(auctionID, creatorID, eventID, dateAndTimeOfCreation, itemID, currentPrice, highestBidderID);
             int year = auction.DateAndTimeOfCreation.Year;
             int month = auction.DateAndTimeOfCreation.Month;
             int day = auction.DateAndTimeOfCreation.Day;

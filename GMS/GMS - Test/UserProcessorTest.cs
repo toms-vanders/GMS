@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GMS___Business_Layer;
-using System.Net.Mail;
-using GMS___Model;
+﻿using GMS___Business_Layer;
 using GMS___Data_Access_Layer;
+using GMS___Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace GMS___Test
 {
@@ -28,12 +27,10 @@ namespace GMS___Test
                 user2 = up.LogInUser("Non existing email address", "password");
                 user3 = up.LogInUser("mail@mail.com", "wrong password");
                 user4 = up.LogInUser("mail@mail.com", "Password");
-            }
-            catch(Exception e)
+            } catch (Exception e)
             {
                 noExceptionWasThrown = false;
-            }
-            finally
+            } finally
             {
                 //CleanUp
                 UserAccess userAccess = new UserAccess();
@@ -62,12 +59,10 @@ namespace GMS___Test
                 test2 = up.InsertApiKey("Non existing email address", "key");
                 User user = up.LogInUser("mail@mail.com", "password");
                 apikey = user.ApiKey;
-            }
-            catch(Exception e)
+            } catch (Exception e)
             {
                 noExceptionWasThrown = false;
-            }
-            finally
+            } finally
             {
                 //CleanUp
                 UserAccess userAccess = new UserAccess();
@@ -94,12 +89,10 @@ namespace GMS___Test
                 user1 = up.GetUserByEmail("mail@mail.com");
                 user2 = up.GetUserByEmail("asd");
                 user1name = user1.UserName;
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 noExceptionWasThrown = false;
-            }
-            finally
+            } finally
             {
                 //CleanUp
                 UserAccess userAccess = new UserAccess();

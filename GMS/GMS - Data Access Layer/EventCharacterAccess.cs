@@ -1,10 +1,7 @@
 ﻿using Dapper;
 using GMS___Model;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace GMS___Data_Access_Layer
 {
@@ -19,7 +16,7 @@ namespace GMS___Data_Access_Layer
         {
 
             // Either join participant list or the waiting list by checking if participant list reached the maximum amout of sign-ups.
-            using (IDbConnection conn = GetConnection()) 
+            using (IDbConnection conn = GetConnection())
             {
                 if (!isParticipantListFull(eventParticipant.EventID))
                 {
@@ -138,6 +135,16 @@ namespace GMS___Data_Access_Layer
                         return false;
                     }
                 }
+            }
+        }
+
+        public int participantsInEvent(int eventID)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = " + eventID);
+
+                return signedUpCount;
             }
         }
     }

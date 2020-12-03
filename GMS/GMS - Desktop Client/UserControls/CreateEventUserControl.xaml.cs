@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GMS___Model;
+using System;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using GMS___Model;
-using Newtonsoft.Json;
 
 namespace GMS___Desktop_Client.UserControls
 {
@@ -50,7 +40,7 @@ namespace GMS___Desktop_Client.UserControls
                 MaxNumberOfCharacters = (int)eventMaxPlayers.Value,
                 GuildID = ConfigurationManager.AppSettings["ApiToken"]
             };
-           
+
             var response = await client.PostAsJsonAsync("api/Guild/events/insert", newEvent);
 
             if (response.IsSuccessStatusCode)
@@ -58,8 +48,7 @@ namespace GMS___Desktop_Client.UserControls
                 MessageBox.Show("Event added");
                 ClearCreateEventsForm();
 
-            }
-            else
+            } else
             {
                 MessageBox.Show("Error Code" +
                 response.StatusCode + " : Message - " + response.ReasonPhrase);
@@ -71,8 +60,8 @@ namespace GMS___Desktop_Client.UserControls
         private void closeEventFormButton_Click(object sender, RoutedEventArgs e)
         {
             ClearCreateEventsForm();
-        }        
-        
+        }
+
         private void ClearCreateEventsForm()
         {
             eventName.Text = string.Empty;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+﻿using System.Collections;
 
 namespace GMS___Model
 {
@@ -15,7 +11,7 @@ namespace GMS___Model
             this.Members = new ArrayList();
             this.Events = new ArrayList();
         }
-        
+
         public string GuildID { get; set; }
         public string Name { get; set; }
         public ArrayList Members { get; set; }

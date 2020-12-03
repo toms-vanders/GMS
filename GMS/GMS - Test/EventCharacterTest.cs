@@ -1,12 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GMS___Model;
+﻿using GMS___Business_Layer;
 using GMS___Data_Access_Layer;
-using GMS___Business_Layer;
-using NodaTime;
-using System.Linq;
+using GMS___Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace GMS___Test
 {
@@ -36,7 +32,7 @@ namespace GMS___Test
             int maxNumberOfCharacters = 25;
             string guildID = "99999999-9999-9999-9999-999999999999";
 
-            testEvent = new Event(guildID,eventName,description,eventType,location,date,maxNumberOfCharacters);
+            testEvent = new Event(guildID, eventName, description, eventType, location, date, maxNumberOfCharacters);
 
             string characterName = "Bob";
             string race = "Demon";
@@ -68,11 +64,41 @@ namespace GMS___Test
             Boolean NoReasonThisShouldBeTrue = true;
             Boolean JoinCompleted = false;
             Boolean TestThrewException = false;
+            string eventName = "";
             try
             {
                 NoReasonThisShouldBeTrue = ecp.ContainsEntry(testEvent.EventID, testCharacter.Name);
                 ecp.JoinEvent(testEvent.EventID, testCharacter.Name, "AFK", new DateTime(2020, 12, 24));
                 JoinCompleted = ecp.ContainsEntry(testEvent.EventID, testCharacter.Name);
+                List<Event> events = (List<Event>)ep.GetGuildEventsByCharacterName(testEvent.GuildID, testCharacter.Name);
+                eventName = (events[0]).Name;
+            }
+            catch (Exception ex)
+            {
+                TestThrewException = true;
+            } finally
+            {
+                //Cleanup
+            }
+
+            Assert.AreEqual("Test Raid", eventName);
+            Assert.IsFalse(NoReasonThisShouldBeTrue);
+            Assert.IsTrue(JoinCompleted);
+            Assert.IsFalse(TestThrewException);
+        }
+        [TestMethod]
+        public void TestNumberOfParticipants()
+        {
+            int beforeJoin = -1;
+            int afterJoin = -1;
+            Boolean TestThrewException = false;
+            string eventName = "";
+            try
+            {
+                beforeJoin = ecp.ParticipantsInEvent(testEvent.EventID);
+                ecp.JoinEvent(testEvent.EventID, testCharacter.Name, "AFK", new DateTime(2020, 12, 24));
+                afterJoin = ecp.ParticipantsInEvent(testEvent.EventID);
+
             }
             catch (Exception ex)
             {
@@ -81,11 +107,10 @@ namespace GMS___Test
             finally
             {
                 //Cleanup
-                eca.DeleteEventCharacterByEventIDAndCharacterName(testEvent.EventID, testCharacter.Name);
             }
 
-            Assert.IsFalse(NoReasonThisShouldBeTrue);
-            Assert.IsTrue(JoinCompleted);
+            Assert.AreEqual(0,beforeJoin);
+            Assert.AreEqual(1,afterJoin);
             Assert.IsFalse(TestThrewException);
         }
     }
