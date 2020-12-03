@@ -21,8 +21,11 @@ namespace GMS___Desktop_Client.UserControls
 
             eventType.ItemsSource = Enum.GetValues(typeof(EventType.EventTypes)).Cast<EventType.EventTypes>();
 
-            client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44377/");
+            client = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:44377/")
+            };
+            client.DefaultRequestHeaders.Add("Authorization",(string) App.Current.Properties["AuthToken"]);
 
 
         }
