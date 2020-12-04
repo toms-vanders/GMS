@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.ComponentModel;
 
 namespace GMS___Desktop_Client.UserControls
 {
@@ -17,6 +18,7 @@ namespace GMS___Desktop_Client.UserControls
     /// </summary>
     public partial class SearchEventUserControl : UserControl
     {
+        private readonly BackgroundWorker worker = new BackgroundWorker();
         private readonly HttpClient client;
         IEnumerable<Event> eventList;
         IEnumerable<Event> joinedEvents;
@@ -25,6 +27,8 @@ namespace GMS___Desktop_Client.UserControls
         public SearchEventUserControl()
         {
             InitializeComponent();
+            worker.DoWork += worker_DoWork;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
 
             filterByEventTypeBox.ItemsSource = Enum.GetValues(typeof(EventType.EventTypes)).Cast<EventType.EventTypes>();
 
@@ -32,7 +36,7 @@ namespace GMS___Desktop_Client.UserControls
             {
                 BaseAddress = new Uri("https://localhost:44377/")
             };
-            client.DefaultRequestHeaders.Add("Authorization",(string)App.Current.Properties["AuthToken"]);
+            client.DefaultRequestHeaders.Add("Authorization", (string)App.Current.Properties["AuthToken"]);
             eventSearchBox.IsReadOnly = true;
             filterByEventTypeBox.IsEnabled = false;
             filterByRoleBox.IsEnabled = false;
@@ -73,7 +77,7 @@ namespace GMS___Desktop_Client.UserControls
 
         private void FilterEvents()
         {
-            if(eventList !=null)
+            if (eventList != null)
             {
                 var filterByName = eventList.Where(ev => ev.Name.IndexOf(eventSearchBox.Text, (StringComparison)CompareOptions.IgnoreCase) >= 0);
 
@@ -88,15 +92,17 @@ namespace GMS___Desktop_Client.UserControls
                     }
 
                     eventGrid.ItemsSource = filterByEventType;
-                } else
+                }
+                else
                 {
                     eventGrid.ItemsSource = filterByName;
                 }
-            } else
+            }
+            else
             {
                 eventGrid.Visibility = Visibility.Hidden;
             }
-            
+
 
         }
 
@@ -108,19 +114,18 @@ namespace GMS___Desktop_Client.UserControls
         private void EventGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
 
-            if (e.PropertyName == "GuildID" || e.PropertyName == "RowId" ||
-                e.PropertyName == "Participants" || e.PropertyName == "WaitingList")
+            if (e.PropertyName == "GuildID" || e.PropertyName == "RowId" || e.PropertyName == "Description" ||
+                e.PropertyName == "Participants" || e.PropertyName == "WaitingList" || e.PropertyName == "MaxNumberOfCharacters")
             {
                 e.Cancel = true;
-            } else if (e.PropertyName == "EventID")
+            }
+            else if (e.PropertyName == "EventID")
             {
                 e.Column.Header = "ID";
-            } else if (e.PropertyName == "EventType")
+            }
+            else if (e.PropertyName == "EventType")
             {
                 e.Column.Header = "Event Type";
-            } else if (e.PropertyName == "MaxNumberOfCharacters")
-            {
-                e.Column.Header = "Max num. of Players";
             }
 
             eventGrid.Columns[0].DisplayIndex = eventGrid.Columns.Count - 1;
@@ -139,7 +144,8 @@ namespace GMS___Desktop_Client.UserControls
             {
                 MessageBox.Show("Event " + selectedEvent.EventID + " deleted!");
                 FillDataGrid();
-            } else
+            }
+            else
             {
                 MessageBox.Show("Error Code" +
                 response.StatusCode + " : Message - " + response.ReasonPhrase);
@@ -162,15 +168,21 @@ namespace GMS___Desktop_Client.UserControls
 
                 Window joinEventWindow = new JoinEventWindow(eventID, eventName, rowID);
                 joinEventWindow.ShowDialog();
-            } else
+
+
+
+                // runs a background worker that loads events
+                //worker.RunWorkerAsync();
+            }
+            else
             {
-                if (MessageBox.Show("You are already part of this event, do you wish to cancel your participation?","Already participating",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (MessageBox.Show("You are already part of this event, do you wish to cancel your participation?", "Already participating", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    CancelParticipation(SelectedEventID().EventID,(string)App.Current.Properties["SelectedCharacter"]);
+                    CancelParticipation(SelectedEventID().EventID, (string)App.Current.Properties["SelectedCharacter"]);
                 }
             }
 
-            
+
         }
 
         private Event SelectedEventID()
@@ -184,15 +196,26 @@ namespace GMS___Desktop_Client.UserControls
             joinedEvents = JsonConvert.DeserializeObject<IEnumerable<Event>>(response);
         }
 
-        private async void CancelParticipation(int EventID,string characterName)
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            FillDataGrid();
+        }
+
+        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            
+        }
+
+        private async void CancelParticipation(int EventID, string characterName)
         {
             client.DefaultRequestHeaders.Add("x-eventid", "" + EventID);
             client.DefaultRequestHeaders.Add("x-charactername", characterName);
             var response = await client.DeleteAsync("api/guild/events/withdraw");
             if (response.IsSuccessStatusCode)
             {
-                MessageBox.Show("You have successfully cancelled your partition in the event","Cancelled participation",MessageBoxButton.OK,MessageBoxImage.Information);
-            } else
+                MessageBox.Show("You have successfully cancelled your partition in the event", "Cancelled participation", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
             {
                 MessageBox.Show("There seems to have been an error cancelling your participation please try again later.", "Error cancelling participation", MessageBoxButton.OK, MessageBoxImage.Error);
             }
