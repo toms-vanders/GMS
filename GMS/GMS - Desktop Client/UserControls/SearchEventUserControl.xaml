@@ -24,10 +24,10 @@
         </Grid.RowDefinitions>
 
         <!-- Search Box -->
-        <wpfx:WatermarkTextBox x:Name="eventSearchBox" Grid.Column="1" Grid.Row="1" Watermark="Search Event" TextChanged="eventSearchBox_TextChanged"/>
+        <wpfx:WatermarkTextBox x:Name="eventSearchBox" Grid.Column="1" Grid.Row="1" Watermark="Search Event" TextChanged="EventSearchBox_TextChanged"/>
 
         <!-- Event Filter Box -->
-        <wpfx:CheckComboBox x:Name="filterByEventTypeBox" Grid.Column="2" Grid.Row="1" Delimiter="; " IsSelectAllActive="True" ItemSelectionChanged="filterByEventTypeBox_ItemSelectionChanged"/>
+        <wpfx:CheckComboBox x:Name="filterByEventTypeBox" Grid.Column="2" Grid.Row="1" Delimiter="; " IsSelectAllActive="True" ItemSelectionChanged="FilterByEventTypeBox_ItemSelectionChanged"/>
 
         <TextBlock Text="Select event type" IsHitTestVisible="False" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Margin=" 5 0 0 0">
             <TextBlock.Style>
@@ -45,28 +45,30 @@
         <!-- Role Filter Box -->
         <wpfx:CheckComboBox x:Name="filterByRoleBox" Grid.Column="3" Grid.Row="1" Text="All roles" />
 
+        <!-- Empty DataGridLabel -->
+        <TextBox x:Name ="dataGridMessage" Text="No event data has been found" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Center" Visibility="Hidden" IsEnabled="False"/>
         <!-- Event DataGrid -->
-        <DataGrid Name="eventGrid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="True" AutoGeneratingColumn="eventGrid_AutoGeneratingColumn"
+        <DataGrid Name="eventGrid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="True" AutoGeneratingColumn="EventGrid_AutoGeneratingColumn"
                   HorizontalAlignment="Left" IsReadOnly="True" >
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button x:Name="joinEventButton" Content="Join" Click="joinEventButton_Click"/>
+                            <Button x:Name="joinEventButton" Content="Join" Click="JoinEventButton_Click"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button x:Name="editEventButton" Content="Edit" Click="editEventButton_Click"/>
+                            <Button x:Name="editEventButton" Content="Edit" Click="EditEventButton_Click"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button x:Name="deleteEventButton" Content="Delete" Click="deleteEventButton_Click"/>
+                            <Button x:Name="deleteEventButton" Content="Delete" Click="DeleteEventButton_Click"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -64,5 +64,10 @@ namespace GMS___Model
         public ArrayList WaitingList { get; set; }
         public Byte[] RowId { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Event @event &&
+                   EventID == @event.EventID;
+        }
     }
 }
