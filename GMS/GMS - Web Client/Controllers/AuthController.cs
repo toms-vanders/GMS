@@ -95,7 +95,13 @@ namespace GMS___Web_Client.Controllers
         {
             this.Session["UserToken"] = PostLogin(user);
             User tempUser = GetJson<User>("api/user");
-            this.Session["ApiToken"] = tempUser.ApiKey;
+            try
+            {
+                this.Session["ApiToken"] = tempUser.ApiKey;
+            } catch
+            {
+                this.Session["ApiToken"] = "";
+            }
             this.Session["EmailAddress"] = tempUser.EmailAddress;
             this.Session["Username"] = tempUser.UserName;
         }

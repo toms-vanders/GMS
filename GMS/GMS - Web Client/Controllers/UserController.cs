@@ -2,6 +2,7 @@
 using GMS___Web_Client.Models;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace GMS___Web_Client.Controllers
@@ -14,17 +15,18 @@ namespace GMS___Web_Client.Controllers
         {
             if (InSession())
             {
-                this.Session["Guild"] = "";
-                ArrayList characterList = new ArrayList();
-                ArrayList characterNameList = GetJson<ArrayList>("gw2api/characters");
-                foreach (string name in characterNameList)
+                try
                 {
-                    string urlSuffix = "gw2api/characters/" + name + "/core";
-                    characterList.Add(GetJson<Character>(urlSuffix));
-                }
-                ViewBag.Characters = characterList;
-                ViewBag.Message = "Your user page.";
-                return View();
+                    Session["Guild"] = "";
+                    ViewBag.ApiToken = Session["ApiToken"];
+                    ViewBag.UserToken = Session["UserToken"];
+                    ViewBag.Characters = GetJson<List<string>>("gw2api/characters");
+                    ViewBag.Message = "Your user page.";
+                    return View();
+                } catch (Exception ex)
+                {
+                    return RedirectToAction("ApiForm", "User");
+                }   
             }
             ViewBag.Error = "You aren't authorized to access this page.";
             return RedirectToAction("Index", "Home");
@@ -33,11 +35,15 @@ namespace GMS___Web_Client.Controllers
         {
             if (InSession())
             {
-                string urlSuffix = "gw2api/characters/" + name;
-                ViewBag.Character = GetJson<Character>(urlSuffix + "/core");
+                //string urlSuffix = "gw2api/characters/" + name;
+                //ViewBag.Character = GetJson<Character>(urlSuffix + "/core");
+                //ViewBag.Equipment = InitializeEquipment(GetJson<Equipments>(urlSuffix + "/equipment"));
+                Character character = GetJson<Character>("gw2api/characters/" + name + "/core");
+                this.Session["Guild"] = character.Guild;
+                ViewBag.Guild = character.Guild;
+                ViewBag.Character = name;
+                ViewBag.ApiToken = Session["ApiToken"];
                 ViewBag.Message = "Your character page.";
-                ViewBag.Equipment = InitializeEquipment(GetJson<Equipments>(urlSuffix + "/equipment"));
-                this.Session["Guild"] = ViewBag.Character.Guild;
                 return View();
             }
             ViewBag.Error = "You aren't authorized to access this page.";

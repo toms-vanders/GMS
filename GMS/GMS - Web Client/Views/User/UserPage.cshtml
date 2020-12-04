@@ -2,21 +2,74 @@
     ViewBag.Title = "User";
 }
 
+@Scripts.Render("~/bundles/jquery")
+<script src="~/JavaScript/user.js"></script>
+
 <div class="row">
-    <div class="col-md-8 list-group">
-        @foreach (var character in ViewBag.Characters)
+    <div class="col-8 list-group">
+        <h5>Your events</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Event type</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Date</th>
+                </tr>
+            </thead>
+            <tbody id="events">
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4 list-group">
+        <h5>Your characters</h5>
+        @for (var i = 0; i < ViewBag.Characters.Count; i++)
         {
-            <a href="@Url.Action("CharacterPage", "User", new { name = character.Name})" class="list-group-item list-group-item-action flex-column align-items-start">
+            <a href="@Url.Action("CharacterPage", "User", new { name = ViewBag.Characters[i] })" class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">@character.Name</h5>
-                    <small>@character.Level</small>
+                    <h5 class="mb-1">@ViewBag.Characters[i]</h5>
+                    <small id="@i-Level">??</small>
                 </div>
-                <p class="mb-1">@character.Race</p>
-                <p class="mb-1">@character.Profession</p>
-                <small>@character.Gender</small>
+                <p id="@i-Race" class="mb-1">??</p>
+                <p id="@i-Profession" class="mb-1">??</p>
+                <small id="@i-Gender">??</small>
             </a>
         }
     </div>
-    @Html.ActionLink("Enter your api key", "ApiForm", "User") <br>
+    <div class="toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; left: 50%; bottom: 15%; transform: translate(-50%, 0px); z-index: 9999;">
+        <div class="toast-header">
+            <img src="https://static.staticwars.com/quaggans/summer.jpg" class="rounded mr-2" style="width:50px; height:50px;" alt="...">
+            <strong class="mr-auto">GMS</strong>
+            <small class="text-muted">just now</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Your characters are loading.
+        </div>
+    </div>
 </div>
 
+<script type="text/javascript">
+        $(document).ready(function () {
+            var characters = @Html.Raw(Json.Encode(ViewBag.Characters));
+            var apiToken = '@ViewBag.ApiToken';
+            loadCharacters(characters, apiToken);
+        });
+</script>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            var apiToken = '@ViewBag.ApiToken';
+            var userToken = '@ViewBag.UserToken';
+            loadEvents(apiToken, userToken);
+        });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.toast').toast('show');
+    });
+</script>
