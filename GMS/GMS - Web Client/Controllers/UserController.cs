@@ -19,14 +19,14 @@ namespace GMS___Web_Client.Controllers
                 {
                     Session["Guild"] = "";
                     ViewBag.ApiToken = Session["ApiToken"];
+                    ViewBag.UserToken = Session["UserToken"];
                     ViewBag.Characters = GetJson<List<string>>("gw2api/characters");
                     ViewBag.Message = "Your user page.";
                     return View();
                 } catch (Exception ex)
                 {
                     return RedirectToAction("ApiForm", "User");
-                }
-                
+                }   
             }
             ViewBag.Error = "You aren't authorized to access this page.";
             return RedirectToAction("Index", "Home");
