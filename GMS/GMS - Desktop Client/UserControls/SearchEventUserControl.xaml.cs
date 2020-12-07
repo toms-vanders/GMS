@@ -173,6 +173,7 @@ namespace GMS___Desktop_Client.UserControls
                 if (MessageBox.Show("You are already part of this event, do you wish to cancel your participation?", "Already participating", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     CancelParticipation(SelectedEventID().EventID, (string)App.Current.Properties["SelectedCharacter"]);
+                    FillDataGrid();
                 }
             }
         }
