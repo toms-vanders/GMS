@@ -1,4 +1,5 @@
-﻿using GMS___Model;
+﻿using GMS___Desktop_Client.UserControls;
+using GMS___Model;
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -13,11 +14,13 @@ namespace GMS___Desktop_Client
     {
 
         private readonly HttpClient client;
+        private SearchEventUserControl DataGrid;
 
-        public JoinEventWindow(int eventID, string eventName, byte[] rowID)
+        public JoinEventWindow(SearchEventUserControl dataGrid,int eventID, string eventName, byte[] rowID)
         {
             InitializeComponent();
 
+            DataGrid = dataGrid;
             eventIDBox.Text = eventID.ToString();
             eventNameBox.Text = eventName;
             client = new HttpClient
@@ -46,7 +49,6 @@ namespace GMS___Desktop_Client
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show("You joined the event");
-                    Close();
 
                 } else
                 {
@@ -57,8 +59,8 @@ namespace GMS___Desktop_Client
             {
                 MessageBox.Show("Please input your role for the event");
             }
-
-
+            DataGrid.FillDataGrid();
+            Close();
         }
 
         private void closeJoinEventButton_Click(object sender, RoutedEventArgs e)
