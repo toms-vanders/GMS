@@ -104,6 +104,7 @@ namespace GMS___Web_Client.Controllers
             }
             this.Session["EmailAddress"] = tempUser.EmailAddress;
             this.Session["Username"] = tempUser.UserName;
+            this.Session["AccountCreated"] = tempUser.AccountCreated;
         }
 
         public string PostLogin(User user)

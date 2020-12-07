@@ -93,5 +93,22 @@ namespace GMS___Web_Client.Controllers
             }
             return equipment;
         }
+
+        public ActionResult Account()
+        {
+            if (InSession())
+            {
+                var model = new UserModel();
+                ViewBag.AccountCreated = Session["AccountCreated"];
+                model.UserName = Session["Username"].ToString();
+                model.EmailAddress = Session["EmailAddress"].ToString();
+                ViewBag.Message = "Your account details.";
+                return View(model);
+            } else
+            {
+                ViewBag.Error = "You aren't authorized to access this page.";
+                return RedirectToAction("Index", "Home");
+            }
+        }
     }
 }

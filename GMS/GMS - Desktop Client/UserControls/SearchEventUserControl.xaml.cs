@@ -50,17 +50,16 @@ namespace GMS___Desktop_Client.UserControls
         {
             if (!string.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
             {
-                eventSearchBox.IsReadOnly = false;
-                filterByEventTypeBox.IsEnabled = true;
-                filterByRoleBox.IsEnabled = true;
-                eventGrid.Visibility = Visibility.Visible;
-                dataGridMessage.Visibility = Visibility.Hidden;
-
                 string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
 
                 eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
                 eventGrid.ItemsSource = eventList;
                 GetJoinedEventsAsync();
+                eventSearchBox.IsReadOnly = false;
+                filterByEventTypeBox.IsEnabled = true;
+                filterByRoleBox.IsEnabled = true;
+                eventGrid.Visibility = Visibility.Visible;
+                dataGridMessage.Visibility = Visibility.Hidden;
             }
         }
 
@@ -171,8 +170,8 @@ namespace GMS___Desktop_Client.UserControls
 
 
 
-                // runs a background worker that loads events
-                //worker.RunWorkerAsync();
+                //runs a background worker that loads events
+                worker.RunWorkerAsync();
             }
             else
             {
