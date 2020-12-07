@@ -35,7 +35,7 @@ namespace GMS___Desktop_Client
 
         private async void logInButton_Click(object sender, RoutedEventArgs e)
         {
-            var controller = await this.ShowProgressAsync("Please wait...", "Logging in...", true);
+            var controller = await this.ShowProgressAsync("Please wait...", "Logging in...", false);
             var userName = userEmailText.Text;
             var password = passwordText.Password;
             var emailAddress = "";
@@ -94,15 +94,13 @@ namespace GMS___Desktop_Client
             if (loggingResult == true)
             {
                 var windowLocation = this.PointToScreen(new Point(0, 0));
-                Window MainWindow = new MainWindow();
-                MainWindow.Left = windowLocation.X;
-                MainWindow.Top = windowLocation.Y;
+                Window MainWindow = new MainWindow
+                {
+                    Left = windowLocation.X,
+                    Top = windowLocation.Y
+                };
                 MainWindow.Show();
                 Close();
-            } 
-            else if (controller.IsCanceled)
-            {
-                await this.ShowMessageAsync("Logging in", "Loggin in was cancelled.");
             } 
             else
             {

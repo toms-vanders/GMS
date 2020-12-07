@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Guild Management System - GMS" Height="450" Width="800">
     <mah:MetroWindow.Resources>
-        <ImageBrush x:Key="GW2Background" ImageSource="{DynamicResource BackgroundPath}" Stretch="Fill" Opacity="0.2" />
+        <ImageBrush x:Key="GW2Background" ImageSource="{DynamicResource BackgroundPath}" Stretch="Fill" Opacity="0.3" />
         <Style x:Key="GridStyle1" TargetType="{x:Type Grid}">
             <Setter Property="Background" Value="{StaticResource GW2Background}" />
             
