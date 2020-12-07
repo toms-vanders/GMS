@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Windows.Navigation;
 using System.Windows;
+using System.Windows.Media.Imaging;
+using System.Reflection;
 
 namespace GMS___Desktop_Client
 {
@@ -24,6 +26,9 @@ namespace GMS___Desktop_Client
             InitializeComponent();
             client = new HttpClient();
             client.BaseAddress = new Uri("https://localhost:44377/");
+            var path = Environment.CurrentDirectory;
+            var uriPath = new Uri(path.Substring(0,path.LastIndexOf("bin"))+ @"\Images\bg.png", UriKind.RelativeOrAbsolute);
+            this.Resources["BackgroundPath"] = new BitmapImage(uriPath);
         }
 
         private void logInButton_Click(object sender, RoutedEventArgs e)
