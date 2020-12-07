@@ -18,7 +18,6 @@ namespace GMS___Desktop_Client.UserControls
     /// </summary>
     public partial class SearchEventUserControl : UserControl
     {
-        private readonly BackgroundWorker worker = new BackgroundWorker();
         private readonly HttpClient client;
         IEnumerable<Event> eventList;
         IEnumerable<Event> joinedEvents;
@@ -27,8 +26,6 @@ namespace GMS___Desktop_Client.UserControls
         public SearchEventUserControl()
         {
             InitializeComponent();
-            worker.DoWork += worker_DoWork;
-            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
 
             filterByEventTypeBox.ItemsSource = Enum.GetValues(typeof(EventType.EventTypes)).Cast<EventType.EventTypes>();
 
@@ -131,7 +128,6 @@ namespace GMS___Desktop_Client.UserControls
             eventGrid.Columns[0].DisplayIndex = eventGrid.Columns.Count - 1;
             eventGrid.Columns[1].DisplayIndex = eventGrid.Columns.Count - 1;
             eventGrid.Columns[2].DisplayIndex = eventGrid.Columns.Count - 1;
-
         }
 
         private void DeleteEventButton_Click(object sender, RoutedEventArgs e)
@@ -169,11 +165,6 @@ namespace GMS___Desktop_Client.UserControls
 
                 Window joinEventWindow = new JoinEventWindow(eventID, eventName, rowID);
                 joinEventWindow.ShowDialog();
-
-
-
-                //runs a background worker that loads events
-                worker.RunWorkerAsync();
             }
             else
             {
@@ -182,8 +173,6 @@ namespace GMS___Desktop_Client.UserControls
                     CancelParticipation(SelectedEventID().EventID, (string)App.Current.Properties["SelectedCharacter"]);
                 }
             }
-
-
         }
 
         private Event SelectedEventID()
@@ -195,16 +184,6 @@ namespace GMS___Desktop_Client.UserControls
         {
             var response = await client.GetStringAsync("api/guild/" + App.Current.Properties["CharacterGuildID"] + "/character/" + App.Current.Properties["SelectedCharacter"]);
             joinedEvents = JsonConvert.DeserializeObject<IEnumerable<Event>>(response);
-        }
-
-        private void worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            FillDataGrid();
-        }
-
-        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            
         }
 
         private async void CancelParticipation(int EventID, string characterName)
