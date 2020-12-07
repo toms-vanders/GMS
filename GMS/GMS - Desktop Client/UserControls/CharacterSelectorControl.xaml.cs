@@ -156,8 +156,9 @@ namespace GMS___Desktop_Client.UserControls
             }
 
             //path URI
-            var pathURI = new BitmapImage(new Uri(@"C:\Users\dymus\Developer\githubDamiana\gms\GMS\GMS - Desktop Client\Images\professions\" + professionIconPath, UriKind.Absolute));
-            this.Resources["ProfessionIconPath"] = pathURI;
+            var path = Environment.CurrentDirectory;
+            var pathURI = new Uri(path.Substring(0, path.LastIndexOf("bin")) + @"Images\professions\" + professionIconPath, UriKind.Absolute);
+            this.Resources["ProfessionIconPath"] = new BitmapImage(pathURI);
         }
     }
 }
