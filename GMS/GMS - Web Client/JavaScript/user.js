@@ -93,7 +93,8 @@ function loadGuildEvents(guildId, userToken) {
                 event += "<td>" + data[i].name + "</td>";
                 event += "<td>" + data[i].eventType + "</td>";
                 event += "<td>" + data[i].location + "</td>";
-                event += "<td>" + data[i].date + "</td>";
+                let date = new Date(data[i].date + "Z");
+                event += "<td>" + date.toUTCString() + "</td>";
                 event += "</tr>";
                 $(events).append(event);
             }
