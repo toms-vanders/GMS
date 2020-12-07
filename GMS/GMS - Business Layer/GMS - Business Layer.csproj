@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
