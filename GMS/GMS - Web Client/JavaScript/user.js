@@ -25,6 +25,55 @@ function loadCharacters(characters, apiToken) {
         })
 };
 
+function loadEvents(apiToken, userToken) {
+    $.ajax({
+        type: "GET",
+        url: "https://localhost:44377/gw2api/account",
+        headers: { 'Authorization': apiToken },
+        data: {
+
+        },
+        dataType: "json",
+        success: function (data) {
+            for (var i = 0; i < data.guilds.length; i++) {
+                loadGuildEvents(data.guilds[i], userToken);
+            }
+        },
+        error: function (error) {
+            console.log(data);
+        },
+    })
+};
+
+function loadGuildEvents(guildId, userToken) {
+    $.ajax({
+        type: "GET",
+        url: "https://localhost:44377/api/guild/" + guildId,
+        headers: { 'Authorization': userToken },
+        data: {
+
+        },
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            for (var i = 0; i < data.length; i++) {
+                var event = "<tr>";
+                event += "<th scope=\"row\">" + data[i].eventID + "</th>";
+                event += "<td>" + data[i].name + "</td>";
+                event += "<td>" + data[i].eventType + "</td>";
+                event += "<td>" + data[i].location + "</td>";
+                event += "<td>" + data[i].date + "</td>";
+                event += "</tr>";
+                $(events).append(event);
+            }
+            },
+        error: function (error) {
+            console.log(data);
+            return "";
+        },
+    })
+};
+
 function loadCharacter(character, apiToken) {
     $.ajax({
         type: "GET",
@@ -79,8 +128,7 @@ function loadItem(id, apiToken) {
         dataType: "json",
         success: function (data) {
             console.log(data.icon);
-            var items = "";
-            items += "<a href=\"#\" class=\"list-group-item list-group-item-action flex-column align-items-start\">";
+            var items = "<a href=\"#\" class=\"list-group-item list-group-item-action flex-column align-items-start\">";
             items += "<div class=\"d-flex w-100 justify-content-between\">";
             items += "<h4 class=\"mb-1\">" + data.details.type + "</h4>";
             items += "<small id=\"" + data.details.type + "Level" + "\">" + data.level + "</small>";
