@@ -83,7 +83,7 @@
 
         <!-- Event Date and Time -->
         <TextBlock Text="Event  date and time" Grid.Column="2" Grid.Row="2" Margin="20 10 5 5"/>
-        <wpfx:DateTimePicker x:Name="eventDate" Background="#354056" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left"  TextAlignment="Left"
+        <mah:DateTimePicker x:Name="eventDate" Background="#354056" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left"
                              Margin="20 0 0 0" Width="300" BorderThickness="0" Foreground="White"/>
 
         <!-- Event Description -->

@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Guild Management System - GMS" Height="450" Width="800">
     <mah:MetroWindow.Resources>
-        <ImageBrush x:Key="GW2Background" ImageSource="{DynamicResource BackgroundPath}" Stretch="Fill" Opacity="0.75" />
+        <ImageBrush x:Key="GW2Background" ImageSource="{DynamicResource BackgroundPath}" Stretch="Fill" Opacity="0.2" />
         <Style x:Key="GridStyle1" TargetType="{x:Type Grid}">
             <Setter Property="Background" Value="{StaticResource GW2Background}" />
             
@@ -47,7 +47,8 @@
         <PasswordBox x:Name="passwordText" Background="#162238" Grid.Column="1" Grid.Row="4" />
 
         <!--Row 5-->
-        <TextBlock x:Name="IncorrectCredentialsTextBlock"  Text="" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" HorizontalAlignment="Center" Foreground="DarkRed" FontWeight="UltraBold"/>
+        <TextBlock x:Name="IncorrectCredentialsTextBlock"  Text="" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" HorizontalAlignment="Center" Foreground="#e14737"
+                   FontWeight="UltraBold"/>
 
         <!-- Row 6-->
         <Button x:Name="logInButton" Background="#131C2D" Content="Log In" Grid.Column="1" Grid.Row="6" Click="logInButton_Click" Margin="0 8 0 0" />
