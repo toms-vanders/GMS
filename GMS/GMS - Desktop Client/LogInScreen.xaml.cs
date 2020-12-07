@@ -1,20 +1,21 @@
 ﻿using GMS___Model;
 using Newtonsoft.Json;
 using System;
+using MahApps.Metro.Controls;
 using System.Collections;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Windows;
 using System.Windows.Navigation;
+using System.Windows;
 
 namespace GMS___Desktop_Client
 {
     /// <summary>
     /// Interaction logic for LogInScreen.xaml
     /// </summary>
-    public partial class LogInScreen : Window
+    public partial class LogInScreen : MetroWindow
     {
         private readonly HttpClient client;
 
@@ -52,16 +53,15 @@ namespace GMS___Desktop_Client
                 GetCharacters(returnUser);
                 GetDefaultCharacter();
 
-
-
-                MessageBox.Show("Login Succesful!\n Welcome " + returnUser.UserName, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                var windowLocation = this.PointToScreen(new Point(0, 0));
                 Window MainWindow = new MainWindow();
+                MainWindow.Left = windowLocation.X;
+                MainWindow.Top = windowLocation.Y;
                 MainWindow.Show();
                 Close();
             } else
             {
-                MessageBox.Show("Username/email or Password is Incorrect", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
-
+                IncorrectCredentialsTextBlock.Text = "Wrong username or password. Try again.";
             }
 
         }
@@ -107,17 +107,19 @@ namespace GMS___Desktop_Client
                 var chara = JsonConvert.DeserializeObject<Character>(json);
                 App.Current.Properties["CharacterGuildID"] = chara.Guild;
                 App.Current.Properties["SelectedCharacter"] = chara.Name;
+                App.Current.Properties["SelectedCharacterObject"] = chara;
             } catch (Exception ex)
             {
                 throw ex;
             }
         }
-
         private void SetAppProperties(User returnedUser)
         {
             App.Current.Properties["ApiKey"] = returnedUser.ApiKey;
             App.Current.Properties["UserName"] = returnedUser.UserName;
             App.Current.Properties["Characters"] = returnedUser.Characters;
+            //App.Current.Properties["GuildID"] = "821239B1-FE78-3742-83A4-75152E1ED7A96C18AA79-9093-490B-8B9A-F2AA6C8DAB8E";
+            App.Current.Properties["SelectedCharacter"] = "";
         }
     }
 }

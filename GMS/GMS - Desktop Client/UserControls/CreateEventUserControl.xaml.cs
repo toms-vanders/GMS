@@ -74,5 +74,6 @@ namespace GMS___Desktop_Client.UserControls
             eventDescription.Text = string.Empty;
             eventMaxPlayers.Value = null;
         }
+
     }
 }
