@@ -38,7 +38,7 @@ namespace GMS___Desktop_Client.UserControls
                 Name = eventName.Text,
                 EventType = eventType.Text,
                 Location = eventLocation.Text,
-                Date = (DateTime)eventDate.Value,
+                Date = eventDate.DisplayDate,
                 Description = eventDescription.Text,
                 MaxNumberOfCharacters = (int)eventMaxPlayers.Value,
                 GuildID = ConfigurationManager.AppSettings["ApiToken"]
@@ -70,7 +70,7 @@ namespace GMS___Desktop_Client.UserControls
             eventName.Text = string.Empty;
             eventType.SelectedIndex = -1;
             eventLocation.Text = string.Empty;
-            eventDate.Value = null;
+            eventDate.DisplayDate = new DateTime();
             eventDescription.Text = string.Empty;
             eventMaxPlayers.Value = null;
         }

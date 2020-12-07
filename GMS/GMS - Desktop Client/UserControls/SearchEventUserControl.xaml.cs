@@ -54,6 +54,7 @@ namespace GMS___Desktop_Client.UserControls
 
                 eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
                 eventGrid.ItemsSource = eventList;
+                eventGrid.Items.Refresh();
                 GetJoinedEventsAsync();
                 eventSearchBox.IsReadOnly = false;
                 filterByEventTypeBox.IsEnabled = true;
@@ -153,7 +154,8 @@ namespace GMS___Desktop_Client.UserControls
 
         private void EditEventButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Window editEventWindow = new EditEventWindow(this,SelectedEventID());
+            editEventWindow.ShowDialog();
         }
 
         private void JoinEventButton_Click(object sender, RoutedEventArgs e)
