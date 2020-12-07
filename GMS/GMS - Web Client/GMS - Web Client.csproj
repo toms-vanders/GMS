@@ -173,10 +173,15 @@
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\images\404-quaggan.png" />
+    <Content Include="Content\images\cheer_quaggan.png" />
+    <Content Include="Content\images\cow_quaggan.png" />
+    <Content Include="Content\images\elf_quaggan.png" />
     <Content Include="Content\images\error_background.jpg" />
-    <Content Include="Content\images\error_quaggan_404.jpg" />
     <Content Include="Content\images\ezgif.com-gif-maker.gif" />
     <Content Include="Content\images\index_background.jpg" />
+    <Content Include="Content\images\lollipop_quaggan.png" />
+    <Content Include="Content\images\party_quaggan.png" />
     <Content Include="Content\jquery-ui-timepicker-addon.css" />
     <Content Include="Content\jquery-ui-timepicker-addon.min.css" />
     <Content Include="Content\themes\base\accordion.css" />

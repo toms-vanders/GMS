@@ -8,6 +8,7 @@
 {
     @Html.AntiForgeryToken()
 
+<div class="col-6">
     <div class="form-horizontal">
         <h4>Sign Up for Our Online Account</h4>
         <hr />
@@ -59,12 +60,13 @@
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    }
 </div>
+<div class="col-6">
+    <img class="img-fluid rounded mx-auto d-block" src="~/Content/images/cheer_quaggan.png" />
+</div>
+        
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
