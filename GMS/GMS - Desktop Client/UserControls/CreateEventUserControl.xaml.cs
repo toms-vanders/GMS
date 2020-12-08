@@ -27,12 +27,10 @@ namespace GMS___Desktop_Client.UserControls
             };
             client.DefaultRequestHeaders.Add("Authorization",(string) App.Current.Properties["AuthToken"]);
 
-
         }
 
         private async void createEventButton_Click(object sender, RoutedEventArgs e)
         {
-
             Event newEvent = new Event()
             {
                 Name = eventName.Text,
@@ -41,7 +39,7 @@ namespace GMS___Desktop_Client.UserControls
                 Date = eventDate.DisplayDate,
                 Description = eventDescription.Text,
                 MaxNumberOfCharacters = (int)eventMaxPlayers.Value,
-                GuildID = ConfigurationManager.AppSettings["ApiToken"]
+                GuildID = (string)App.Current.Properties["CharacterGuildID"]
             };
 
             var response = await client.PostAsJsonAsync("api/Guild/events/insert", newEvent);
