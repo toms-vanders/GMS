@@ -1,6 +1,7 @@
 ﻿using GMS___Data_Access_Layer;
 using GMS___Model;
 using System;
+using BCrypt.Net;
 
 namespace GMS___Business_Layer
 {
@@ -12,24 +13,34 @@ namespace GMS___Business_Layer
         {
             return userAccess.GetUserFromDatabase(email);
         }
-            public User InsertNewUser(string userName, string email, string password)
+        public User InsertNewUser(string userName, string email, string password)
         {
             User userToBeAdded = new User(userName, email, GetHashedPassword(password));
             userAccess.InsertUser(userToBeAdded);
             return userToBeAdded;
         }
-        public User LogInUser(string emailAddress, string password)
+        public User GetUserByUsername(string email)
         {
-            User user = userAccess.GetUserFromDatabase(emailAddress);
+            return userAccess.GetUserFromDatabaseWithUsername(email);
+        }
+        public User LogInUser(string username, string password)
+        {
+            User user = userAccess.GetUserFromDatabaseWithUsername(username);
             if (user is null)
             {
                 return null;
             }
-            if (user.Password == GetHashedPassword(password))
+            try{
+                if (BCrypt.Net.BCrypt.Verify(password, user.Password))
+                {
+                    user.UserName = username;
+                    return user;
+                }
+            } catch (Exception)
             {
-                user.EmailAddress = emailAddress;
-                return user;
+                return null;
             }
+            
             return null;
         }
         public Boolean InsertApiKey(string emailAddress, string apiKey)
@@ -38,25 +49,13 @@ namespace GMS___Business_Layer
             if (user is null)
             {
                 return false;
-            } 
+            }
             user.ApiKey = apiKey;
             return userAccess.UpdateUser(user) == 1 ? true : false;
         }
         public string GetHashedPassword(string password)
         {
-            password += "salt";
-            return GetHashCode(password).ToString();
-        }
-
-        public int GetHashCode(string original)
-        {
-            long sum = 0, mul = 1;
-            for (int i = 0; i < original.Length; i++)
-            {
-                mul = (i % 4 == 0) ? 1 : mul * 256;
-                sum += original[i] * mul;
-            }
-            return (int)(Math.Abs(sum) % 2147483647);
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GMS___Model
+﻿namespace GMS___Model
 {
     public class Character
     {

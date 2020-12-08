@@ -1,7 +1,6 @@
 using Dapper;
 using GMS___Model;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -29,13 +28,29 @@ namespace GMS___Data_Access_Layer
         {
             using (IDbConnection conn = GetConnection())
             {
-                List<User> users = conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole FROM Users where emailAddress in @emails", new { emails = new[] { emailAddress } }).ToList();
+                List<User> users = conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole, accountCreated FROM Users where emailAddress in @emails", new { emails = new[] { emailAddress } }).ToList();
                 if (users.Count != 1)
                 {
-                    return (User) null;
+                    return (User)null;
                 } else
                 {
                     //users[0].EmailAddress = emailAddress;
+                    return users[0];
+                }
+            }
+        }
+
+        public User GetUserFromDatabaseWithUsername(String username)
+        {
+            using (IDbConnection conn = GetConnection())
+            {
+                List<User> users = conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole, accountCreated FROM Users where userName in @usernames", new { usernames = new[] { username } }).ToList();
+                if (users.Count != 1)
+                {
+                    return (User)null;
+                }
+                else
+                {
                     return users[0];
                 }
             }
@@ -51,8 +66,7 @@ namespace GMS___Data_Access_Layer
                     string sqlCommand = "INSERT INTO Users (userName, emailAddress, password, ApiKey, userRole)";
                     sqlCommand += " VALUES (@UserName, @EmailAddress, @Password, @ApiKey, @UserRole)";
                     affectedRows = conn.Execute(sqlCommand, user);
-                }
-                catch (SqlException ex)
+                } catch (SqlException ex)
                 {
                     Console.WriteLine(ex.ToString()); // TODO change exception handling
                 }
@@ -75,8 +89,7 @@ namespace GMS___Data_Access_Layer
                         , userRole = @UserRole
                         WHERE userID = @UserID";
                     affectedRows = conn.Execute(sqlCommand, user);
-                }
-                catch (SqlException ex)
+                } catch (SqlException ex)
                 {
                     Console.WriteLine(ex.ToString()); // TODO change exception handling
                 }
@@ -92,8 +105,7 @@ namespace GMS___Data_Access_Layer
                 try
                 {
                     affectedRows = conn.Execute(@"DELETE FROM Users WHERE userName = @name", new { name = new[] { UserName } });
-                }
-                catch (SqlException ex)
+                } catch (SqlException ex)
                 {
                     Console.WriteLine(ex.ToString()); // TODO change exception handling
                 }

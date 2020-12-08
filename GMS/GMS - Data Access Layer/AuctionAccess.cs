@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 
 namespace GMS___Data_Access_Layer
 {
@@ -26,8 +25,7 @@ namespace GMS___Data_Access_Layer
                     string sqlCommand = "INSERT INTO Auction (creatorID, eventID, itemID)";
                     sqlCommand += " VALUES (@CreatorID, @EventID, @ItemID)";
                     affectedRows = conn.Execute(sqlCommand, action);
-                }
-                catch (SqlException ex)
+                } catch (SqlException ex)
                 {
                     Console.WriteLine(ex.ToString()); // TODO change exception handling
                 }
@@ -42,7 +40,7 @@ namespace GMS___Data_Access_Layer
                 List<Auction> auctions = conn.Query<Auction>("SELECT * FROM Auction WHERE auctionID in @ids", new { ids = new[] { auctionID } }).ToList();
                 if (auctions.Count() != 1)
                 {
-                    return (Auction) null;
+                    return (Auction)null;
                 } else
                 {
                     return auctions[0];
@@ -57,8 +55,7 @@ namespace GMS___Data_Access_Layer
                 try
                 {
                     affectedRows = conn.Execute(@"DELETE FROM Auction WHERE creatorID = @id", new { id = new[] { CreatorID } });
-                }
-                catch (SqlException ex)
+                } catch (SqlException ex)
                 {
                     Console.WriteLine(ex.ToString()); // TODO change exception handling
                 }

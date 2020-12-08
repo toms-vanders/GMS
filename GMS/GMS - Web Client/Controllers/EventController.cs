@@ -17,7 +17,7 @@ namespace GMS___Web_Client.Controllers
             if (InSession())
             {
                 string urlSuffix = "gw2api/characters/" + name + "/core";
-                ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
+                ViewBag.Character = GetJson<Character>(urlSuffix);
                 // Getting all event types needed for DropDownList
                 var eventTypes = GetAllEventTypes();
                 var model = new EventModel();
@@ -25,6 +25,7 @@ namespace GMS___Web_Client.Controllers
                 model.EventTypes = GetOptionEventTypesList(eventTypes);
                 model.GuildID = ViewBag.Character.Guild;
                 ViewBag.Message = "Creating event.";
+                ViewBag.UserToken = Session["UserToken"];
                 return View(model);
             }
             ViewBag.Error = "You aren't authorized to access this page.";
@@ -38,13 +39,14 @@ namespace GMS___Web_Client.Controllers
                 var error = TempData["ErrorMessage"] as string;
                 ViewBag.Error = error;
                 string urlSuffix = "gw2api/characters/" + name + "/core";
-                ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
+                ViewBag.Character = GetJson<Character>(urlSuffix);
                 // Getting all event types needed for DropDownList
                 var eventTypes = GetAllEventTypes();
                 var model = new EventModel();
                 // Get list of SelectListItem(s)
                 model.EventTypes = GetOptionEventTypesList(eventTypes);
                 ViewBag.Message = "Find new events";
+                ViewBag.UserToken = Session["UserToken"];
                 return View(model);
             }
             ViewBag.Error = "You aren't authorized to access this page.";
@@ -66,8 +68,8 @@ namespace GMS___Web_Client.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    Event tempEvent = PostJson("api/guild/events/insert", new Event(model.GuildID, model.EventName, 
-                        model.EventDescription, model.EventType, model.EventLocation, model.EventDateTime, 
+                    Event tempEvent = PostJson("api/guild/events/insert", new Event(model.GuildID, model.EventName,
+                        model.EventDescription, model.EventType, model.EventLocation, model.EventDateTime,
                         model.EventMaxNumberOfCharacters));
                     if (tempEvent != null)
                     {
@@ -108,7 +110,8 @@ namespace GMS___Web_Client.Controllers
             {
                 this.Session["characterName"] = name;
                 string urlSuffix = "gw2api/characters/" + name + "/core";
-                ViewBag.Character = GetJson<Character>(urlSuffix, new Character());
+                ViewBag.Character = GetJson<Character>(urlSuffix);
+                ViewBag.UserToken = Session["UserToken"];
                 // Getting all event types needed for DropDownList
                 var eventTypes = GetAllEventTypes();
                 var model = new EventModel();
@@ -117,12 +120,11 @@ namespace GMS___Web_Client.Controllers
                 // Get info about event
                 EventProcessor processor = new EventProcessor();
                 List<Event> events = (List<Event>)processor.GetEventByID(eventID);
-                if(events.Count == 0)
+                if (events.Count == 0)
                 {
                     TempData["ErrorMessage"] = "This Event no longer exists";
-                    return RedirectToAction("SearchEvents","Event", new { name = this.Session["characterName"]});
-                }
-                else
+                    return RedirectToAction("SearchEvents", "Event", new { name = this.Session["characterName"] });
+                } else
                 {
                     Event eventToBeUpdated = events[0];
                     model.eventID = eventToBeUpdated.EventID;
@@ -155,6 +157,14 @@ namespace GMS___Web_Client.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    EventCharacterProcessor ecp = new EventCharacterProcessor();
+                    if (model.EventMaxNumberOfCharacters < ecp.ParticipantsInEvent(model.eventID))
+                    {
+                        var eventTypes = GetAllEventTypes();
+                        model.EventTypes = GetOptionEventTypesList(eventTypes);
+                        ViewBag.Error = "You cant set the maximum number of participants to below the current number of participants.";
+                        return View(model);
+                    }
                     EventProcessor processor = new EventProcessor();
                     Boolean wasSuccessful = processor.UpdateEvent(model.eventID, model.EventName,
                         model.EventType, model.EventLocation, model.EventDateTime, model.EventDescription,
@@ -165,10 +175,9 @@ namespace GMS___Web_Client.Controllers
                         return RedirectToAction("SearchEvents", "Event", new { name = this.Session["characterName"] });
                     } else
                     {
-                        return RedirectToAction("UpdateEventForm","Event", new { name = this.Session["characterName"], eventID = model.eventID, error = true });
+                        return RedirectToAction("UpdateEventForm", "Event", new { name = this.Session["characterName"], eventID = model.eventID, error = true });
                     }
-                }
-                else
+                } else
                 {
                     ViewBag.Error = "Invalid information was given.";
                     var eventTypes = GetAllEventTypes();

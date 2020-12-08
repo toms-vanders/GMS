@@ -1,8 +1,9 @@
-﻿function getAllTheEvents(guildID) {
+﻿function getAllTheEvents(guildID, userToken) {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: "GET",
             url: "https://localhost:44377/api/guild/" + guildID,
+            headers: { 'Authorization': userToken },
             data: {
 
             },
@@ -17,20 +18,21 @@
     })
 }
 
-function getAndDisplayEventsCaller(eventTypes, keywords, characterName, guildID) {
-    getAllTheEvents(guildID)
+function getAndDisplayEventsCaller(eventTypes, keywords, characterName, guildID, userToken) {
+    getAllTheEvents(guildID, userToken)
         .then((data) => {
-            displayEventsTable(data, characterName, guildID, eventTypes, keywords)
+            displayEventsTable(data, characterName, guildID, eventTypes, keywords, userToken)
         })
         .catch((error) => {
             alert("Failed to get any events.");
         })
 }
 
-function displayEventsTable(allEvents, characterName, guildID, eventTypes, keywords) {
+function displayEventsTable(allEvents, characterName, guildID, eventTypes, keywords, userToken) {
     $.ajax({
         type: "GET",
         url: "https://localhost:44377/api/guild/" + guildID + "/character/" + characterName,
+        headers: { 'Authorization': userToken },
         data: {
 
         },
@@ -92,7 +94,7 @@ function displayEventsTable(allEvents, characterName, guildID, eventTypes, keywo
     })
 }
 
-function joinEvent(eventID, characterName, characterRole, signUpDateTime, rowId) {
+function joinEvent(eventID, characterName, characterRole, signUpDateTime, rowId, userToken) {
     var EventCharacter = {};
     EventCharacter.eventID = parseInt(eventID);
     EventCharacter.characterName = characterName;
@@ -103,7 +105,7 @@ function joinEvent(eventID, characterName, characterRole, signUpDateTime, rowId)
         type: 'POST',
         contentType: 'application/json; charset=utf-8',
         url: 'https://localhost:44377/api/guild/events/join/',
-        headers: { 'x-rowid': rowId },
+        headers: { 'x-rowid': rowId, 'Authorization': userToken },
         data: JSON.stringify(EventCharacter),
         dataType: 'json',
         success: function () {
@@ -117,11 +119,11 @@ function joinEvent(eventID, characterName, characterRole, signUpDateTime, rowId)
     })
 }
 
-function cancelParticipation(eventID, characterName) {
+function cancelParticipation(eventID, characterName, userToken) {
     $.ajax({
         type: 'DELETE',
         url: 'https://localhost:44377/api/guild/events/withdraw',
-        headers: { 'x-eventid': eventID, 'x-charactername': characterName },
+        headers: { 'x-eventid': eventID, 'x-charactername': characterName, 'Authorization': userToken },
         success: function () {
             alert('Event participation was cancelled');
         }, error: function () {
@@ -130,11 +132,11 @@ function cancelParticipation(eventID, characterName) {
     })
 }
 
-function removeEvent(eventID, rowId) {
+function removeEvent(eventID, rowId, userToken) {
     $.ajax({
         type: 'DELETE',
         url: 'https://localhost:44377/api/guild/events/remove/',
-        headers: { 'x-eventid': eventID, 'x-rowid': rowId },
+        headers: { 'x-eventid': eventID, 'x-rowid': rowId, 'Authorization': userToken },
         success: function () {
             alert("The event was removed.");
         }, error: function () {

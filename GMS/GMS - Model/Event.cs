@@ -1,8 +1,5 @@
-﻿using NodaTime;
-using System;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GMS___Model
 {
@@ -26,7 +23,7 @@ namespace GMS___Model
             this.WaitingList = new ArrayList();
         }
 
-        public Event(int eventID, string guildId, string name, string description, string eventType, string location, DateTime date,  int maxNumberOfCharacters, Byte[] rowId)
+        public Event(int eventID, string guildId, string name, string description, string eventType, string location, DateTime date, int maxNumberOfCharacters, Byte[] rowId)
         {
             this.EventID = eventID;
             this.Name = name;
@@ -67,5 +64,10 @@ namespace GMS___Model
         public ArrayList WaitingList { get; set; }
         public Byte[] RowId { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Event @event &&
+                   EventID == @event.EventID;
+        }
     }
 }

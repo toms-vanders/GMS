@@ -1,8 +1,6 @@
 ﻿using GMS___Data_Access_Layer;
 using GMS___Model;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GMS___Business_Layer
 {
@@ -23,6 +21,11 @@ namespace GMS___Business_Layer
         public bool ContainsEntry(int eventId, string characterName)
         {
             return eventCharacterAccess.ContainsEntry(eventId, characterName);
+        }
+        
+        public int ParticipantsInEvent(int eventID)
+        {
+            return eventCharacterAccess.participantsInEvent(eventID);
         }
     }
 }
