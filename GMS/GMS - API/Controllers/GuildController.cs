@@ -192,6 +192,8 @@ namespace GMS___API.Controllers
         }
 
         [HttpDelete("events/withdraw/")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<string> DeleteEventCharacter([FromHeader(Name = "x-eventid")] int eventID, [FromHeader(Name = "x-charactername")] string characterName)
         {
             // Check if EventCharacter contains entry with given eventID and characterName,
@@ -239,6 +241,8 @@ namespace GMS___API.Controllers
         }
 
         [HttpDelete("events/remove/")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<string> DeleteEvent([FromHeader(Name = "x-eventid")] int eventID, [FromHeader(Name = "x-rowid")] byte[] rowId)
         {
             // Get the Event from database, and compare the rowIds
