@@ -10,7 +10,6 @@ function loadCharacters(apiToken) {
         },
         dataType: "json",
         success: function (data) {
-            console.log(data);
             for (var t = 0; t < data.length; t++) {
                 var character = "<a href=\"/User/CharacterPage?name=" + data[t].replace(/ /g, '%20') + "\" class=\"list-group-item list-group-item-action flex-column align-items-start\" >";
                 character += "<div class=\"d-flex w-100 justify-content-between\" >";
@@ -27,7 +26,7 @@ function loadCharacters(apiToken) {
             loadCharactersCore(data, apiToken);
         },
         error: function (error) {
-            console.log(character);
+            //console.log(character);
         },
     })
 };
@@ -52,7 +51,7 @@ function loadCharactersCore(characters, apiToken) {
             }
         },
         error: function (error) {
-            console.log(character);
+            //console.log(character);
         },
     })
 };
