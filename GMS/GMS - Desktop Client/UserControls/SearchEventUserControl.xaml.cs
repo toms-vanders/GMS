@@ -51,8 +51,10 @@ namespace GMS___Desktop_Client.UserControls
 
                 eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
                 eventGrid.ItemsSource = eventList;
+                
                 eventGrid.Items.Refresh();
                 GetJoinedEventsAsync();
+
                 eventSearchBox.IsReadOnly = false;
                 filterByEventTypeBox.IsEnabled = true;
                 filterByRoleBox.IsEnabled = true;
@@ -163,7 +165,7 @@ namespace GMS___Desktop_Client.UserControls
                 string eventName = SelectedEventID().Name;
                 byte[] rowID = SelectedEventID().RowId;
 
-                Window joinEventWindow = new JoinEventWindow(eventID, eventName, rowID);
+                Window joinEventWindow = new JoinEventWindow(this, eventID, eventName, rowID);
                 joinEventWindow.ShowDialog();
             }
             else
@@ -171,6 +173,7 @@ namespace GMS___Desktop_Client.UserControls
                 if (MessageBox.Show("You are already part of this event, do you wish to cancel your participation?", "Already participating", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     CancelParticipation(SelectedEventID().EventID, (string)App.Current.Properties["SelectedCharacter"]);
+                    FillDataGrid();
                 }
             }
         }
