@@ -8,7 +8,7 @@ namespace GMS___Test
     [TestClass]
     public class ModelTest
     {
-        [TestMethod]
+        /*[TestMethod]
         public void TestUser()
         {
             int userID = 43;
@@ -46,7 +46,7 @@ namespace GMS___Test
             Assert.AreEqual("lemon88@ucn.dk", user4.EmailAddress);
             Assert.AreEqual("password12345", user4.Password);
             Assert.AreEqual("BASIC_USER", user4.UserRole);
-        }
+        }*/
 
         [TestMethod]
         public void TestItem()

@@ -10,21 +10,15 @@ namespace GMS___Data_Access_Layer
 {
     public class AuctionAccess : AuctionAccessIF
     {
-        IDbConnection GetConnection()
-        {
-            return new SqlConnection("Server=hildur.ucn.dk;Database=dmaj0919_1081496;User Id=dmaj0919_1081496;Password=Password1!;");
-        }
 
         public int InsertAuction(Auction action)
         {
             int affectedRows = -1;
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 try
                 {
-                    string sqlCommand = "INSERT INTO Auction (creatorID, eventID, itemID)";
-                    sqlCommand += " VALUES (@CreatorID, @EventID, @ItemID)";
-                    affectedRows = conn.Execute(sqlCommand, action);
+                    affectedRows = conn.Execute("INSERT INTO Auction (creatorID, eventID, itemID) VALUES (@CreatorID, @EventID, @ItemID)", action);
                 } catch (SqlException ex)
                 {
                     Console.WriteLine(ex.ToString()); // TODO change exception handling
@@ -34,13 +28,13 @@ namespace GMS___Data_Access_Layer
         }
         public Auction GetAuctionFromDatabase(int auctionID)
         {
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 // TODO this is not the best way to pass single parameter, not the best way to pass multiple parameters in a query
                 List<Auction> auctions = conn.Query<Auction>("SELECT * FROM Auction WHERE auctionID in @ids", new { ids = new[] { auctionID } }).ToList();
                 if (auctions.Count() != 1)
                 {
-                    return (Auction)null;
+                    return null;
                 } else
                 {
                     return auctions[0];
@@ -50,7 +44,7 @@ namespace GMS___Data_Access_Layer
         public int DeleteByCreatorID(int CreatorID)
         {
             int affectedRows = -1;
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 try
                 {

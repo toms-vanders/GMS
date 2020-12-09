@@ -2,7 +2,6 @@
 using GMS___Web_Client.Models;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
 
@@ -31,7 +30,7 @@ namespace GMS___Web_Client.Controllers
                         return RedirectToAction("LogIn", "Auth");
                     }
                     return RedirectToAction("ApiForm", "User");
-                }    catch (Exception)
+                } catch (Exception)
                 {
                     return RedirectToAction("ApiForm", "User");
                 }

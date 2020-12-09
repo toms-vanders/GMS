@@ -1,6 +1,6 @@
-﻿using System.Security.Claims;
+﻿using AuthenticationService.Models;
 using System.Collections.Generic;
-using AuthenticationService.Models;
+using System.Security.Claims;
 
 namespace AuthenticationService.Managers
 {

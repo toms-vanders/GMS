@@ -1,18 +1,17 @@
 ﻿using GMS___Model;
-using Newtonsoft.Json;
-using System;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Windows.Navigation;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Reflection;
-using System.Threading.Tasks;
+using System.Windows.Navigation;
 
 namespace GMS___Desktop_Client
 {
@@ -26,10 +25,12 @@ namespace GMS___Desktop_Client
         public LogInScreen()
         {
             InitializeComponent();
-            client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44377/");
+            client = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:44377/")
+            };
             var path = Environment.CurrentDirectory;
-            var uriPath = new Uri(path.Substring(0,path.LastIndexOf("bin"))+ @"\Images\bg.png", UriKind.RelativeOrAbsolute);
+            var uriPath = new Uri(path.Substring(0, path.LastIndexOf("bin")) + @"\Images\bg.png", UriKind.RelativeOrAbsolute);
             this.Resources["BackgroundPath"] = new BitmapImage(uriPath);
         }
 
@@ -101,8 +102,7 @@ namespace GMS___Desktop_Client
                 };
                 MainWindow.Show();
                 Close();
-            } 
-            else
+            } else
             {
                 await this.ShowMessageAsync("Logging in", "Logging in failed.");
                 IncorrectCredentialsTextBlock.Text = "Wrong username or password. Try again.";

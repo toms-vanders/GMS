@@ -6,14 +6,9 @@ namespace GMS___Data_Access_Layer
 {
     public class EventCharacterWaitingListAccess
     {
-        IDbConnection GetConnection()
-        {
-            return new SqlConnection("Server=hildur.ucn.dk;Database=dmaj0919_1081496;User Id=dmaj0919_1081496;Password=Password1!;");
-        }
-
         public bool DeleteEventCharacterByEventIDAndCharacterName(int eventID, string characterName)
         {
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 int rowsAffected = conn.Execute(@"DELETE FROM EventCharacterWaitingList WHERE eventID = @EventID AND characterName = @CharacterName", new { EventID = eventID, CharacterName = characterName });
 
