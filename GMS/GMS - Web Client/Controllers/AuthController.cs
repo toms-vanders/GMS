@@ -12,7 +12,6 @@ namespace GMS___Web_Client.Controllers
     {
         public static string EndPoint = "https://localhost:44377/";
 
-
         // GET: Auth
         public ActionResult Index()
         {

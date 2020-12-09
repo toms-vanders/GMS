@@ -66,6 +66,26 @@ namespace GMS___API.Controllers
             }
         }
 
+        [HttpGet("events/{eventID}/participants")]
+        public ActionResult<int> GetNumberOfSignedParticipants(string eventId)
+        {
+            IAuthService authService = new JWTService(clientSettings.Value.SecretKey);
+            string token = HttpContext.Request.Headers["Authorization"];
+            try
+            {
+                if (!authService.IsTokenValid(token))
+                {
+                    return BadRequest("Unauthorized Access");
+                } else
+                {
+                    return eventCharacterProcessor.ParticipantsInEvent(Int32.Parse(eventId));
+                }
+            } catch
+            {
+                return BadRequest("Unauthorized Access");
+            }
+        }
+
         [HttpGet("{guildId}/type/{type}")]
         public ActionResult<List<Event>> GetByType(string guildId, string type)
         {
