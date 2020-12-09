@@ -4,6 +4,21 @@
 
 @Scripts.Render("~/bundles/jquery")
 <script src="~/JavaScript/user.js"></script>
+<style>
+    .rotate {
+        animation: rotation 4s infinite linear;
+    }
+
+    @@keyframes rotation {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(359deg);
+        }
+    }
+</style>
 
 <div class="row">
     <div class="col-8 list-group">
@@ -25,9 +40,8 @@
     <div id="characters" class="col-md-4 list-group">
         <h5>Your characters</h5>
     </div>
-    <div class="toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; left: 50%; bottom: 15%; transform: translate(-50%, 0px); z-index: 9999;">
+    <div class="toast" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; left: 50%; bottom: 15%; transform: translate(-50%, 0px); z-index: 9999;">
         <div class="toast-header">
-            <img src="https://static.staticwars.com/quaggans/summer.jpg" class="rounded mr-2" style="width:50px; height:50px;" alt="...">
             <strong class="mr-auto">GMS</strong>
             <small class="text-muted">just now</small>
             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -35,7 +49,10 @@
             </button>
         </div>
         <div class="toast-body">
-            Your characters are loading.
+            <div class="d-flex w-100 justify-content-between">
+                <p id="toastText" style="padding-top: 25px">Your character details are loading...</p>
+                <img src="~/Content/images/summer_quaggan.png" class="rotate" style="width:80px;height:80px;margin-left:10px" alt="Aloha quaggan">
+            </div>
         </div>
     </div>
 </div>
