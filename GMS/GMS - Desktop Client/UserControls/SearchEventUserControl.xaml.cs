@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
+using MessageBoxImage = GMS___Desktop_Client.WpfMessageBox.MsgCl.MessageBoxImage;
 
 namespace GMS___Desktop_Client.UserControls
 {
@@ -133,12 +134,11 @@ namespace GMS___Desktop_Client.UserControls
             var response = client.DeleteAsync("api/Guild/events/remove/" + selectedEvent.EventID).Result;
             if (response.IsSuccessStatusCode)
             {
-                MessageBox.Show("Event " + selectedEvent.EventID + " deleted!");
+                WpfMessageBox.Show("Successfully deleted", "Event " + selectedEvent.EventID + " deleted!", MessageBoxButton.OK, MessageBoxImage.Information);
                 FillDataGrid();
             } else
             {
-                MessageBox.Show("Error Code" +
-                response.StatusCode + " : Message - " + response.ReasonPhrase);
+                WpfMessageBox.Show("Error", "Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -161,7 +161,7 @@ namespace GMS___Desktop_Client.UserControls
                 joinEventWindow.ShowDialog();
             } else
             {
-                if (MessageBox.Show("You are already part of this event, do you wish to cancel your participation?", "Already participating", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (WpfMessageBox.Show("Already participating", "You are already part of this event, do you wish to cancel your participation?",  MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     CancelParticipation(SelectedEventID().EventID, (string)App.Current.Properties["SelectedCharacter"]);
                     FillDataGrid();
@@ -187,10 +187,10 @@ namespace GMS___Desktop_Client.UserControls
             var response = await client.DeleteAsync("api/guild/events/withdraw");
             if (response.IsSuccessStatusCode)
             {
-                MessageBox.Show("You have successfully cancelled your partition in the event", "Cancelled participation", MessageBoxButton.OK, MessageBoxImage.Information);
+                WpfMessageBox.Show("Cancelled participation", "You have successfully cancelled your partition in the event", MessageBoxButton.OK, MessageBoxImage.Information);
             } else
             {
-                MessageBox.Show("There seems to have been an error cancelling your participation please try again later.", "Error cancelling participation", MessageBoxButton.OK, MessageBoxImage.Error);
+                WpfMessageBox.Show("Error cancelling participation", "There seems to have been an error cancelling your participation please try again later.", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }

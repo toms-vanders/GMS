@@ -11,7 +11,6 @@
         <ImageBrush x:Key="GW2Background" ImageSource="{DynamicResource BackgroundPath}" Stretch="Fill" Opacity="0.3" />
         <Style x:Key="GridStyle1" TargetType="{x:Type Grid}">
             <Setter Property="Background" Value="{StaticResource GW2Background}" />
-            
         </Style>
     </mah:MetroWindow.Resources>
     <Grid Style="{StaticResource GridStyle1}">
@@ -36,7 +35,6 @@
         
         <!-- Row 1 -->
         <TextBlock Text="Username" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" />
-
 
         <!-- Row 2-->
         <TextBox x:Name="userEmailText" Background="#162238" Grid.Column="1" Grid.Row="2" />

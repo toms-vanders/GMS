@@ -6,6 +6,7 @@ using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
+using MessageBoxImage = GMS___Desktop_Client.WpfMessageBox.MsgCl.MessageBoxImage;
 
 namespace GMS___Desktop_Client
 {
@@ -50,16 +51,15 @@ namespace GMS___Desktop_Client
 
                 if (response.IsSuccessStatusCode)
                 {
-                    await this.ShowMessageAsync("Successfully joined event", "You have successfully joined this event!", MessageDialogStyle.Affirmative);
+                    WpfMessageBox.Show("Successfully joined event", "You have successfully joined this event!", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 } else
                 {
-                    await this.ShowMessageAsync("Something went wrong",
-                        "An error has occured while joining the event\nError code : " + response.StatusCode + "\n Error message : " + response.ReasonPhrase, MessageDialogStyle.Affirmative);
+                    WpfMessageBox.Show("Something went wrong", "An error has occured while joining the event\n Error code : " + response.ReasonPhrase, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             } else
             {
-                await this.ShowMessageAsync("No role specified", "Please fill in your role for this event!", MessageDialogStyle.Affirmative);
+                WpfMessageBox.Show("No role specified", "Please fill in your role for this event!", MessageBoxButton.OK, MessageBoxImage.Question);
             }
             DataGrid.FillDataGrid();
             Close();
