@@ -49,7 +49,7 @@
         <TextBox x:Name ="dataGridMessage" Text="No event data has been found" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Center" Visibility="Hidden" IsEnabled="False"/>
         <!-- Event DataGrid -->
         <DataGrid Name="eventGrid" AlternatingRowBackground="#141D2E" Background="#202B43" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="True" AutoGeneratingColumn="EventGrid_AutoGeneratingColumn"
-                  HorizontalAlignment="Left" IsReadOnly="True" >
+                  HorizontalAlignment="Left" IsReadOnly="True" ColumnWidth="*">
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
                     <Setter Property="Background" Value="#202B43"></Setter>

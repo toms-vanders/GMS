@@ -18,7 +18,6 @@ namespace GMS___Desktop_Client.UserControls
     /// </summary>
     public partial class SearchEventUserControl : UserControl
     {
-        private readonly BackgroundWorker worker = new BackgroundWorker();
         private readonly HttpClient client;
         IEnumerable<Event> eventList;
         IEnumerable<Event> joinedEvents;
@@ -27,8 +26,6 @@ namespace GMS___Desktop_Client.UserControls
         public SearchEventUserControl()
         {
             InitializeComponent();
-            worker.DoWork += worker_DoWork;
-            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
 
             filterByEventTypeBox.ItemsSource = Enum.GetValues(typeof(EventType.EventTypes)).Cast<EventType.EventTypes>();
 
@@ -50,18 +47,19 @@ namespace GMS___Desktop_Client.UserControls
         {
             if (!string.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
             {
+                string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
+
+                eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
+                eventGrid.ItemsSource = eventList;
+                
+                eventGrid.Items.Refresh();
+                GetJoinedEventsAsync();
+
                 eventSearchBox.IsReadOnly = false;
                 filterByEventTypeBox.IsEnabled = true;
                 filterByRoleBox.IsEnabled = true;
                 eventGrid.Visibility = Visibility.Visible;
                 dataGridMessage.Visibility = Visibility.Hidden;
-
-                string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
-
-                eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
-                eventGrid.ItemsSource = eventList;
-                eventGrid.Items.Refresh();
-                GetJoinedEventsAsync();
             }
         }
 
@@ -132,7 +130,6 @@ namespace GMS___Desktop_Client.UserControls
             eventGrid.Columns[0].DisplayIndex = eventGrid.Columns.Count - 1;
             eventGrid.Columns[1].DisplayIndex = eventGrid.Columns.Count - 1;
             eventGrid.Columns[2].DisplayIndex = eventGrid.Columns.Count - 1;
-
         }
 
         private void DeleteEventButton_Click(object sender, RoutedEventArgs e)
@@ -168,23 +165,17 @@ namespace GMS___Desktop_Client.UserControls
                 string eventName = SelectedEventID().Name;
                 byte[] rowID = SelectedEventID().RowId;
 
-                Window joinEventWindow = new JoinEventWindow(eventID, eventName, rowID);
+                Window joinEventWindow = new JoinEventWindow(this, eventID, eventName, rowID);
                 joinEventWindow.ShowDialog();
-
-
-
-                // runs a background worker that loads events
-                //worker.RunWorkerAsync();
             }
             else
             {
                 if (MessageBox.Show("You are already part of this event, do you wish to cancel your participation?", "Already participating", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     CancelParticipation(SelectedEventID().EventID, (string)App.Current.Properties["SelectedCharacter"]);
+                    FillDataGrid();
                 }
             }
-
-
         }
 
         private Event SelectedEventID()
@@ -196,16 +187,6 @@ namespace GMS___Desktop_Client.UserControls
         {
             var response = await client.GetStringAsync("api/guild/" + App.Current.Properties["CharacterGuildID"] + "/character/" + App.Current.Properties["SelectedCharacter"]);
             joinedEvents = JsonConvert.DeserializeObject<IEnumerable<Event>>(response);
-        }
-
-        private void worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            FillDataGrid();
-        }
-
-        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            
         }
 
         private async void CancelParticipation(int EventID, string characterName)

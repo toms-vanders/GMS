@@ -78,7 +78,7 @@
                 <input id="submitButton" type="submit" class="btn btn-outline-secondary" value="Search" onclick="onSearchClick()" />
             </div>
         </div>
-        <div class="col">
+        <div class="col text-dark">
             @Html.DropDownListFor(model => model.EventType, Model.EventTypes, new { @class = "mul-select-types", @multiple = "multiple", @id = "eventTypesSelectBox" })
             <!-- TODO Html.DropDownListFor Roles -->
         </div>
