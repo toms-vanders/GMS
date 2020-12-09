@@ -131,6 +131,32 @@ namespace GMS___API.Controllers
             }
         }
 
+        [HttpPost("events/update")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Event> UpdateEvent([FromBody] Event e)
+        {
+            IAuthService authService = new JWTService(clientSettings.Value.SecretKey);
+            string token = HttpContext.Request.Headers["Authorization"];
+            try
+            {
+                if (!authService.IsTokenValid(token))
+                {
+                    return BadRequest("Unauthorized Access");
+                } else
+                {
+                    if (eventProcessor.UpdateEvent(e.EventID, e.Name, e.EventType, e.Location, e.Date, e.Description, e.MaxNumberOfCharacters, e.GuildID,e.RowId))
+                    {
+                        return e;
+                    }
+                    return BadRequest("Invalid data");
+                }
+            } catch
+            {
+                return BadRequest("Unauthorized Access");
+            }
+        }
+
         [HttpPost("events/join")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -166,6 +192,8 @@ namespace GMS___API.Controllers
         }
 
         [HttpDelete("events/withdraw/")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<string> DeleteEventCharacter([FromHeader(Name = "x-eventid")] int eventID, [FromHeader(Name = "x-charactername")] string characterName)
         {
             // Check if EventCharacter contains entry with given eventID and characterName,
@@ -213,6 +241,8 @@ namespace GMS___API.Controllers
         }
 
         [HttpDelete("events/remove/")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<string> DeleteEvent([FromHeader(Name = "x-eventid")] int eventID, [FromHeader(Name = "x-rowid")] byte[] rowId)
         {
             // Get the Event from database, and compare the rowIds

@@ -30,11 +30,17 @@ namespace GMS___Business_Layer
             {
                 return null;
             }
-            if (BCrypt.Net.BCrypt.Verify(password, user.Password))
+            try{
+                if (BCrypt.Net.BCrypt.Verify(password, user.Password))
+                {
+                    user.UserName = username;
+                    return user;
+                }
+            } catch (Exception)
             {
-                user.UserName = username;
-                return user;
+                return null;
             }
+            
             return null;
         }
         public Boolean InsertApiKey(string emailAddress, string apiKey)

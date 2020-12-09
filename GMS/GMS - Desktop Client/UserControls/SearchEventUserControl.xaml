@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:GMS___Desktop_Client.UserControls"
              xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="AliceBlue">
+             d:DesignHeight="450" d:DesignWidth="800" Background="#202B43">
     <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
@@ -24,10 +24,10 @@
         </Grid.RowDefinitions>
 
         <!-- Search Box -->
-        <wpfx:WatermarkTextBox x:Name="eventSearchBox" Grid.Column="1" Grid.Row="1" Watermark="Search Event" TextChanged="EventSearchBox_TextChanged"/>
+        <wpfx:WatermarkTextBox x:Name="eventSearchBox" Background="#354056"  Grid.Column="1" Grid.Row="1" Watermark="Search Event" TextChanged="EventSearchBox_TextChanged"/>
 
         <!-- Event Filter Box -->
-        <wpfx:CheckComboBox x:Name="filterByEventTypeBox" Grid.Column="2" Grid.Row="1" Delimiter="; " IsSelectAllActive="True" ItemSelectionChanged="FilterByEventTypeBox_ItemSelectionChanged"/>
+        <wpfx:CheckComboBox x:Name="filterByEventTypeBox" Background="#354056" Grid.Column="2" Grid.Row="1" Delimiter="; " IsSelectAllActive="True" ItemSelectionChanged="FilterByEventTypeBox_ItemSelectionChanged"/>
 
         <TextBlock Text="Select event type" IsHitTestVisible="False" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Margin=" 5 0 0 0">
             <TextBlock.Style>
@@ -43,13 +43,24 @@
         </TextBlock>
 
         <!-- Role Filter Box -->
-        <wpfx:CheckComboBox x:Name="filterByRoleBox" Grid.Column="3" Grid.Row="1" Text="All roles" />
+        <wpfx:CheckComboBox x:Name="filterByRoleBox" Background="#354056" Grid.Column="3" Grid.Row="1" Text="All roles" />
 
         <!-- Empty DataGridLabel -->
         <TextBox x:Name ="dataGridMessage" Text="No event data has been found" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Center" Visibility="Hidden" IsEnabled="False"/>
         <!-- Event DataGrid -->
-        <DataGrid Name="eventGrid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="True" AutoGeneratingColumn="EventGrid_AutoGeneratingColumn"
-                  HorizontalAlignment="Left" IsReadOnly="True" >
+        <DataGrid Name="eventGrid" AlternatingRowBackground="#141D2E" Background="#202B43" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="True" AutoGeneratingColumn="EventGrid_AutoGeneratingColumn"
+                  HorizontalAlignment="Left" IsReadOnly="True" ColumnWidth="*">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="#202B43"></Setter>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Height" Value="45"></Setter>
+                    <Setter Property="Background" Value="#202B43"></Setter>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

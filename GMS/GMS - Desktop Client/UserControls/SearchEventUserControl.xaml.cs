@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.ComponentModel;
 
 namespace GMS___Desktop_Client.UserControls
 {
@@ -32,7 +33,7 @@ namespace GMS___Desktop_Client.UserControls
             {
                 BaseAddress = new Uri("https://localhost:44377/")
             };
-            client.DefaultRequestHeaders.Add("Authorization",(string)App.Current.Properties["AuthToken"]);
+            client.DefaultRequestHeaders.Add("Authorization", (string)App.Current.Properties["AuthToken"]);
             eventSearchBox.IsReadOnly = true;
             filterByEventTypeBox.IsEnabled = false;
             filterByRoleBox.IsEnabled = false;
@@ -46,17 +47,19 @@ namespace GMS___Desktop_Client.UserControls
         {
             if (!string.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
             {
+                string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
+
+                eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
+                eventGrid.ItemsSource = eventList;
+                
+                eventGrid.Items.Refresh();
+                GetJoinedEventsAsync();
+
                 eventSearchBox.IsReadOnly = false;
                 filterByEventTypeBox.IsEnabled = true;
                 filterByRoleBox.IsEnabled = true;
                 eventGrid.Visibility = Visibility.Visible;
                 dataGridMessage.Visibility = Visibility.Hidden;
-
-                string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
-
-                eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
-                eventGrid.ItemsSource = eventList;
-                GetJoinedEventsAsync();
             }
         }
 
@@ -73,7 +76,7 @@ namespace GMS___Desktop_Client.UserControls
 
         private void FilterEvents()
         {
-            if(eventList !=null)
+            if (eventList != null)
             {
                 var filterByName = eventList.Where(ev => ev.Name.IndexOf(eventSearchBox.Text, (StringComparison)CompareOptions.IgnoreCase) >= 0);
 
@@ -88,15 +91,17 @@ namespace GMS___Desktop_Client.UserControls
                     }
 
                     eventGrid.ItemsSource = filterByEventType;
-                } else
+                }
+                else
                 {
                     eventGrid.ItemsSource = filterByName;
                 }
-            } else
+            }
+            else
             {
                 eventGrid.Visibility = Visibility.Hidden;
             }
-            
+
 
         }
 
@@ -108,25 +113,23 @@ namespace GMS___Desktop_Client.UserControls
         private void EventGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
 
-            if (e.PropertyName == "GuildID" || e.PropertyName == "RowId" ||
-                e.PropertyName == "Participants" || e.PropertyName == "WaitingList")
+            if (e.PropertyName == "GuildID" || e.PropertyName == "RowId" || e.PropertyName == "Description" ||
+                e.PropertyName == "Participants" || e.PropertyName == "WaitingList" || e.PropertyName == "MaxNumberOfCharacters")
             {
                 e.Cancel = true;
-            } else if (e.PropertyName == "EventID")
+            }
+            else if (e.PropertyName == "EventID")
             {
                 e.Column.Header = "ID";
-            } else if (e.PropertyName == "EventType")
+            }
+            else if (e.PropertyName == "EventType")
             {
                 e.Column.Header = "Event Type";
-            } else if (e.PropertyName == "MaxNumberOfCharacters")
-            {
-                e.Column.Header = "Max num. of Players";
             }
 
             eventGrid.Columns[0].DisplayIndex = eventGrid.Columns.Count - 1;
             eventGrid.Columns[1].DisplayIndex = eventGrid.Columns.Count - 1;
             eventGrid.Columns[2].DisplayIndex = eventGrid.Columns.Count - 1;
-
         }
 
         private void DeleteEventButton_Click(object sender, RoutedEventArgs e)
@@ -139,7 +142,8 @@ namespace GMS___Desktop_Client.UserControls
             {
                 MessageBox.Show("Event " + selectedEvent.EventID + " deleted!");
                 FillDataGrid();
-            } else
+            }
+            else
             {
                 MessageBox.Show("Error Code" +
                 response.StatusCode + " : Message - " + response.ReasonPhrase);
@@ -148,7 +152,8 @@ namespace GMS___Desktop_Client.UserControls
 
         private void EditEventButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Window editEventWindow = new EditEventWindow(this,SelectedEventID());
+            editEventWindow.ShowDialog();
         }
 
         private void JoinEventButton_Click(object sender, RoutedEventArgs e)
@@ -160,17 +165,17 @@ namespace GMS___Desktop_Client.UserControls
                 string eventName = SelectedEventID().Name;
                 byte[] rowID = SelectedEventID().RowId;
 
-                Window joinEventWindow = new JoinEventWindow(eventID, eventName, rowID);
+                Window joinEventWindow = new JoinEventWindow(this, eventID, eventName, rowID);
                 joinEventWindow.ShowDialog();
-            } else
+            }
+            else
             {
-                if (MessageBox.Show("You are already part of this event, do you wish to cancel your participation?","Already participating",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (MessageBox.Show("You are already part of this event, do you wish to cancel your participation?", "Already participating", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    CancelParticipation(SelectedEventID().EventID,(string)App.Current.Properties["SelectedCharacter"]);
+                    CancelParticipation(SelectedEventID().EventID, (string)App.Current.Properties["SelectedCharacter"]);
+                    FillDataGrid();
                 }
             }
-
-            
         }
 
         private Event SelectedEventID()
@@ -184,15 +189,16 @@ namespace GMS___Desktop_Client.UserControls
             joinedEvents = JsonConvert.DeserializeObject<IEnumerable<Event>>(response);
         }
 
-        private async void CancelParticipation(int EventID,string characterName)
+        private async void CancelParticipation(int EventID, string characterName)
         {
             client.DefaultRequestHeaders.Add("x-eventid", "" + EventID);
             client.DefaultRequestHeaders.Add("x-charactername", characterName);
             var response = await client.DeleteAsync("api/guild/events/withdraw");
             if (response.IsSuccessStatusCode)
             {
-                MessageBox.Show("You have successfully cancelled your partition in the event","Cancelled participation",MessageBoxButton.OK,MessageBoxImage.Information);
-            } else
+                MessageBox.Show("You have successfully cancelled your partition in the event", "Cancelled participation", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
             {
                 MessageBox.Show("There seems to have been an error cancelling your participation please try again later.", "Error cancelling participation", MessageBoxButton.OK, MessageBoxImage.Error);
             }

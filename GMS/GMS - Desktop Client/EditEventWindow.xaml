@@ -1,0 +1,169 @@
+﻿<mah:MetroWindow x:Class="GMS___Desktop_Client.EditEventWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="Edit Event Window" Height="400" Width="650">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Text="Editing event" 
+                   Grid.Column="1" 
+                   Grid.Row="1" 
+                   FontSize="30"
+                   Margin="0,0,0,10"
+                   Padding="0 0 0 0"
+                   Grid.ColumnSpan="3" />
+
+        <!-- Event datetime-->
+        <TextBlock Text="Event date and time" 
+                   Grid.Column="3" 
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   Margin="0,0,10,5"/>
+
+        <mah:DateTimePicker x:Name="eventDateTime" 
+                 Grid.Column="4" 
+                 Grid.Row="2" 
+                 VerticalContentAlignment="Center"
+                 HorizontalAlignment="Left" 
+                 Width="150"
+                 Height="25"
+                 Margin="0,0,0,5"/>
+
+        <!-- Event ID-->
+        <TextBlock Text="Event ID" 
+                   Grid.Column="1" 
+                   Grid.Row="2" 
+                   Margin="0,0,0,5"/>
+
+        <TextBox x:Name="eventID" 
+                 Grid.Column="2" 
+                 Grid.Row="2" 
+                 VerticalContentAlignment="Center"
+                 HorizontalAlignment="Left" 
+                 Width="150" 
+                 Margin="0,0,0,5"
+                 IsReadOnly="True"/>
+
+        <!-- Event Name-->
+        <TextBlock Text="Event name" 
+                   Grid.Column="3" 
+                   Grid.Row="3"
+                   Margin="0,0,0,5"/>
+
+        <TextBox x:Name="eventName" 
+                 Grid.Column="4" 
+                 Grid.Row="3" 
+                 VerticalContentAlignment="Center"
+                 HorizontalAlignment="Left" 
+                 Width="150"
+                 Margin="0,0,0,5"/>
+
+        <!-- Event type-->
+        <TextBlock Text="Event type" 
+                   Grid.Column="1" 
+                   Grid.Row="3"
+                   Margin="0,0,0,5"/>
+
+        <TextBox x:Name="eventType" 
+                 Grid.Column="2" 
+                 Grid.Row="3" 
+                 VerticalContentAlignment="Center"
+                 HorizontalAlignment="Left" 
+                 Width="150"
+                 Margin="0,0,0,5"/>
+
+        <!-- Event location-->
+        <TextBlock Text="Event location" 
+                   Grid.Column="3" 
+                   Grid.Row="4"
+                   Margin="0,0,0,5"/>
+
+        <TextBox x:Name="eventLocation" 
+                 Grid.Column="4" 
+                 Grid.Row="4" 
+                 VerticalContentAlignment="Center"
+                 HorizontalAlignment="Left" 
+                 Width="150"
+                 Margin="0,0,0,5"/>
+
+        <!-- Event max participants-->
+        <TextBlock Text="Max number of participants" 
+                   Grid.Column="1" 
+                   Grid.Row="4"
+                   Margin="0,0,5,5"/>
+
+        <mah:NumericUpDown x:Name="eventMaxParticipants" 
+                 Grid.Column="2" 
+                 Grid.Row="4" 
+                 VerticalContentAlignment="Center"
+                 HorizontalAlignment="Left" 
+                 Width="150"
+                 Margin="0,0,5,5"/>
+
+        <!-- Event description-->
+        <TextBlock Text="Event description" 
+                   Grid.Column="1" 
+                   Grid.Row="5"
+                   Margin="0,0,0,5"/>
+
+        <TextBox x:Name="eventDescription" 
+                 Grid.Column="1" 
+                 Grid.Row="6" 
+                 VerticalContentAlignment="Top"
+                 Grid.ColumnSpan="4"
+                 Grid.RowSpan="2"
+                 HorizontalAlignment="Center" 
+                 Width="500"
+                 Height="100"
+                 Margin="0,0,0,5"/>
+        <!-- Buttons -->
+        <!-- Buttons -->
+        <Button x:Name="editEventButton" 
+                Grid.Column="3" 
+                Grid.Row="8" 
+                Content="Save"
+                Margin="16,0,0,0" 
+                Width="100" 
+                HorizontalAlignment="Left" 
+                Click="EditEventButton_Click" Height="27" VerticalAlignment="Top" />
+        <Button x:Name="cancelEventEditFormButton" 
+                Grid.Column="4" 
+                Grid.Row="8" 
+                Content="Cancel"
+                Margin="0 0 0 0" 
+                Width="100" 
+                HorizontalAlignment="Center" 
+                Click="CancelEventEditFormButton_Click"/>
+
+    </Grid>
+</mah:MetroWindow>

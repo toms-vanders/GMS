@@ -124,10 +124,11 @@ function cancelParticipation(eventID, characterName, userToken) {
         type: 'DELETE',
         url: 'https://localhost:44377/api/guild/events/withdraw',
         headers: { 'x-eventid': eventID, 'x-charactername': characterName, 'Authorization': userToken },
-        success: function () {
-            alert('Event participation was cancelled');
-        }, error: function () {
-            alert('Error cancelling your event participation');
+        dataType: "json",
+        success: function (data) {
+            alert(data.responseText);
+        }, error: function (data) {
+            alert(data.responseText);
         }
     })
 }
@@ -137,10 +138,11 @@ function removeEvent(eventID, rowId, userToken) {
         type: 'DELETE',
         url: 'https://localhost:44377/api/guild/events/remove/',
         headers: { 'x-eventid': eventID, 'x-rowid': rowId, 'Authorization': userToken },
-        success: function () {
-            alert("The event was removed.");
-        }, error: function () {
-            alert("An error occurred when trying to remove event.");
+        dataType: "json",
+        success: function (data) {
+            alert(data.responseText);
+        }, error: function (data) {
+            alert(data.responseText);
         }
     })
 }
