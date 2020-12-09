@@ -2,7 +2,6 @@
 using GMS___Model;
 using MahApps.Metro.Controls;
 using System;
-using System.Configuration;
 using System.Net.Http;
 using System.Windows;
 

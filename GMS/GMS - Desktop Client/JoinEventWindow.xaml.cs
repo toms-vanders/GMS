@@ -1,11 +1,11 @@
 ﻿using GMS___Desktop_Client.UserControls;
 using GMS___Model;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 
 namespace GMS___Desktop_Client
 {
@@ -18,7 +18,7 @@ namespace GMS___Desktop_Client
         private readonly HttpClient client;
         private readonly SearchEventUserControl DataGrid;
 
-        public JoinEventWindow(SearchEventUserControl dataGrid,int eventID, string eventName, byte[] rowID)
+        public JoinEventWindow(SearchEventUserControl dataGrid, int eventID, string eventName, byte[] rowID)
         {
             InitializeComponent();
 
@@ -29,8 +29,8 @@ namespace GMS___Desktop_Client
             {
                 BaseAddress = new Uri("https://localhost:44377/")
             };
-            client.DefaultRequestHeaders.Add("Authorization",(string)App.Current.Properties["AuthToken"]);
-            client.DefaultRequestHeaders.Add("x-rowid",JsonSerializer.Serialize(rowID));
+            client.DefaultRequestHeaders.Add("Authorization", (string)App.Current.Properties["AuthToken"]);
+            client.DefaultRequestHeaders.Add("x-rowid", JsonSerializer.Serialize(rowID));
         }
 
         private async void JoinEventButton_Click(object sender, RoutedEventArgs e)
@@ -50,11 +50,11 @@ namespace GMS___Desktop_Client
 
                 if (response.IsSuccessStatusCode)
                 {
-                    await this.ShowMessageAsync("Successfully joined event", "You have successfully joined this event!",MessageDialogStyle.Affirmative);
+                    await this.ShowMessageAsync("Successfully joined event", "You have successfully joined this event!", MessageDialogStyle.Affirmative);
 
                 } else
                 {
-                    await this.ShowMessageAsync("Something went wrong", 
+                    await this.ShowMessageAsync("Something went wrong",
                         "An error has occured while joining the event\nError code : " + response.StatusCode + "\n Error message : " + response.ReasonPhrase, MessageDialogStyle.Affirmative);
                 }
             } else

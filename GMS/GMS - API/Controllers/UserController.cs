@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AuthenticationService.Managers;
+﻿using AuthenticationService.Managers;
 using AuthenticationService.Models;
 using GMS___Business_Layer;
 using GMS___Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 
 namespace GMS___API.Controllers
 {
@@ -50,14 +48,13 @@ namespace GMS___API.Controllers
         public ActionResult<User> Get()
         {
             IAuthService authService = new JWTService(clientSettings.Value.SecretKey);
-            string token= HttpContext.Request.Headers["Authorization"];
+            string token = HttpContext.Request.Headers["Authorization"];
             try
             {
                 if (!authService.IsTokenValid(token))
                 {
                     return BadRequest("Unauthorized Access");
-                }
-                else
+                } else
                 {
                     List<Claim> claims = authService.GetTokenClaims(token).ToList();
                     return userProcessor.GetUserByEmail(claims.FirstOrDefault(t => t.Type.Equals(ClaimTypes.Email)).Value);
@@ -78,16 +75,14 @@ namespace GMS___API.Controllers
                 if (!authService.IsTokenValid(token))
                 {
                     return BadRequest("Unauthorized Access");
-                }
-                else
+                } else
                 {
                     List<Claim> claims = authService.GetTokenClaims(token).ToList();
                     if ((claims.FirstOrDefault(t => t.Type.Equals(ClaimTypes.Role)).Value == "Admin"))
                         return userProcessor.GetUserByEmail(email);
                     return BadRequest("Unauthorized Access");
                 }
-            }
-            catch
+            } catch
             {
                 return BadRequest("Unauthorized Access");
             }
@@ -96,7 +91,7 @@ namespace GMS___API.Controllers
         [HttpPost]
         public User Post([FromBody] User user)
         {
-            return userProcessor.InsertNewUser(user.UserName,user.EmailAddress,user.Password);
+            return userProcessor.InsertNewUser(user.UserName, user.EmailAddress, user.Password);
         }
 
         [HttpPost("insertapi")]
@@ -110,16 +105,14 @@ namespace GMS___API.Controllers
                 if (!authService.IsTokenValid(token))
                 {
                     return BadRequest("Unauthorized Access");
-                }
-                else
+                } else
                 {
                     List<Claim> claims = authService.GetTokenClaims(token).ToList();
                     if ((claims.FirstOrDefault(t => t.Type.Equals(ClaimTypes.Email)).Value == user.EmailAddress) && userProcessor.InsertApiKey(user.EmailAddress, user.ApiKey))
                         return user;
                     return BadRequest("Not valid information");
                 }
-            }
-            catch
+            } catch
             {
                 return BadRequest("Unauthorized Access");
             }

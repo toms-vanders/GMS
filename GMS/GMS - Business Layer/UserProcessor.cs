@@ -1,7 +1,6 @@
 ﻿using GMS___Data_Access_Layer;
 using GMS___Model;
 using System;
-using BCrypt.Net;
 
 namespace GMS___Business_Layer
 {
@@ -30,7 +29,8 @@ namespace GMS___Business_Layer
             {
                 return null;
             }
-            try{
+            try
+            {
                 if (BCrypt.Net.BCrypt.Verify(password, user.Password))
                 {
                     user.UserName = username;
@@ -40,7 +40,7 @@ namespace GMS___Business_Layer
             {
                 return null;
             }
-            
+
             return null;
         }
         public Boolean InsertApiKey(string emailAddress, string apiKey)
