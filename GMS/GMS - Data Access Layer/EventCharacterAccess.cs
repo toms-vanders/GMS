@@ -137,7 +137,7 @@ namespace GMS___Data_Access_Layer
         {
             using (IDbConnection conn = DBConnection.GetConnection())
             {
-                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = @eventID", eventID);
+                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = @EventID", new { EventID = eventID });
 
                 return signedUpCount;
             }
