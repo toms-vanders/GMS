@@ -1,6 +1,5 @@
 ﻿using GMS___Model;
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Windows;
@@ -25,7 +24,7 @@ namespace GMS___Desktop_Client.UserControls
             {
                 BaseAddress = new Uri("https://localhost:44377/")
             };
-            client.DefaultRequestHeaders.Add("Authorization",(string) App.Current.Properties["AuthToken"]);
+            client.DefaultRequestHeaders.Add("Authorization", (string)App.Current.Properties["AuthToken"]);
 
         }
 

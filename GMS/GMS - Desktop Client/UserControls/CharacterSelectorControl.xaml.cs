@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
@@ -42,8 +41,8 @@ namespace GMS___Desktop_Client.UserControls
         private void CharacterSelectionBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GetSelectedCharacterInfo();
-            
-            
+
+
 
             //GetJoinedEventsAsync();
         }
@@ -59,8 +58,7 @@ namespace GMS___Desktop_Client.UserControls
                 App.Current.Properties["CharacterName"] = returnedCharacter.Name;
 
                 SetProfessionIcon(returnedCharacter.Profession);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 throw ex;
             }
@@ -70,7 +68,7 @@ namespace GMS___Desktop_Client.UserControls
         {
             string professionIconPath = "";
 
-            switch(charProfession.ToLower())
+            switch (charProfession.ToLower())
             {
                 case "guardian":
                     professionIconPath = @"Guardian_icon.png";
