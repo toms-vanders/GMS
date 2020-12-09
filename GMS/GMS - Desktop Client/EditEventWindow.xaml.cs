@@ -4,6 +4,7 @@ using MahApps.Metro.Controls;
 using System;
 using System.Net.Http;
 using System.Windows;
+using MessageBoxImage = GMS___Desktop_Client.WpfMessageBox.MsgCl.MessageBoxImage;
 
 namespace GMS___Desktop_Client
 {
@@ -55,12 +56,13 @@ namespace GMS___Desktop_Client
             if (response.IsSuccessStatusCode)
             {
                 DataGrid.FillDataGrid();
-                MessageBox.Show("Event updated");
+                WpfMessageBox.Show("Event updated", "Successfully updated event information.", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            } else
+            }
+            else
             {
-                MessageBox.Show("Error Code" +
-                response.StatusCode + " : Message - " + response.ReasonPhrase);
+                WpfMessageBox.Show("Error", "Error Code" +
+                response.StatusCode + " : Message - " + response.ReasonPhrase, MessageBoxButton.OK, MessageBoxImage.Error);
             }
             Close();
         }
