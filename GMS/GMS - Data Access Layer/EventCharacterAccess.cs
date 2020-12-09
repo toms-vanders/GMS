@@ -85,8 +85,8 @@ namespace GMS___Data_Access_Layer
         {
             using (IDbConnection conn = DBConnection.GetConnection())
             {
-                int maxAmount = conn.ExecuteScalar<int>("SELECT maxNumberOfCharacters FROM Event WHERE eventID = @eventID", eventID);
-                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = @eventID", eventID);
+                int maxAmount = conn.ExecuteScalar<int>("SELECT maxNumberOfCharacters FROM Event WHERE eventID = @EventID", new { EventID = eventID });
+                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = @EventID", new { EventID = eventID });
 
                 return signedUpCount == maxAmount;
             }
