@@ -3,55 +3,107 @@
     ViewBag.Title = "CharacterPage";
 }
 
-<h2>CharacterPage</h2>
+@Scripts.Render("~/bundles/jquery")
+<script src="~/JavaScript/user.js"></script>
+<style>
+    .absolution {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+</style>
 
+<h2>@ViewBag.Character</h2>
+
+<div class="container">
+
+</div>
 <div class="row">
-    <div class="col-md-8 list-group">
+    <div class="col-8 list-group" id="equipment">
+
+    </div>
+    <div class="col-4 list-group" id="details">
         <div class="flex-column align-items-start list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">@ViewBag.Character.Name</h5>
-                <small>@ViewBag.Character.Level</small>
+                <div class="mb-1" id="race">
+                    <div class="spinner-border spinner-border-sm text-success">
+                        <span class="sr-only" role="status">Loading...</span>
+                    </div>
+                </div>
+                <small id="level">
+                    <div class="spinner-border spinner-border-sm text-success" role="status">
+                        <span class="sr-only" >Loading...</span>
+                    </div>
+                </small>
             </div>
-            <p class="mb-1">@ViewBag.Character.Race</p>
-            <p class="mb-1">@ViewBag.Character.Profession</p>
-            <small>@ViewBag.Character.Title</small>
+            <div class="mb-1" id="profession">
+                <div class="spinner-border spinner-border-sm text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <small id="gender">
+                <div class="spinner-border spinner-border-sm text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </small>
+        </div>
+        <div id="events" style="margin-top:10px;">
+            <div class="flex-column align-items-start list-group-item" aria-describedby="linkHelpBlock">
+                @if (ViewBag.Guild is null)
+                {
+                    <img src="@Url.Content("~/Content/images/ezgif.com-gif-maker.gif")" class="rounded mx-auto d-block img-fluid" />
+                    <small id="linkHelpBlock" class="form-text text-muted">
+                        In order to create and search events, your character needs to represant a guild.
+                        When you become a guild representant, it can take a few minutes to process the change
+                        in order to display links.
+                    </small>
+                }
+                else
+                {
+                    <p>@Html.ActionLink("Create new guild event", "CreateEventForm", "Event", new { name = ViewBag.Character }, null)</p>
+                    <p>@Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character }, null)</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; left: 50%; bottom: 15%; transform: translate(-50%, 0px); z-index: 9999;">
+        <div class="toast-header">
+            <strong class="mr-auto">GMS</strong>
+            <small class="text-muted">just now</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            <div class="d-flex w-100 justify-content-between">
+                <p id="toastText" style="padding-top: 25px">Your character details are loading...</p>
+                <img src="~/Content/images/summer_quaggan.png" class="rotate" style="width:80px;height:80px;margin-left:10px" alt="Aloha quaggan">
+            </div>
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-8 list-group">
-        @foreach (var equipment in ViewBag.Equipment)
-        {
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">@equipment.Name</h5>
-                    <small>@equipment.Level</small>
-                </div>
-                <p class="mb-1">@equipment.Rarity</p>
-                <small>Value: @equipment.Vendor_value</small>
-                <img src="@equipment.Icon" class="img-thumbnail" alt="Responsive image"/>
-            </a>
-        }
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-4" aria-describedby="linkHelpBlock">
-        @if (ViewBag.Character.Guild is null)
-        {
-            <img src="@Url.Content("~/Content/images/ezgif.com-gif-maker.gif")" />
-            <small id="linkHelpBlock" class="form-text text-muted">
-                In order to create and search events, your character needs to represant a guild.
-                When you become a guild representant, it can take a few minutes to process the change
-                in order to display links.
-            </small>
-        }
-        else
-        {
-            @Html.ActionLink("Create new guild event", "CreateEventForm", "Event", new { name = ViewBag.Character.Name }, null) <br>
-            @Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character.Name }, null)
-            System.Diagnostics.Debug.WriteLine(@Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character.Name }, null));
-        }
-    </div>
-</div>
+<img class="img-fluid rounded mx-auto d-block absolution zoom" src="~/Content/images/cow_quaggan.png" />
 
+<script type="text/javascript">
+        $(document).ready(function () {
+            var character = '@ViewBag.Character';
+            var apiToken = '@ViewBag.ApiToken';
+            loadCharacter(character, apiToken);
+        });
+</script>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            var character = '@ViewBag.Character';
+            var apiToken = '@ViewBag.ApiToken';
+            loadEquipmentList(character, apiToken);
+        });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.toast').toast('show');
+    });
+</script>

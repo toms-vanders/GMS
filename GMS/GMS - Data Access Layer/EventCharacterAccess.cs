@@ -1,24 +1,21 @@
 ﻿using Dapper;
 using GMS___Model;
+using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace GMS___Data_Access_Layer
 {
     public class EventCharacterAccess
     {
-        IDbConnection GetConnection()
-        {
-            return new SqlConnection("Server=hildur.ucn.dk;Database=dmaj0919_1081496;User Id=dmaj0919_1081496;Password=Password1!;");
-        }
 
         public bool InsertEventCharacter(EventCharacter eventParticipant)
         {
 
             // Either join participant list or the waiting list by checking if participant list reached the maximum amout of sign-ups.
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
-                if (!isParticipantListFull(eventParticipant.EventID))
+                if (!IsParticipantListFull(eventParticipant.EventID))
                 {
                     int rowsAffected = conn.Execute(@"INSERT INTO EventCharacter (eventID, characterName, characterRole, signUpDateTime) " +
                     "VALUES (@EventID, @CharacterName, @CharacterRole, @SignUpDateTime)", eventParticipant);
@@ -46,7 +43,7 @@ namespace GMS___Data_Access_Layer
 
         public bool ContainsEntry(int eventId, string characterName)
         {
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 int entries = conn.ExecuteScalar<int>(@"SELECT COUNT(*) FROM EventCharacter WHERE eventID = @EventID AND characterName = @CharacterName", new { EventID = eventId, CharacterName = characterName });
                 return entries == 1;
@@ -55,11 +52,11 @@ namespace GMS___Data_Access_Layer
 
         public bool DeleteEventCharacterByEventIDAndCharacterName(int eventID, string characterName)
         {
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 int rowsAffected;
 
-                if (isParticipantListFull(eventID))
+                if (IsParticipantListFull(eventID))
                 {
                     //rowsAffected = conn.Execute(@"DELETE FROM EventCharacter WHERE eventID = @EventID AND characterName = @CharacterName", new { EventID = eventID, CharacterName = characterName });
 
@@ -71,11 +68,10 @@ namespace GMS___Data_Access_Layer
 
                     return MoveCharacterFromWaitingListToParticipantList(eventID, characterName);
 
-                }
-                else
+                } else
                 {
                     rowsAffected = conn.Execute(@"DELETE FROM EventCharacter WHERE eventID = @EventID AND characterName = @CharacterName", new { EventID = eventID, CharacterName = characterName });
-                    
+
                     if (rowsAffected > 0)
                     {
                         return true;
@@ -85,12 +81,12 @@ namespace GMS___Data_Access_Layer
             }
         }
 
-        public bool isParticipantListFull(int eventID)
+        public bool IsParticipantListFull(int eventID)
         {
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
-                int maxAmount = conn.ExecuteScalar<int>("SELECT maxNumberOfCharacters FROM Event WHERE eventID = " + eventID);
-                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = " + eventID);
+                int maxAmount = conn.ExecuteScalar<int>("SELECT maxNumberOfCharacters FROM Event WHERE eventID = @EventID", new { EventID = eventID });
+                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = @EventID", new { EventID = eventID });
 
                 return signedUpCount == maxAmount;
             }
@@ -98,7 +94,7 @@ namespace GMS___Data_Access_Layer
 
         public bool MoveCharacterFromWaitingListToParticipantList(int eventID, string characterName)
         {
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
 
                 conn.Open();
@@ -124,9 +120,8 @@ namespace GMS___Data_Access_Layer
                         trans.Commit();
 
                         return true;
-                       
-                    }
-                    catch (Exception ex)
+
+                    } catch (Exception ex)
                     {
                         trans.Rollback();
 
@@ -138,11 +133,11 @@ namespace GMS___Data_Access_Layer
             }
         }
 
-        public int participantsInEvent(int eventID)
+        public int ParticipantsInEvent(int eventID)
         {
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
-                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = " + eventID);
+                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = @EventID", new { EventID = eventID });
 
                 return signedUpCount;
             }

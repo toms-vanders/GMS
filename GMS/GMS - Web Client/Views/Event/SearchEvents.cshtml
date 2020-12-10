@@ -39,6 +39,13 @@
 </script>
 
 <style>
+    .absolution {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+
     .mul-select-types, mul-select-roles {
         width: 100%;
     }
@@ -78,7 +85,7 @@
                 <input id="submitButton" type="submit" class="btn btn-outline-secondary" value="Search" onclick="onSearchClick()" />
             </div>
         </div>
-        <div class="col">
+        <div class="col text-dark">
             @Html.DropDownListFor(model => model.EventType, Model.EventTypes, new { @class = "mul-select-types", @multiple = "multiple", @id = "eventTypesSelectBox" })
             <!-- TODO Html.DropDownListFor Roles -->
         </div>
@@ -144,7 +151,7 @@
             });
         });
     </script>
-    
+
     <!-- loading the events on page load -->
 
     <script type="text/javascript">
@@ -218,7 +225,6 @@
     </script>
 
     <!-- end joining events -->
-
     <!-- removing events -->
     <script type="text/javascript">
         function removeEventWrapper(eventID, rowId) {
@@ -244,6 +250,8 @@
                 $('[data-toggle=tooltip]').tooltip();
             });
         </script>*@
+
+    <img class="img-fluid mx-auto d-block absolution zoom" src="~/Content/images/party_quaggan.png" />
 </body>
 
 @section Scripts {

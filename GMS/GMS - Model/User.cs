@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using GMS___Model;
 
 namespace GMS___Model
 {
@@ -15,6 +13,7 @@ namespace GMS___Model
             this.ApiKey = "";
             this.Characters = new ArrayList();
             this.UserRole = "User";
+            this.AccountCreated = DateTime.Now;
         }
 
         public User(string Username, string Password)
@@ -25,8 +24,9 @@ namespace GMS___Model
             this.ApiKey = "";
             this.Characters = new ArrayList();
             this.UserRole = "User";
+            this.AccountCreated = DateTime.Now;
         }
-        public User(int UserID, string UserName, string Email, string Password, string ApiKey, string UserRole)
+        public User(int UserID, string UserName, string Email, string Password, string ApiKey, string UserRole, DateTime accountCreated)
         {
             this.UserID = UserID;
             this.UserName = UserName;
@@ -35,8 +35,9 @@ namespace GMS___Model
             this.ApiKey = ApiKey;
             this.Characters = new ArrayList();
             this.UserRole = UserRole;
+            this.AccountCreated = accountCreated;
         }
-        public User(string UserName, string Email, string Password, string ApiKey, string UserRole)
+        public User(string UserName, string Email, string Password, string ApiKey, string UserRole, DateTime accountCreated)
         {
             this.UserName = UserName;
             this.Password = Password;
@@ -44,14 +45,16 @@ namespace GMS___Model
             this.ApiKey = ApiKey;
             this.Characters = new ArrayList();
             this.UserRole = UserRole;
+            this.AccountCreated = accountCreated;
         }
-        public User(string userName, string password, string email, string apiKey, ArrayList characters)
+        public User(string userName, string password, string email, string apiKey, ArrayList characters, DateTime accountCreated)
         {
             this.UserName = userName;
             Password = password;
             this.EmailAddress = email;
             this.ApiKey = apiKey;
             this.Characters = characters;
+            this.AccountCreated = accountCreated;
         }
         public User(string userName, string email, string password)
         {
@@ -69,5 +72,6 @@ namespace GMS___Model
         public string ApiKey { get; set; }
         public ArrayList Characters { get; set; }
         public string UserRole { get; set; }
+        public DateTime AccountCreated { get; set; }
     }
 }

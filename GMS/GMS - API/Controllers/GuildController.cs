@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Text.Json;
-using System.Threading.Tasks;
 using AuthenticationService.Managers;
 using GMS___Business_Layer;
 using GMS___Model;
@@ -13,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GMS___API.Controllers
 {
@@ -42,20 +36,18 @@ namespace GMS___API.Controllers
                 if (!authService.IsTokenValid(token))
                 {
                     return BadRequest("Unauthorized Access");
-                }
-                else
+                } else
                 {
                     return eventProcessor.GetAllGuildEvents(guildId).ToList();
                 }
-            }
-            catch
+            } catch
             {
                 return BadRequest("Unauthorized Access");
             }
         }
 
         [HttpGet("events/{eventId}")]
-        public ActionResult<List<Event>> Get(string eventId) 
+        public ActionResult<List<Event>> Get(string eventId)
         {
             IAuthService authService = new JWTService(clientSettings.Value.SecretKey);
             string token = HttpContext.Request.Headers["Authorization"];
@@ -64,13 +56,31 @@ namespace GMS___API.Controllers
                 if (!authService.IsTokenValid(token))
                 {
                     return BadRequest("Unauthorized Access");
-                }
-                else
+                } else
                 {
                     return eventProcessor.GetEventByID(Int32.Parse(eventId)).ToList();
                 }
+            } catch
+            {
+                return BadRequest("Unauthorized Access");
             }
-            catch
+        }
+
+        [HttpGet("events/{eventID}/participants")]
+        public ActionResult<int> GetNumberOfSignedParticipants(string eventId)
+        {
+            IAuthService authService = new JWTService(clientSettings.Value.SecretKey);
+            string token = HttpContext.Request.Headers["Authorization"];
+            try
+            {
+                if (!authService.IsTokenValid(token))
+                {
+                    return BadRequest("Unauthorized Access");
+                } else
+                {
+                    return eventCharacterProcessor.ParticipantsInEvent(Int32.Parse(eventId));
+                }
+            } catch
             {
                 return BadRequest("Unauthorized Access");
             }
@@ -86,13 +96,11 @@ namespace GMS___API.Controllers
                 if (!authService.IsTokenValid(token))
                 {
                     return BadRequest("Unauthorized Access");
-                }
-                else
+                } else
                 {
                     return eventProcessor.GetAllGuildEventsByEventType(guildId, type).ToList();
                 }
-            }
-            catch
+            } catch
             {
                 return BadRequest("Unauthorized Access");
             }
@@ -117,8 +125,7 @@ namespace GMS___API.Controllers
                 if (!authService.IsTokenValid(token))
                 {
                     return BadRequest("Unauthorized Access");
-                }
-                else
+                } else
                 {
                     if (eventProcessor.InsertEvent(e.Name, e.EventType, e.Location, e.Date, e.Description, e.MaxNumberOfCharacters, e.GuildID))
                     {
@@ -126,8 +133,33 @@ namespace GMS___API.Controllers
                     }
                     return BadRequest("Invalid data");
                 }
+            } catch
+            {
+                return BadRequest("Unauthorized Access");
             }
-            catch
+        }
+
+        [HttpPost("events/update")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Event> UpdateEvent([FromBody] Event e)
+        {
+            IAuthService authService = new JWTService(clientSettings.Value.SecretKey);
+            string token = HttpContext.Request.Headers["Authorization"];
+            try
+            {
+                if (!authService.IsTokenValid(token))
+                {
+                    return BadRequest("Unauthorized Access");
+                } else
+                {
+                    if (eventProcessor.UpdateEvent(e.EventID, e.Name, e.EventType, e.Location, e.Date, e.Description, e.MaxNumberOfCharacters, e.GuildID, e.RowId))
+                    {
+                        return e;
+                    }
+                    return BadRequest("Invalid data");
+                }
+            } catch
             {
                 return BadRequest("Unauthorized Access");
             }
@@ -145,8 +177,7 @@ namespace GMS___API.Controllers
                 if (!authService.IsTokenValid(token))
                 {
                     return BadRequest("Unauthorized Access");
-                }
-                else
+                } else
                 {
                     if (eventProcessor.HasEventChangedRowVersion(ec.EventID, rowId))
                     {
@@ -160,14 +191,15 @@ namespace GMS___API.Controllers
                     }
                     return BadRequest("Invalid data.");
                 }
-            }
-            catch
+            } catch
             {
                 return BadRequest("Unauthorized Access");
             }
         }
 
         [HttpDelete("events/withdraw/")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<string> DeleteEventCharacter([FromHeader(Name = "x-eventid")] int eventID, [FromHeader(Name = "x-charactername")] string characterName)
         {
             // Check if EventCharacter contains entry with given eventID and characterName,
@@ -181,40 +213,37 @@ namespace GMS___API.Controllers
                 if (!authService.IsTokenValid(token))
                 {
                     return BadRequest("Unauthorized Access");
-                }
-                else
+                } else
                 {
                     if (eventCharacterProcessor.ContainsEntry(eventID, characterName))
                     {
                         if (eventCharacterProcessor.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName))
                         {
                             return "Succesfully deleted from participant's list";
-                        }
-                        else
+                        } else
                         {
                             return "Not succesfully deleted";
                         }
-                    }
-                    else
+                    } else
                     {
                         if (eventCharacterWaitingListProcessor.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName))
                         {
                             return "Succesfully deleted from waiting list";
-                        }
-                        else
+                        } else
                         {
                             return "Not succesfully deleted from waiting list";
                         }
                     }
                 }
-            }
-            catch
+            } catch
             {
                 return BadRequest("Unauthorized Access");
             }
         }
 
         [HttpDelete("events/remove/")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<string> DeleteEvent([FromHeader(Name = "x-eventid")] int eventID, [FromHeader(Name = "x-rowid")] byte[] rowId)
         {
             // Get the Event from database, and compare the rowIds
@@ -228,30 +257,26 @@ namespace GMS___API.Controllers
                 if (!authService.IsTokenValid(token))
                 {
                     return BadRequest("Unauthorized Access");
-                }
-                else
+                } else
                 {
                     if (eventProcessor.HasEventChangedRowVersion(eventID, rowId))
                     {
                         return "Not succesfully deleted";
-                    }
-                    else
+                    } else
                     {
                         if (eventProcessor.DeleteEventByID(eventID))
                         {
                             return "Succesfully deleted";
-                        }
-                        else
+                        } else
                         {
                             return "Not succesfully deleted";
                         }
                     }
                 }
-            }
-            catch
+            } catch
             {
                 return BadRequest("Unauthorized Access");
-            }            
+            }
         }
     }
 }

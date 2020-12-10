@@ -16,7 +16,7 @@ namespace GMS___Test
             User user2 = null;
             User user3 = null;
             User user4 = null;
-            Boolean noExceptionWasThrown = true;
+            bool noExceptionWasThrown = true;
             try
             {
                 UserProcessor up = new UserProcessor();
@@ -27,7 +27,7 @@ namespace GMS___Test
                 user2 = up.LogInUser("Non existing email address", "password");
                 user3 = up.LogInUser("mail@mail.com", "wrong password");
                 user4 = up.LogInUser("mail@mail.com", "Password");
-            } catch (Exception e)
+            } catch (Exception)
             {
                 noExceptionWasThrown = false;
             } finally
@@ -46,10 +46,10 @@ namespace GMS___Test
         [TestMethod]
         public void TestInsertApiKey()
         {
-            Boolean test1 = false;
-            Boolean test2 = true;
-            Boolean noExceptionWasThrown = true;
-            String apikey = "";
+            bool test1 = false;
+            bool test2 = true;
+            bool noExceptionWasThrown = true;
+            string apikey = "";
             try
             {
                 UserProcessor up = new UserProcessor();
@@ -59,7 +59,7 @@ namespace GMS___Test
                 test2 = up.InsertApiKey("Non existing email address", "key");
                 User user = up.LogInUser("mail@mail.com", "password");
                 apikey = user.ApiKey;
-            } catch (Exception e)
+            } catch (Exception)
             {
                 noExceptionWasThrown = false;
             } finally
@@ -77,19 +77,18 @@ namespace GMS___Test
         [TestMethod]
         public void TestGetUserByEmail()
         {
-            User user1 = null;
             User user2 = null;
             string user1name = "";
-            Boolean noExceptionWasThrown = true;
+            bool noExceptionWasThrown = true;
             try
             {
                 UserProcessor up = new UserProcessor();
                 up.InsertNewUser("name", "mail@mail.com", "password");
 
-                user1 = up.GetUserByEmail("mail@mail.com");
+                User user1 = up.GetUserByEmail("mail@mail.com");
                 user2 = up.GetUserByEmail("asd");
                 user1name = user1.UserName;
-            } catch (Exception e)
+            } catch (Exception)
             {
                 noExceptionWasThrown = false;
             } finally

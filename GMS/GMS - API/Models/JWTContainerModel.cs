@@ -1,5 +1,5 @@
-﻿using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace AuthenticationService.Models
 {

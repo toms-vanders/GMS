@@ -4,42 +4,61 @@
     ViewBag.Title = "Log in";
 }
 
+<style>
+    .absolution {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+</style>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Log In To Your Online Account</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="div-center">
+        <div class="content">
+            <h4 style="padding-left: 14px">Log In To Your Account</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+            <div class="form-group" style="min-width:300px">
+                @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Log in" class="btn btn-default" />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                    <button id="submitButton" type="submit" class="btn btn-outline-success" onclick="changeButton()">Log in</button>
+                    <button id="loadButton" class="btn btn-outline-success" type="button" disabled style="display:none">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<img class="img-fluid mx-auto d-block absolution zoom" src="~/Content/images/lollipop_quaggan.png" />
+
+<script>
+    function changeButton() {
+        $('#submitButton').hide();
+        $('#loadButton').show();
+    }
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
