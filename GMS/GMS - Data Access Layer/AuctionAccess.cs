@@ -16,6 +16,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return -1;
             }
 
             int affectedRows = -1;
@@ -40,6 +41,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new Exception(), "No connection to either the internet or the database available.");
+                return null;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -71,6 +73,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new Exception(), "No connection to either the internet or the database available.");
+                return -1;
             }
 
             int affectedRows = -1;
