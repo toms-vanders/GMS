@@ -34,8 +34,10 @@ namespace GMS___Business_Layer
 
         public bool UpdateEvent(int eventID, string name, string eventType, string location, DateTime date, string description, int maxNumberOfCharacters, string guildID, byte[] rowId)
         {
+            EventCharacterWaitingListProcessor ecwp = new EventCharacterWaitingListProcessor();
             Event eventToBeUpdated = new Event(eventID, guildID, name, description, eventType, location, date, maxNumberOfCharacters, rowId);
             bool wasUpdateSuccessful = eventAccess.UpdateEvent(eventToBeUpdated);
+            ecwp.MovePeopleFromWaitingList(eventID);
             return wasUpdateSuccessful;
         }
 
