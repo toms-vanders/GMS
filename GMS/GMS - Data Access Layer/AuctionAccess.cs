@@ -49,7 +49,7 @@ namespace GMS___Data_Access_Layer
                 try
                 {
                     log.Info("Retrieving auction from the database with auction ID: @auctionID", auctionID);
-                    if (conn.Query<Auction>("SELECT * FROM Auction WHERE auctionID in @AuctionID", new { AuctionID = auctionID }) is Auction auction)
+                    if (conn.QueryFirst<Auction>("SELECT * FROM Auction WHERE auctionID in @AuctionID", new { AuctionID = auctionID }) is Auction auction)
                     {
                         log.Info("Sucessfully retrieved auction from database.");
                         return auction;

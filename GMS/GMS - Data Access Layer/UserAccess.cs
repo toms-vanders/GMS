@@ -52,7 +52,7 @@ namespace GMS___Data_Access_Layer
                 try
                 {
                     log.Info("Retrieving the user with email: @email", emailAddress);
-                    if (conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole, accountCreated FROM Users where emailAddress in @emails", new { emails = emailAddress }) is User user)
+                    if (conn.QueryFirst<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole, accountCreated FROM Users where emailAddress = @emails", new { emails = emailAddress }) is User user)
                     {
                         log.Info("Successfully retrieved the user with email: @email from the database", emailAddress);
                         return user;
@@ -83,7 +83,7 @@ namespace GMS___Data_Access_Layer
                 try
                 {
                     log.Info("Retrieving the user with username: @username", username);
-                    if (conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole, accountCreated FROM Users where userName in @usernames", new { usernames = username }) is User user)
+                    if (conn.QueryFirst<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole, accountCreated FROM Users WHERE userName = @usernames", new { usernames = username }) is User user)
                     {
                         log.Info("Successfully retrieved the user wtih username: @username", username);
                         return user;

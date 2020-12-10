@@ -27,7 +27,8 @@ namespace GMS___Data_Access_Layer
                 try
                 {
                     log.Info("Retrieving event with ID: @EventID", eventID);
-                    if (conn.Query<Event>("SELECT * FROM Event WHERE eventID = @EventID", new { EventID = eventID }) is Event retrievedEvent)
+                    
+                    if(conn.QueryFirst<Event>("SELECT * FROM Event WHERE eventID = @EventID", new { EventID = eventID }) is Event retrievedEvent)
                     {
                         log.Info("Successfully retrieved event.");
                         return retrievedEvent;
