@@ -29,7 +29,7 @@ namespace GMS___Desktop_Client.UserControls
 
         }
 
-        private async void createEventButton_Click(object sender, RoutedEventArgs e)
+        private async void CreateEventButton_Click(object sender, RoutedEventArgs e)
         {
             var eName = eventName.Text;
             if (eName.Equals(""))
@@ -123,7 +123,7 @@ namespace GMS___Desktop_Client.UserControls
 
 
 
-        private void closeEventFormButton_Click(object sender, RoutedEventArgs e)
+        private void CloseEventFormButton_Click(object sender, RoutedEventArgs e)
         {
             ClearCreateEventsForm();
         }

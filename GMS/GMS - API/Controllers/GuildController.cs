@@ -47,7 +47,7 @@ namespace GMS___API.Controllers
         }
 
         [HttpGet("events/{eventId}")]
-        public ActionResult<List<Event>> Get(string eventId)
+        public ActionResult<Event> Get(string eventId)
         {
             IAuthService authService = new JWTService(clientSettings.Value.SecretKey);
             string token = HttpContext.Request.Headers["Authorization"];
@@ -58,7 +58,7 @@ namespace GMS___API.Controllers
                     return BadRequest("Unauthorized Access");
                 } else
                 {
-                    return eventProcessor.GetEventByID(Int32.Parse(eventId)).ToList();
+                    return eventProcessor.GetEventByID(Int32.Parse(eventId));
                 }
             } catch
             {
@@ -219,7 +219,7 @@ namespace GMS___API.Controllers
                     {
                         if (eventCharacterProcessor.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName))
                         {
-                            return "Succesfully deleted from participant's list";
+                            return "Succesfully deleted from participants list";
                         } else
                         {
                             return "Not succesfully deleted";

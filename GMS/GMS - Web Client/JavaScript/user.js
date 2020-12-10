@@ -24,7 +24,7 @@ function loadCharacters(apiToken) {
 };
 
 function loadEmptyCharacter(character, number) {
-    var character = '<a href="/User/CharacterPage?name=' + character.replace(/ /g, '%20') + '" class="list-group-item list-group-item-action flex-column align-items-start" >' +
+    var character = '<a data-toggle="tooltip" data-original-title="Click to go to this character\'s page" data-placement="left" href="/User/CharacterPage?name=' + character.replace(/ /g, '%20') + '" class="list-group-item list-group-item-action flex-column align-items-start" >' +
                     '<div class="d-flex w-100 justify-content-between" >' +
                     '<h5 class="mb-1">' + character + '</h5>' +
                     '<small id="' + number + '-Level">' +
@@ -148,10 +148,24 @@ function loadCharacter(character, apiToken) {
         },
         dataType: "json",
         success: function (data) {
+            console.log(data);
             $("#level").html(data.level);
             $("#race").html(data.race);
             $("#profession").html(data.profession);
             $("#gender").html(data.gender);
+            let date = new Date(data.created);
+            year = date.getFullYear();
+            month = date.getMonth() + 1;
+            dt = date.getDate();
+            if (dt < 10) {
+                dt = '0' + dt;
+            }
+            if (month < 10) {
+                month = '0' + month;
+            }
+            $("#created").html(year + '-' + month + '-' + dt);
+            $("#deaths").html(data.deaths);
+            $("#age").html(data.age);
         },
         error: function (error) {
             //console.log(character);

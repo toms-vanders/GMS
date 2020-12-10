@@ -48,7 +48,7 @@ namespace GMS___Test
             } finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 
@@ -85,7 +85,7 @@ namespace GMS___Test
             } finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 
@@ -108,7 +108,7 @@ namespace GMS___Test
             {
                 ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID);
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 Event eventToBeUpdated = ((List<Event>)ep.GetEventByID(id))[0];
                 eventToBeUpdated.Location = "Update";
                 test1 = ep.UpdateEvent(eventToBeUpdated.EventID, eventToBeUpdated.Name, eventToBeUpdated.EventType,
@@ -126,7 +126,7 @@ namespace GMS___Test
             } finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 
