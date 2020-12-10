@@ -1,5 +1,7 @@
 ﻿using MahApps.Metro.Controls;
+using System;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace GMS___Desktop_Client
 {
@@ -13,6 +15,10 @@ namespace GMS___Desktop_Client
         {
             InitializeComponent();
 
+            //icon
+            var path = Environment.CurrentDirectory;
+            var iconUriPath = new Uri(path.Substring(0, path.LastIndexOf("bin")) + @"\icon.ico", UriKind.RelativeOrAbsolute);
+            this.Resources["MainWindowLogoPath"] = new BitmapImage(iconUriPath);
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)

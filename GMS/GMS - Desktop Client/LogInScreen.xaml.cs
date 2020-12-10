@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Navigation;
 
 namespace GMS___Desktop_Client
@@ -34,6 +33,10 @@ namespace GMS___Desktop_Client
             var path = Environment.CurrentDirectory;
             var uriPath = new Uri(path.Substring(0, path.LastIndexOf("bin")) + @"\Images\bg.png", UriKind.RelativeOrAbsolute);
             this.Resources["BackgroundPath"] = new BitmapImage(uriPath);
+
+            //icon
+            var iconUriPath = new Uri(path.Substring(0, path.LastIndexOf("bin")) + @"\icon.ico", UriKind.RelativeOrAbsolute);
+            this.Resources["LogoPath"] = new BitmapImage(iconUriPath);
         }
 
         private async void logInButton_Click(object sender, RoutedEventArgs e)
