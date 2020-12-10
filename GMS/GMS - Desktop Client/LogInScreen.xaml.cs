@@ -11,6 +11,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Navigation;
 
 namespace GMS___Desktop_Client
@@ -102,7 +104,8 @@ namespace GMS___Desktop_Client
                 };
                 MainWindow.Show();
                 Close();
-            } else
+            }
+            else
             {
                 await this.ShowMessageAsync("Logging in", "Logging in failed.");
                 IncorrectCredentialsTextBlock.Text = "Wrong username or password. Try again.";

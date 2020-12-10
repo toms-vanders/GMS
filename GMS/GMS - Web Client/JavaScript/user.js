@@ -10,10 +10,11 @@ function loadCharacters(apiToken) {
         },
         dataType: "json",
         success: function (data) {
-            for (var t = 0; t < data.length; t++) {
-                loadEmptyCharacter(data[t], t);
+            for (var i = 0; i < data.length; i++) {
+                loadEmptyCharacter(data[i], i);
             }
-            i = 0;
+            document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow', 15);
+            document.getElementsByClassName('progress-bar').item(0).setAttribute('style', 'width:' + 15 + '%');
             loadCharactersCore(data, apiToken);
         },
         error: function (error) {
@@ -68,8 +69,15 @@ function loadCharactersCore(characters, apiToken) {
             i++;
             if (i < characters.length) {
                 loadCharactersCore(characters, apiToken);
+                document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow', (i / characters.length)*100);
+                document.getElementsByClassName('progress-bar').item(0).setAttribute('style', 'width:' + (i / characters.length) * 100 + '%');
             } else {
                 $('.toast').toast('hide');
+                document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow', 100);
+                document.getElementsByClassName('progress-bar').item(0).setAttribute('style', 'width:' + 100 + '%');
+                document.getElementsByClassName('progress-bar').item(0).classList.remove("progress-bar-striped");
+                document.getElementsByClassName('progress-bar').item(0).classList.remove("progress-bar-animated");
+                document.getElementsByClassName('progress-bar').item(0).appendChild(document.createTextNode("Success"));
             }
         },
         error: function (error) {
