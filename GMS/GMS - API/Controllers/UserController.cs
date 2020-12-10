@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AuthenticationService.Managers;
 using AuthenticationService.Models;
+using GMS___API.Models;
 using GMS___Business_Layer;
 using GMS___Model;
 using Microsoft.AspNetCore.Http;
@@ -115,6 +116,85 @@ namespace GMS___API.Controllers
                 {
                     List<Claim> claims = authService.GetTokenClaims(token).ToList();
                     if ((claims.FirstOrDefault(t => t.Type.Equals(ClaimTypes.Email)).Value == user.EmailAddress) && userProcessor.InsertApiKey(user.EmailAddress, user.ApiKey))
+                        return user;
+                    return BadRequest("Not valid information");
+                }
+            }
+            catch
+            {
+                return BadRequest("Unauthorized Access");
+            }
+        }
+
+        [HttpPost("account/username")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<ChangeUsernameModel> ChangeUsername([FromBody] ChangeUsernameModel user)
+        {
+            IAuthService authService = new JWTService(clientSettings.Value.SecretKey);
+            string token = HttpContext.Request.Headers["Authorization"];
+            try
+            {
+                if (!authService.IsTokenValid(token))
+                {
+                    return BadRequest("Unauthorized Access");
+                }
+                else
+                {
+                    List<Claim> claims = authService.GetTokenClaims(token).ToList();
+                    if ((claims.FirstOrDefault(t => t.Type.Equals(ClaimTypes.Name)).Value == user.OldUsername) && userProcessor.ChangeUsername(user.OldUsername, user.NewUsername, user.Password))
+                        return user;
+                    return BadRequest("Not valid information");
+                }
+            }
+            catch
+            {
+                return BadRequest("Unauthorized Access");
+            }
+        }
+
+        [HttpPost("account/email")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<User> ChangeEmail([FromBody] User user)
+        {
+
+            IAuthService authService = new JWTService(clientSettings.Value.SecretKey);
+            string token = HttpContext.Request.Headers["Authorization"];
+            try
+            {
+                if (!authService.IsTokenValid(token))
+                {
+                    return BadRequest("Unauthorized Access");
+                }
+                else
+                {
+                    List<Claim> claims = authService.GetTokenClaims(token).ToList();
+                    if ((claims.FirstOrDefault(t => t.Type.Equals(ClaimTypes.Name)).Value == user.UserName) && userProcessor.ChangeEmail(user.UserName, user.EmailAddress, user.Password))
+                        return user;
+                    return BadRequest("Not valid information");
+                }
+            }
+            catch
+            {
+                return BadRequest("Unauthorized Access");
+            }
+        }
+
+        [HttpPost("account/password")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<ChangePasswordModel> ChangePassword([FromBody] ChangePasswordModel user)
+        {
+            IAuthService authService = new JWTService(clientSettings.Value.SecretKey);
+            string token = HttpContext.Request.Headers["Authorization"];
+            try
+            {
+                if (!authService.IsTokenValid(token))
+                {
+                    return BadRequest("Unauthorized Access");
+                }
+                else
+                {
+                    List<Claim> claims = authService.GetTokenClaims(token).ToList();
+                    if ((claims.FirstOrDefault(t => t.Type.Equals(ClaimTypes.Name)).Value == user.Username) && userProcessor.ChangePassword(user.Username, user.CurrentPassword, user.NewPassword))
                         return user;
                     return BadRequest("Not valid information");
                 }

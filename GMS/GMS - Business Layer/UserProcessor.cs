@@ -31,7 +31,7 @@ namespace GMS___Business_Layer
                 return null;
             }
             try{
-                if (BCrypt.Net.BCrypt.Verify(password, user.Password))
+                if (VerifyPassword(password, user.Password))
                 {
                     user.UserName = username;
                     return user;
@@ -43,7 +43,7 @@ namespace GMS___Business_Layer
             
             return null;
         }
-        public Boolean InsertApiKey(string emailAddress, string apiKey)
+        public bool InsertApiKey(string emailAddress, string apiKey)
         {
             User user = userAccess.GetUserFromDatabase(emailAddress);
             if (user is null)
@@ -53,9 +53,72 @@ namespace GMS___Business_Layer
             user.ApiKey = apiKey;
             return userAccess.UpdateUser(user) == 1 ? true : false;
         }
+        public bool ChangeUsername(string oldUsername, string newUsername, string password)
+        {
+            try
+            {
+                User user = userAccess.GetUserFromDatabaseWithUsername(oldUsername);
+                if (VerifyPassword(password, user.Password))
+                {
+                    user.UserName = newUsername;
+                    return userAccess.UpdateUser(user) == 1 ? true : false;
+                }
+            }
+            catch (Exception)
+            {
+                return false; // Need to catch the exception
+            }
+
+            return false;
+            
+        }
+
+        public bool ChangeEmail(string username, string newEmailAddress, string password)
+        {
+            try
+            {
+                User user = userAccess.GetUserFromDatabaseWithUsername(username);
+                if (VerifyPassword(password, user.Password))
+                {
+                    user.EmailAddress = newEmailAddress;
+                    return userAccess.UpdateUser(user) == 1 ? true : false;
+                }
+            }
+            catch (Exception)
+            {
+                return false; // Need to catch the exception
+            }
+
+            return false;
+        }
+
+        public bool ChangePassword(string username, string currentPassword, string newPassword)
+        {
+            try
+            {
+                User user = userAccess.GetUserFromDatabaseWithUsername(username);
+                if (VerifyPassword(currentPassword, user.Password))
+                {
+                    user.Password = GetHashedPassword(newPassword);
+                    return userAccess.UpdateUser(user) == 1 ? true : false;
+                }
+            }
+            catch (Exception)
+            {
+                return false; // Need to catch the exception
+            }
+
+            return false;
+        }
+
         public string GetHashedPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        public bool VerifyPassword(string password, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
     }
 }

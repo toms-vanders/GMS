@@ -111,6 +111,7 @@ namespace GMS___Web_Client.Controllers
                 model.UserName = Session["Username"].ToString();
                 model.EmailAddress = Session["EmailAddress"].ToString();
                 ViewBag.Message = "Your account details.";
+                ViewBag.UserToken = Session["UserToken"];
                 return View(model);
             } else
             {

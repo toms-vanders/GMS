@@ -3,22 +3,329 @@
 @{
     ViewBag.Title = "Account details";
 }
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/popper")
+@Scripts.Render("~/bundles/bootstrap")
+
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
-
 
 <label id="AccountCreatedLabel">Account created on: </label>
 <input id="AccountCreated" name="AccountCreated" class="form-control text-box single-line" type="datetime" value=@ViewBag.AccountCreated disabled />
 
-@Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-@Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", disabled = true } })
+<!-- Change Username -->
+<div class="form-group">
+    @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", disabled = true } })
+        <div>
+            <a class="btn btn-primary" href="#changeUsernameModal" data-toggle="modal" data-target="#changeUsernameModal">Edit</a>
+        </div>
+    </div>
+</div>
 
-@Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
-@Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", disabled = true } })
+<!-- Change Email -->
+<div class="form-group">
+    @Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", disabled = true } })
+        <div class="pull-left">
+            <a class="btn btn-primary" href="#changeEmailModal" data-toggle="modal" data-target="#changeEmailModal">Edit</a>
+        </div>
+    </div>
+</div>
+
+<!-- Change API Key -->
+<div class="form-group">
+    <input type="button" class="btn btn-primary" value="Change API Key" onclick="location.href='@Url.Action("ApiForm", "User")'" />
+</div>
+
+<!-- Change Password -->
+<div class="form-group">
+    <a class="btn btn-primary" href="#changePasswordModal" data-toggle="modal" data-target="#changePasswordModal">Change Password</a>
+</div>
+
+<!-- Change Username Modal -->
+<div class="modal fade" id="changeUsernameModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Change your username</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-10">
+                        <label for="usernameInput">Username</label>
+                        <input type="text" id="usernameInput" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        <label for="currentPasswordUsername">Current Password</label>
+                        <input type="password" id="currentPasswordUsername" class="form-control" aria-describedby="currentPasswordUsername" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="changeUsernameButton">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Email Modal -->
+<div class="modal fade" id="changeEmailModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Enter an email address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-10">
+                        <label for="email">Email</label>
+                        <input type="text" id="emailInput" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        <label for="currentPasswordEmail">Current Password</label>
+                        <input type="password" id="currentPasswordEmail" class="form-control" aria-describedby="currentPasswordEmail" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="changeEmailButton">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Change your password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-10">
+                        <label for="currrentPassword">Current Password</label>
+                        <input type="password" id="currentPasswordInput" class="form-control" aria-describedby="currentPassword" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPasswordInput" class="form-control" name="up" aria-describedby="newPassword" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPasswordInput" class="form-control" name="up2" aria-describedby="confirmPassword" data-rule required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="changePasswordButton">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Username function -->
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#changeUsernameButton').click(function () {
+                var newUsername = $("#changeUsernameModal #usernameInput").val().trim();
+                var oldUsername = '@Model.UserName';
+                var password = $("#changeUsernameModal #currentPasswordUsername").val().trim();
+                var userToken = '@ViewBag.UserToken';
+                if (newUsername == "" || password == "") {
+                    alert("All fields must be filled out");
+                } else {
+                    changeUsername(oldUsername, newUsername, password, userToken);
+                    refreshPage();
+                }
+            })
+        })
+</script>
+
+<script type="text/javascript">
+    function changeUsername(oldUsername, newUsername, password, userToken) {
+        var Username = {};
+        Username.oldUsername = oldUsername;
+        Username.newUsername = newUsername;
+        Username.password = password;
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            url: 'https://localhost:44377/api/user/account/username/',
+            headers: { 'Authorization': userToken },
+            data: JSON.stringify(Username),
+            dataType: 'json',
+            success: function () {
+                alert("You successfully changed your username.");
+                $('#changeUsernameModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            }, error: function () {
+                alert("Error trying to change the username.");
+            }
+        })
+    }
+</script>
+
+<!-- Change email function -->
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#changeEmailButton').click(function () {
+                var username = '@Model.UserName';
+                var emailAddress = $("#changeEmailModal #emailInput").val().trim();
+                var password = $("#changeEmailModal #currentPasswordEmail").val().trim();
+                var userToken = '@ViewBag.UserToken';
+                if (emailAddress == "" || password == "") {
+                    alert("All fields must be filled out");
+                } else {
+                    changeEmail(username, emailAddress, password, userToken);
+                    refreshPage();
+                }
+            })
+        })
+</script>
+
+<script type="text/javascript">
+    function changeEmail(username, emailAddress, password, userToken) {
+
+        var Email = {};
+        Email.username = username;
+        Email.emailAddress = emailAddress;
+        Email.password = password;
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            url: 'https://localhost:44377/api/user/account/email/',
+            headers: { 'Authorization': userToken },
+            data: JSON.stringify(Email),
+            dataType: 'json',
+            success: function () {
+                alert("Your email has been updated.");
+                $('#changeEmailModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            }, error: function () {
+                alert("Error trying to change the email.");
+            }
+        })
+    }
+</script>
+
+<!-- Change password function -->
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#changePasswordButton').click(function () {
+                var username = '@Model.UserName';
+                var currentPassword = $("#changePasswordModal #currentPasswordInput").val().trim();
+                var newPassword = $("#changePasswordModal #newPasswordInput").val().trim();
+                var confirmPassword = $("#changePasswordModal #confirmPasswordInput").val().trim();
+                var userToken = '@ViewBag.UserToken';
+                if (currentPassword == "" || newPassword == "") {
+                    alert("All fields must be filled out");
+                } else {
+                    changePassword(username, currentPassword, newPassword, userToken);
+                    refreshPage();
+                }
+            })
+        })
+</script>
+
+<script type="text/javascript">
+    function changePassword(username, currentPassword, newPassword, userToken) {
+        var Password = {};
+        Password.username = username;
+        Password.currentPassword = currentPassword;
+        Password.newPassword = newPassword;
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            url: 'https://localhost:44377/api/user/account/password/',
+            headers: { 'Authorization': userToken },
+            data: JSON.stringify(Password),
+            dataType: 'json',
+            success: function () {
+                alert("You successfully changed the password.");
+                $('#changePasswordModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            }, error: function () {
+                alert("Error trying to change the Password.");
+            }
+        })
+    }
+</script>
+
+<!-- Validate new password function -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#changePasswordModal").validate({
+            rules: {
+                newPasswordInput: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 10,
+
+                },
+
+                confirmPasswordInput: {
+                    equalTo: "#newPasswordInput",
+                    minlength: 6,
+                    maxlength: 10
+                }
+
+            },
+            messages: {
+                newPasswordInput: {
+                    required: "the password is required"
+
+                }
+            }
+
+        })
+    })
+</script>
+
+
+<!-- refresh page function -->
+<script type="text/javascript">
+    function refreshPage() {
+        window.location.reload();
+    }
+</script>
 
 <div>
     @*@Html.ActionLink("Change your username" "ChangeUsername")
-    @Html.ActionLink("Change your password" "ChangePassword")*@
+        @Html.ActionLink("Change your password" "ChangePassword")*@
     @Html.ActionLink("Back to action list", "Index")
 </div>
 
