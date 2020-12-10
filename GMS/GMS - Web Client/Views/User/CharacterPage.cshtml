@@ -5,6 +5,13 @@
 
 @Scripts.Render("~/bundles/jquery")
 <script src="~/JavaScript/user.js"></script>
+<style>
+    .absolution {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+</style>
 
 <h2>@ViewBag.Character</h2>
 
@@ -18,33 +25,49 @@
     <div class="col-4 list-group" id="details">
         <div class="flex-column align-items-start list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-                <p class="mb-1" id="race">??</p>
-                <small id="level">??</small>
-            </div>
-            <p class="mb-1" id="profession">??</p>
-            <small id="gender">??</small>
-        </div>
-    </div>
-    <div class="row" id="events">
-        <div class="col-md-4" aria-describedby="linkHelpBlock">
-            @if (ViewBag.Guild is null)
-            {
-                <img src="@Url.Content("~/Content/images/ezgif.com-gif-maker.gif")" />
-                <small id="linkHelpBlock" class="form-text text-muted">
-                    In order to create and search events, your character needs to represant a guild.
-                    When you become a guild representant, it can take a few minutes to process the change
-                    in order to display links.
+                <div class="mb-1" id="race">
+                    <div class="spinner-border spinner-border-sm text-success">
+                        <span class="sr-only" role="status">Loading...</span>
+                    </div>
+                </div>
+                <small id="level">
+                    <div class="spinner-border spinner-border-sm text-success" role="status">
+                        <span class="sr-only" >Loading...</span>
+                    </div>
                 </small>
-            }
-            else
-            {
-                @Html.ActionLink("Create new guild event", "CreateEventForm", "Event", new { name = ViewBag.Character }, null) <br>
-                @Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character }, null)
-                System.Diagnostics.Debug.WriteLine(@Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character }, null));
-            }
+            </div>
+            <div class="mb-1" id="profession">
+                <div class="spinner-border spinner-border-sm text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <small id="gender">
+                <div class="spinner-border spinner-border-sm text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </small>
+        </div>
+        <div id="events" style="margin-top:10px;">
+            <div class="flex-column align-items-start list-group-item" aria-describedby="linkHelpBlock">
+                @if (ViewBag.Guild is null)
+                {
+                    <img src="@Url.Content("~/Content/images/ezgif.com-gif-maker.gif")" class="rounded mx-auto d-block img-fluid" />
+                    <small id="linkHelpBlock" class="form-text text-muted">
+                        In order to create and search events, your character needs to represant a guild.
+                        When you become a guild representant, it can take a few minutes to process the change
+                        in order to display links.
+                    </small>
+                }
+                else
+                {
+                    <p>@Html.ActionLink("Create new guild event", "CreateEventForm", "Event", new { name = ViewBag.Character }, null)</p>
+                    <p>@Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character }, null)</p>
+                }
+            </div>
         </div>
     </div>
-    <div class="toast" data-delay="8000" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; left: 50%; bottom: 15%; transform: translate(-50%, 0px); z-index: 9999;">
+
+    <div class="toast" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; left: 50%; bottom: 15%; transform: translate(-50%, 0px); z-index: 9999;">
         <div class="toast-header">
             <strong class="mr-auto">GMS</strong>
             <small class="text-muted">just now</small>
@@ -53,10 +76,15 @@
             </button>
         </div>
         <div class="toast-body">
-            Your character details are loading.
+            <div class="d-flex w-100 justify-content-between">
+                <p id="toastText" style="padding-top: 25px">Your character details are loading...</p>
+                <img src="~/Content/images/summer_quaggan.png" class="rotate" style="width:80px;height:80px;margin-left:10px" alt="Aloha quaggan">
+            </div>
         </div>
     </div>
 </div>
+
+<img class="img-fluid rounded mx-auto d-block absolution zoom" src="~/Content/images/cow_quaggan.png" />
 
 <script type="text/javascript">
         $(document).ready(function () {

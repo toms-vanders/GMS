@@ -3,6 +3,7 @@ using GMS___Data_Access_Layer;
 using GMS___Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace GMS___Test
 {
@@ -61,9 +62,9 @@ namespace GMS___Test
         [TestMethod]
         public void TestJoin()
         {
-            Boolean NoReasonThisShouldBeTrue = true;
-            Boolean JoinCompleted = false;
-            Boolean TestThrewException = false;
+            bool NoReasonThisShouldBeTrue = true;
+            bool JoinCompleted = false;
+            bool TestThrewException = false;
             string eventName = "";
             try
             {
@@ -72,8 +73,7 @@ namespace GMS___Test
                 JoinCompleted = ecp.ContainsEntry(testEvent.EventID, testCharacter.Name);
                 List<Event> events = (List<Event>)ep.GetGuildEventsByCharacterName(testEvent.GuildID, testCharacter.Name);
                 eventName = (events[0]).Name;
-            }
-            catch (Exception ex)
+            } catch (Exception)
             {
                 TestThrewException = true;
             } finally
@@ -91,26 +91,23 @@ namespace GMS___Test
         {
             int beforeJoin = -1;
             int afterJoin = -1;
-            Boolean TestThrewException = false;
-            string eventName = "";
+            bool TestThrewException = false;
             try
             {
                 beforeJoin = ecp.ParticipantsInEvent(testEvent.EventID);
                 ecp.JoinEvent(testEvent.EventID, testCharacter.Name, "AFK", new DateTime(2020, 12, 24));
                 afterJoin = ecp.ParticipantsInEvent(testEvent.EventID);
 
-            }
-            catch (Exception ex)
+            } catch (Exception)
             {
                 TestThrewException = true;
-            }
-            finally
+            } finally
             {
                 //Cleanup
             }
 
-            Assert.AreEqual(0,beforeJoin);
-            Assert.AreEqual(1,afterJoin);
+            Assert.AreEqual(0, beforeJoin);
+            Assert.AreEqual(1, afterJoin);
             Assert.IsFalse(TestThrewException);
         }
     }

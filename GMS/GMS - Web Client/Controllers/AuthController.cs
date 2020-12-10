@@ -2,10 +2,7 @@
 using GMS___Web_Client.Models;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -14,7 +11,6 @@ namespace GMS___Web_Client.Controllers
     public class AuthController : Controller
     {
         public static string EndPoint = "https://localhost:44377/";
-
 
         // GET: Auth
         public ActionResult Index()
@@ -95,9 +91,16 @@ namespace GMS___Web_Client.Controllers
         {
             this.Session["UserToken"] = PostLogin(user);
             User tempUser = GetJson<User>("api/user");
-            this.Session["ApiToken"] = tempUser.ApiKey;
+            try
+            {
+                this.Session["ApiToken"] = tempUser.ApiKey;
+            } catch
+            {
+                this.Session["ApiToken"] = "";
+            }
             this.Session["EmailAddress"] = tempUser.EmailAddress;
             this.Session["Username"] = tempUser.UserName;
+            this.Session["AccountCreated"] = tempUser.AccountCreated;
         }
 
         public string PostLogin(User user)
@@ -112,8 +115,7 @@ namespace GMS___Web_Client.Controllers
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                     return webClient.UploadString("api/user/login", JsonConvert.SerializeObject(user));
                 }
-            }
-            catch (WebException ex)
+            } catch (WebException ex)
             {
                 throw ex;
             }

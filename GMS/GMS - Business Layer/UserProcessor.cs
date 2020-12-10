@@ -29,11 +29,18 @@ namespace GMS___Business_Layer
             {
                 return null;
             }
-            if (user.Password == GetHashedPassword(password))
+            try
             {
-                user.UserName = username;
-                return user;
+                if (BCrypt.Net.BCrypt.Verify(password, user.Password))
+                {
+                    user.UserName = username;
+                    return user;
+                }
+            } catch (Exception)
+            {
+                return null;
             }
+
             return null;
         }
         public Boolean InsertApiKey(string emailAddress, string apiKey)
@@ -48,19 +55,7 @@ namespace GMS___Business_Layer
         }
         public string GetHashedPassword(string password)
         {
-            password += "salt";
-            return GetHashCode(password).ToString();
-        }
-
-        public int GetHashCode(string original)
-        {
-            long sum = 0, mul = 1;
-            for (int i = 0; i < original.Length; i++)
-            {
-                mul = (i % 4 == 0) ? 1 : mul * 256;
-                sum += original[i] * mul;
-            }
-            return (int)(Math.Abs(sum) % 2147483647);
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
     }
 }

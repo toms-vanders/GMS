@@ -2,7 +2,7 @@
 using GMS___Web_Client.Models;
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Net;
 using System.Web.Mvc;
 
 namespace GMS___Web_Client.Controllers
@@ -15,11 +15,25 @@ namespace GMS___Web_Client.Controllers
         {
             if (InSession())
             {
-                Session["Guild"] = "";
-                ViewBag.ApiToken = Session["ApiToken"];
-                ViewBag.Characters = GetJson<List<string>>("gw2api/characters");
-                ViewBag.Message = "Your user page.";
-                return View();
+                try
+                {
+                    Session["Guild"] = "";
+                    ViewBag.ApiToken = Session["ApiToken"];
+                    ViewBag.UserToken = Session["UserToken"];
+                    ViewBag.Message = "Your user page.";
+                    return View();
+                } catch (WebException ex)
+                {
+                    if (ex.Status == WebExceptionStatus.Timeout)
+                    {
+                        ViewBag.Error = "The login action timed out. Try again later.";
+                        return RedirectToAction("LogIn", "Auth");
+                    }
+                    return RedirectToAction("ApiForm", "User");
+                } catch (Exception)
+                {
+                    return RedirectToAction("ApiForm", "User");
+                }
             }
             ViewBag.Error = "You aren't authorized to access this page.";
             return RedirectToAction("Index", "Home");
@@ -85,6 +99,23 @@ namespace GMS___Web_Client.Controllers
                 }
             }
             return equipment;
+        }
+
+        public ActionResult Account()
+        {
+            if (InSession())
+            {
+                var model = new UserModel();
+                ViewBag.AccountCreated = Session["AccountCreated"];
+                model.UserName = Session["Username"].ToString();
+                model.EmailAddress = Session["EmailAddress"].ToString();
+                ViewBag.Message = "Your account details.";
+                return View(model);
+            } else
+            {
+                ViewBag.Error = "You aren't authorized to access this page.";
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

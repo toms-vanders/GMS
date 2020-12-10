@@ -10,14 +10,10 @@ namespace GMS___Data_Access_Layer
 {
     public class UserAccess : UserAccessIF
     {
-        IDbConnection GetConnection()
-        {
-            return new SqlConnection("Server=hildur.ucn.dk;Database=dmaj0919_1081496;User Id=dmaj0919_1081496;Password=Password1!;");
-        }
 
         public IEnumerable<User> GetUsersFromDatabase()
         {
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 IEnumerable<User> users = conn.Query<User>("SELECT * FROM Users");
                 return users;
@@ -26,9 +22,9 @@ namespace GMS___Data_Access_Layer
 
         public User GetUserFromDatabase(String emailAddress)
         {
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
-                List<User> users = conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole FROM Users where emailAddress in @emails", new { emails = new[] { emailAddress } }).ToList();
+                List<User> users = conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole, accountCreated FROM Users where emailAddress in @emails", new { emails = new[] { emailAddress } }).ToList();
                 if (users.Count != 1)
                 {
                     return (User)null;
@@ -42,14 +38,13 @@ namespace GMS___Data_Access_Layer
 
         public User GetUserFromDatabaseWithUsername(String username)
         {
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
-                List<User> users = conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole FROM Users where userName in @usernames", new { usernames = new[] { username } }).ToList();
+                List<User> users = conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole, accountCreated FROM Users where userName in @usernames", new { usernames = new[] { username } }).ToList();
                 if (users.Count != 1)
                 {
                     return (User)null;
-                }
-                else
+                } else
                 {
                     return users[0];
                 }
@@ -59,7 +54,7 @@ namespace GMS___Data_Access_Layer
         public int InsertUser(User user)
         {
             int affectedRows = -1;
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 try
                 {
@@ -77,7 +72,7 @@ namespace GMS___Data_Access_Layer
         public int UpdateUser(User user)
         {
             int affectedRows = -1;
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 try
                 {
@@ -100,7 +95,7 @@ namespace GMS___Data_Access_Layer
         public int DeleteByName(string UserName)
         {
             int affectedRows = -1;
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 try
                 {

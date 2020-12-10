@@ -1,9 +1,11 @@
 ﻿using GMS___Business_Layer;
 using GMS___Model;
 using GMS___Web_Client.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace GMS___Web_Client.Controllers
@@ -157,20 +159,19 @@ namespace GMS___Web_Client.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    EventCharacterProcessor ecp = new EventCharacterProcessor();
-                    if (model.EventMaxNumberOfCharacters < ecp.ParticipantsInEvent(model.eventID))
+                    if (model.EventMaxNumberOfCharacters < JsonConvert.DeserializeObject<int>(getNumberOfSignedParticipants(model.eventID)))
                     {
                         var eventTypes = GetAllEventTypes();
                         model.EventTypes = GetOptionEventTypesList(eventTypes);
                         ViewBag.Error = "You cant set the maximum number of participants to below the current number of participants.";
                         return View(model);
                     }
-                    EventProcessor processor = new EventProcessor();
-                    Boolean wasSuccessful = processor.UpdateEvent(model.eventID, model.EventName,
-                        model.EventType, model.EventLocation, model.EventDateTime, model.EventDescription,
-                        model.EventMaxNumberOfCharacters, model.GuildID, model.rowID);
 
-                    if (wasSuccessful)
+                    Event tempEvent = PostJson("api/guild/events/update", new Event(model.eventID, model.GuildID, model.EventName,
+                        model.EventDescription, model.EventType, model.EventLocation, model.EventDateTime,
+                        model.EventMaxNumberOfCharacters, model.rowID));
+
+                    if (tempEvent != null)
                     {
                         return RedirectToAction("SearchEvents", "Event", new { name = this.Session["characterName"] });
                     } else
@@ -188,6 +189,25 @@ namespace GMS___Web_Client.Controllers
             {
                 ViewBag.Error = "You aren't authorized to access this page.";
                 return RedirectToAction("Index", "Home");
+            }
+        }
+
+        public string getNumberOfSignedParticipants(int eventId)
+        {
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.BaseAddress = EndPoint;
+                    webClient.Encoding = System.Text.Encoding.UTF8;
+                    webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+                    webClient.Headers.Add("Authorization", this.Session["UserToken"].ToString());
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    return webClient.DownloadString("api/guild/events/" + eventId + "/participants");
+                }
+            } catch (WebException ex)
+            {
+                throw ex;
             }
         }
     }
