@@ -19,91 +19,133 @@
 
 </div>
 <div class="row">
-    <div class="col-8 list-group" id="equipment">
+    <div class="col-8 list-group">
+        <div class="card border-dark mb-3">
+            <div class="card-header">Items</div>
+            <div class="card-body" id="equipment" style="padding:0px">
 
+            </div>
+        </div>
     </div>
     <div class="col-4 list-group" id="details">
-        <div class="flex-column align-items-start list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-                <div class="mb-1" id="race">
-                    <div class="spinner-border spinner-border-sm text-success">
-                        <span class="sr-only" role="status">Loading...</span>
+        <div class="card border-dark mb-3">
+            <div class="card-header">Character</div>
+            <div class="card-body">
+                <div class="d-flex w-100 justify-content-between">
+                    <div class="mb-1" id="race">
+                        <div class="spinner-border spinner-border-sm text-success">
+                            <span class="sr-only" role="status">Loading...</span>
+                        </div>
+                    </div>
+                    <small id="level">
+                        <div class="spinner-border spinner-border-sm text-success" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </small>
+                </div>
+                <div class="mb-1" id="profession">
+                    <div class="spinner-border spinner-border-sm text-success" role="status">
+                        <span class="sr-only">Loading...</span>
                     </div>
                 </div>
-                <small id="level">
+                <small id="gender">
                     <div class="spinner-border spinner-border-sm text-success" role="status">
-                        <span class="sr-only" >Loading...</span>
+                        <span class="sr-only">Loading...</span>
                     </div>
                 </small>
             </div>
-            <div class="mb-1" id="profession">
-                <div class="spinner-border spinner-border-sm text-success" role="status">
-                    <span class="sr-only">Loading...</span>
+        </div>
+        <div class="card border-dark mb-3">
+            <div class="card-header">Fun facts</div>
+            <div class="card-body">
+                <div class="d-flex w-100 justify-content-between">
+                    <p class="card-text">Date created: </p>
+                    <div class="mb-1" id="created">
+                        <div class="spinner-border spinner-border-sm text-success">
+                            <span class="sr-only" role="status">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex w-100 justify-content-between">
+                    <p class="card-text">How many deaths: </p>
+                    <div class="mb-1" id="deaths">
+                        <div class="spinner-border spinner-border-sm text-success">
+                            <span class="sr-only" role="status">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex w-100 justify-content-between">
+                    <p class="card-text">How many seconds played: </p>
+                    <div class="mb-1" id="age">
+                        <div class="spinner-border spinner-border-sm text-success" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <small id="gender">
-                <div class="spinner-border spinner-border-sm text-success" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </small>
         </div>
-        <div id="events" style="margin-top:10px;">
-            <div class="flex-column align-items-start list-group-item" aria-describedby="linkHelpBlock">
+        <div class="card border-success mb-3" id="events">
+            <div class="card-header">Events</div>
+            <div class="card-body">
                 @if (ViewBag.Guild is null)
                 {
+                    <h4 class="card-title">This character is not representative in a guild.</h4>
+                    <hr />
                     <img src="@Url.Content("~/Content/images/ezgif.com-gif-maker.gif")" class="rounded mx-auto d-block img-fluid" />
-                    <small id="linkHelpBlock" class="form-text text-muted">
+                    <hr />
+                    <p id="linkHelpBlock" class="card-text">
                         In order to create and search events, your character needs to represant a guild.
                         When you become a guild representant, it can take a few minutes to process the change
                         in order to display links.
-                    </small>
+                    </p>
                 }
                 else
                 {
-                    <p>@Html.ActionLink("Create new guild event", "CreateEventForm", "Event", new { name = ViewBag.Character }, null)</p>
-                    <p>@Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character }, null)</p>
+                    <h4 class="card-title">What do you want to do?</h4>
+                    <p class="card-text">@Html.ActionLink("Create new guild event", "CreateEventForm", "Event", new { name = ViewBag.Character }, null)</p>
+                    <p class="card-text">@Html.ActionLink("Find guild events", "SearchEvents", "Event", new { name = ViewBag.Character }, null)</p>
                 }
             </div>
         </div>
-    </div>
 
-    <div class="toast" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; left: 50%; bottom: 15%; transform: translate(-50%, 0px); z-index: 9999;">
-        <div class="toast-header">
-            <strong class="mr-auto">GMS</strong>
-            <small class="text-muted">just now</small>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            <div class="d-flex w-100 justify-content-between">
-                <p id="toastText" style="padding-top: 25px">Your character details are loading...</p>
-                <img src="~/Content/images/summer_quaggan.png" class="rotate" style="width:80px;height:80px;margin-left:10px" alt="Aloha quaggan">
+        <div class="toast" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; left: 50%; bottom: 15%; transform: translate(-50%, 0px); z-index: 9999;">
+            <div class="toast-header">
+                <strong class="mr-auto">GMS</strong>
+                <small class="text-muted">just now</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                <div class="d-flex w-100 justify-content-between">
+                    <p id="toastText" style="padding-top: 25px">Your character details are loading...</p>
+                    <img src="~/Content/images/summer_quaggan.png" class="rotate" style="width:80px;height:80px;margin-left:10px" alt="Aloha quaggan">
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<img class="img-fluid rounded mx-auto d-block absolution zoom" src="~/Content/images/cow_quaggan.png" />
+    <img class="img-fluid rounded mx-auto d-block absolution zoom" src="~/Content/images/cow_quaggan.png" />
 
-<script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
             var character = '@ViewBag.Character';
             var apiToken = '@ViewBag.ApiToken';
             loadCharacter(character, apiToken);
         });
-</script>
+    </script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
             var character = '@ViewBag.Character';
             var apiToken = '@ViewBag.ApiToken';
             loadEquipmentList(character, apiToken);
         });
-</script>
+    </script>
 
-<script>
-    $(document).ready(function () {
-        $('.toast').toast('show');
-    });
-</script>
+    <script>
+        $(document).ready(function () {
+            $('.toast').toast('show');
+        });
+    </script>
