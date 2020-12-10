@@ -15,6 +15,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return false;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())

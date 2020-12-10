@@ -121,14 +121,14 @@ namespace GMS___Web_Client.Controllers
                 model.GuildID = ViewBag.Character.Guild;
                 // Get info about event
                 EventProcessor processor = new EventProcessor();
-                List<Event> events = (List<Event>)processor.GetEventByID(eventID);
-                if (events.Count == 0)
+                Event events = processor.GetEventByID(eventID);
+                if (events is null)
                 {
                     TempData["ErrorMessage"] = "This Event no longer exists";
                     return RedirectToAction("SearchEvents", "Event", new { name = this.Session["characterName"] });
                 } else
                 {
-                    Event eventToBeUpdated = events[0];
+                    Event eventToBeUpdated = events;
                     model.eventID = eventToBeUpdated.EventID;
                     model.EventName = eventToBeUpdated.Name;
                     model.EventType = eventToBeUpdated.EventType;

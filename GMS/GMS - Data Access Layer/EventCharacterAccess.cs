@@ -17,6 +17,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return false;
             }
 
             // Either join participant list or the waiting list by checking if participant list reached the maximum amout of sign-ups.
@@ -66,6 +67,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return false;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -95,6 +97,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return false;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -135,6 +138,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return false;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -166,6 +170,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return false;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -256,6 +261,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return -1;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())

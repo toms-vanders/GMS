@@ -19,6 +19,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return null;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -26,7 +27,8 @@ namespace GMS___Data_Access_Layer
                 try
                 {
                     log.Info("Retrieving event with ID: @EventID", eventID);
-                    if (conn.Query<Event>("SELECT * FROM Event WHERE eventID = @EventID", new { EventID = eventID }) is Event retrievedEvent)
+                    
+                    if(conn.QueryFirst<Event>("SELECT * FROM Event WHERE eventID = @EventID", new { EventID = eventID }) is Event retrievedEvent)
                     {
                         log.Info("Successfully retrieved event.");
                         return retrievedEvent;
@@ -51,6 +53,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return null;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -84,6 +87,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return null;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -116,6 +120,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return null;
             }
 
             // Gets events the user signed up for and is either on Participants List OR Waiting List.
@@ -158,6 +163,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return false;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -196,6 +202,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return false;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -228,6 +235,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return false;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -261,6 +269,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return false;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -293,6 +302,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return -1;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())

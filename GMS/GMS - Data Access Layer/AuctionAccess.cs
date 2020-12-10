@@ -16,6 +16,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return -1;
             }
 
             int affectedRows = -1;
@@ -40,6 +41,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new Exception(), "No connection to either the internet or the database available.");
+                return null;
             }
 
             using (IDbConnection conn = DBConnection.GetConnection())
@@ -47,7 +49,7 @@ namespace GMS___Data_Access_Layer
                 try
                 {
                     log.Info("Retrieving auction from the database with auction ID: @auctionID", auctionID);
-                    if (conn.Query<Auction>("SELECT * FROM Auction WHERE auctionID in @AuctionID", new { AuctionID = auctionID }) is Auction auction)
+                    if (conn.QueryFirst<Auction>("SELECT * FROM Auction WHERE auctionID in @AuctionID", new { AuctionID = auctionID }) is Auction auction)
                     {
                         log.Info("Sucessfully retrieved auction from database.");
                         return auction;
@@ -71,6 +73,7 @@ namespace GMS___Data_Access_Layer
             if (!DBConnection.IsConnectionAvailable())
             {
                 log.Error(exception: new Exception(), "No connection to either the internet or the database available.");
+                return -1;
             }
 
             int affectedRows = -1;
