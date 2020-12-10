@@ -5,7 +5,7 @@ namespace GMS___Data_Access_Layer
 {
     interface IEventAccess
     {
-        IEnumerable<Event> GetEventByID(int eventID);
+        Event GetEventByID(int eventID);
         IEnumerable<Event> GetAllGuildEvents(string guildID);
         IEnumerable<Event> GetAllGuildEventsByEventType(string guidlID, string eventType);
         bool InsertEvent(Event guildEvent);

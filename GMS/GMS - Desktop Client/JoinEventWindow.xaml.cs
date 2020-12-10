@@ -34,13 +34,13 @@ namespace GMS___Desktop_Client
             client.DefaultRequestHeaders.Add("x-rowid", JsonSerializer.Serialize(rowID));
         }
 
-        private async void JoinEventButton_Click(object sender, RoutedEventArgs e)
+        private void JoinEventButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrEmpty(characterRoleBox.Text))
+            if (!string.IsNullOrEmpty(characterRoleBox.Text))
             {
                 EventCharacter newEventCharacter = new EventCharacter()
                 {
-                    EventID = Int32.Parse(eventIDBox.Text),
+                    EventID = int.Parse(eventIDBox.Text),
                     CharacterName = (string)App.Current.Properties["SelectedCharacter"],
                     CharacterRole = characterRoleBox.Text,
                     SignUpDateTime = DateTime.Now,
