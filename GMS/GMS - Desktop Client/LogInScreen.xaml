@@ -6,7 +6,10 @@
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Guild Management System - GMS" Height="450" Width="800">
+        Title="Guild Management System - GMS" 
+        Icon="{DynamicResource LogoPath}"
+        ShowIconOnTitleBar="True"
+        Height="450" Width="800">
     <mah:MetroWindow.Resources>
         <ImageBrush x:Key="GW2Background" ImageSource="{DynamicResource BackgroundPath}" Stretch="Fill" Opacity="0.3" />
         <Style x:Key="GridStyle1" TargetType="{x:Type Grid}">
@@ -31,6 +34,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         
         <!-- Row 1 -->
@@ -66,5 +70,11 @@
                 Create Account
             </Hyperlink>
         </TextBlock>
+
+        <Grid Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3">
+            <TextBlock Grid.Column="2" Grid.Row="11" VerticalAlignment="Bottom" HorizontalAlignment="Right" Foreground="Silver" FontSize="11">
+                Logo by LogoMakr.com
+            </TextBlock>
+        </Grid>
     </Grid>
 </mah:MetroWindow>

@@ -6,8 +6,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local1="clr-namespace:GMS___Desktop_Client.UserControls" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                  mc:Ignorable="d"
-        Title="Guild Management System - GMS" Height="550" Width="1000"
-                 Background="#0E1726">
+        Title="Guild Management System - GMS" 
+        Icon="{DynamicResource MainWindowLogoPath}"
+        ShowIconOnTitleBar="True"
+        Height="550" Width="1000"
+        Background="#0E1726">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
@@ -54,7 +57,7 @@
         </Rectangle>
 
         <!--Tab Control for Main Window-->
-        <TabControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="100" Background="#0D1625" Margin="10 10 0 0">
+        <TabControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Background="#0D1625" Margin="10 10 0 0">
             <TabControl.Resources>
                 <Style TargetType="{x:Type TabPanel}">
                     <Setter Property="Background" Value="#0D1625" />
@@ -122,5 +125,11 @@
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Center" Height="40" Width="40" />
         </Button>
+
+        <Grid Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="4">
+            <TextBlock Grid.Column="2" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right" Foreground="Silver" FontSize="11">
+                Logo by LogoMakr.com
+            </TextBlock>
+        </Grid>
     </Grid>
 </mah:MetroWindow>
