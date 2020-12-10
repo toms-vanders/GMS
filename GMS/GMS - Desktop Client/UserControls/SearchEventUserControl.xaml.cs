@@ -1,9 +1,12 @@
 ﻿using GMS___Model;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +20,7 @@ namespace GMS___Desktop_Client.UserControls
     public partial class SearchEventUserControl : UserControl
     {
         private readonly HttpClient client;
+        private readonly MetroWindow parentWindow = (MetroWindow)App.Current.MainWindow;
         IEnumerable<Event> eventList;
         IEnumerable<Event> joinedEvents;
 
@@ -32,11 +36,13 @@ namespace GMS___Desktop_Client.UserControls
                 BaseAddress = new Uri("https://localhost:44377/")
             };
             client.DefaultRequestHeaders.Add("Authorization", (string)App.Current.Properties["AuthToken"]);
+
             eventSearchBox.IsReadOnly = true;
             filterByEventTypeBox.IsEnabled = false;
             filterByRoleBox.IsEnabled = false;
             eventGrid.Visibility = Visibility.Hidden;
             dataGridMessage.Visibility = Visibility.Visible;
+            
             FillDataGrid();
 
         }
@@ -45,9 +51,20 @@ namespace GMS___Desktop_Client.UserControls
         {
             if (!string.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
             {
-                string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
+                try
+                {
+                    string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
 
-                eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
+                    eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
+                } catch (TimeoutException)
+                {
+                    await parentWindow.ShowMessageAsync("Service unavailable", "An error occurred while contacting the server please try again later.", MessageDialogStyle.Affirmative);
+
+                } catch (WebException)
+                {
+                    await parentWindow.ShowMessageAsync("Web service error", "An error occured contacting the web service please try again later.", MessageDialogStyle.Affirmative);
+                }
+
                 eventGrid.ItemsSource = eventList;
 
                 eventGrid.Items.Refresh();

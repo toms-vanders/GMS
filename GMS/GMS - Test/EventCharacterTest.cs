@@ -50,7 +50,7 @@ namespace GMS___Test
 
             ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID);
-            testEvent.EventID = ea.getIdOfEvent(testEvent.Name);
+            testEvent.EventID = ea.GetIdOfEvent(testEvent.Name);
         }
         [TestCleanup]
         public void TestCleanup()
