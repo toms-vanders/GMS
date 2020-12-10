@@ -27,8 +27,8 @@ namespace GMS___Data_Access_Layer
                 try
                 {
                     log.Info("Retrieving event with ID: @EventID", eventID);
-                    
-                    if(conn.QueryFirst<Event>("SELECT * FROM Event WHERE eventID = @EventID", new { EventID = eventID }) is Event retrievedEvent)
+
+                    if (conn.QueryFirst<Event>("SELECT * FROM Event WHERE eventID = @EventID", new { EventID = eventID }) is Event retrievedEvent)
                     {
                         log.Info("Successfully retrieved event.");
                         return retrievedEvent;
@@ -129,25 +129,14 @@ namespace GMS___Data_Access_Layer
                 try
                 {
                     log.Info("Retrieving events for guild ID: @guildID and character: @characterName", guildID, characterName);
-                    IEnumerable<Event> foundEvents = conn.Query<Event>("SELECT e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters" +
-                        " FROM Event e RIGHT JOIN EventCharacter ec on e.eventID = ec.eventID" +
-                        " WHERE ec.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList();
+                    IEnumerable<Event> foundEvents = conn.Query<Event>("SELECT e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters FROM Event e RIGHT JOIN EventCharacter ec on e.eventID = ec.eventID WHERE ec.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList();
 
                     log.Info("Retrieving events on waiting list for guild ID: @guildID and character: @characterName", guildID, characterName);
-                    IEnumerable<Event> totalEvents = foundEvents.Concat(conn.Query<Event>("SELECT e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters" +
-                        " FROM Event e RIGHT JOIN EventCharacterWaitingList ecwl on e.eventID = ecwl.eventID" +
-                        " WHERE ecwl.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList()).ToList();
+                    IEnumerable<Event> totalEvents = foundEvents.Concat(conn.Query<Event>("SELECT e.eventID, e.guildID, e.name, e.description, e.eventType, e.location, e.date, e.maxNumberOfCharacters FROM Event e RIGHT JOIN EventCharacterWaitingList ecwl on e.eventID = ecwl.eventID WHERE ecwl.characterName = @CharacterName and e.guildID = @GuildID", new { GuildID = guildID, CharacterName = characterName }).ToList()).ToList();
 
-                    if (totalEvents.Any())
-                    {
-                        log.Info("Successfully retrieved @eventCount event(s) for guild ID: @guildID and character: @characterName", foundEvents, guildID, characterName);
-                        log.Info("Successfully retrieved @eventCount event(s) (including waiting list) for guild ID: @guildID and character: @characterName", totalEvents, guildID, characterName);
-                        return totalEvents;
-                    } else
-                    {
-                        log.Error(new Exception(), "Unable to retrieve events from database");
-                        return null;
-                    }
+                    log.Info("Successfully retrieved @eventCount event(s) for guild ID: @guildID and character: @characterName", foundEvents, guildID, characterName);
+                    log.Info("Successfully retrieved @eventCount event(s) (including waiting list) for guild ID: @guildID and character: @characterName", totalEvents, guildID, characterName);
+                    return totalEvents;
                 } catch (SqlException ex)
                 {
                     log.Trace("SQLException encountered while retrieving the events from the database.");
@@ -313,7 +302,7 @@ namespace GMS___Data_Access_Layer
                     List<int> ids = (List<int>)conn.Query<int>(@"Select eventID FROM Event WHERE name = @Name", new { Name = eventName });
                     if (ids.Count() == 0)
                     {
-                        log.Error(new Exception(),"Unable to retrieve event from database");
+                        log.Error(new Exception(), "Unable to retrieve event from database");
                         return 0;
                     } else
                     {
