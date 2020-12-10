@@ -3,7 +3,9 @@
 }
 
 @Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/popper")
 <script src="~/JavaScript/user.js"></script>
+
 <style>
     .absolution {
         position: absolute;
@@ -55,7 +57,7 @@
 <img class="img-fluid mx-auto d-block absolution zoom" src="~/Content/images/vacation_quaggan.png" />
 
 
-    
+
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -75,5 +77,11 @@
 <script>
     $(document).ready(function () {
         $('.toast').toast('show');
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
     });
 </script>
