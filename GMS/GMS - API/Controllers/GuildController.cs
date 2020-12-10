@@ -219,7 +219,7 @@ namespace GMS___API.Controllers
                     {
                         if (eventCharacterProcessor.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName))
                         {
-                            return "Succesfully deleted from participant's list";
+                            return "Succesfully deleted from participants list";
                         } else
                         {
                             return "Not succesfully deleted";
