@@ -29,7 +29,7 @@ namespace GMS___Desktop_Client.UserControls
     public partial class MyInventoryControl : UserControl
     {
         private readonly HttpClient client;
-        private static List<Item> items = new List<Item>();
+        private static List<Item> items;
 
         public MyInventoryControl()
         {
@@ -39,6 +39,7 @@ namespace GMS___Desktop_Client.UserControls
                 BaseAddress = new Uri("https://localhost:44377/")
             };
             client.DefaultRequestHeaders.Add("Authorization", (string)App.Current.Properties["ApiKey"]);
+            items = new List<Item>();
             GetItems();
             // TODO: Save icons in static property
         }
@@ -139,6 +140,7 @@ namespace GMS___Desktop_Client.UserControls
             int itemId = Int32.Parse(buttonName.Substring(3));
 
             // Getting item with matching ID from the static List<Item> items
+            // Using LINQ (from .. in.. where.. select ..)
             Item item = (Item) (from singleItem in items where singleItem.Id == itemId select singleItem).FirstOrDefault();
             
             // Setting item details 
