@@ -9,7 +9,7 @@
         Title="Guild Management System - GMS" 
         Icon="{DynamicResource MainWindowLogoPath}"
         ShowIconOnTitleBar="True"
-        Height="550" Width="1000"
+        Height="600" Width="1000"
         Background="#0E1726">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -23,7 +23,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="20" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="20" />
+            <RowDefinition Height="10" />
         </Grid.RowDefinitions>
 
         <!--Character Selector and Logout Button-->
@@ -101,8 +101,12 @@
                             <Setter Property="Margin" Value="0 0 0 -1" />
                         </Style>
                     </TabControl.Resources>
-                    <TabItem x:Name="searchInventoryTab" Header="Search" Height="39" VerticalAlignment="Top"/>
-                    <TabItem x:Name="allInventoryTab" Header="All" Height="39" VerticalAlignment="Top"/>
+                    <TabItem x:Name="myInventoryTab" Header="My inventory" Height="39" VerticalAlignment="Top" >
+                        <local1:MyInventoryControl />
+                    </TabItem>
+                    <TabItem x:Name="onCharacterTab" Header="Hero" Height="39" VerticalAlignment="Top" >
+                        
+                    </TabItem> 
                 </TabControl>
             </TabItem>
             <TabItem Header="Auctions">

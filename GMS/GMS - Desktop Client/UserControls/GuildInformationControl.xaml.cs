@@ -59,5 +59,10 @@ namespace GMS___Desktop_Client.UserControls
                 guildTag.Text = guild.Tag.ToString();
             }
         }
+
+        private void refreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            FillGuildInfo();
+        }
     }
 }

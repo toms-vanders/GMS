@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="GMS___Desktop_Client.UserControls.MyInventoryControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GMS___Desktop_Client.UserControls" xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="700" Background="#202B43">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Text="Search all inventory" Grid.Column="1" Grid.Row="0" FontSize="30" 
+                  Margin="0 0 0 0" Padding="0 0 0 0" Grid.ColumnSpan="5" />
+
+        <!-- Search field -->
+        <wpfx:WatermarkTextBox Grid.Column="1" Grid.Row="1" x:Name="searchField" Watermark="Item name"  Width="150" HorizontalAlignment="Left" Margin="0 5 0 15"
+                               Background="#354056" Foreground="White" TextChanged="searchField_TextChanged" />
+
+        <!-- Inventory stack panel -->
+        <StackPanel Grid.Column="1" Grid.Row="2">
+            <ScrollViewer Height="250">
+                <WrapPanel x:Name="itemsWrapPanel" Orientation="Horizontal">
+                </WrapPanel>
+            </ScrollViewer>
+        </StackPanel>
+
+        <!-- Item info -->
+        <Grid Grid.Column="1" Grid.Row="3" Margin="0 5 0 0" >
+            <Rectangle Height="100" Stretch="UniformToFill">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="#0E1726" />
+                </Rectangle.Fill>
+            </Rectangle>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                
+                <!-- Item image -->
+                <Image Source="{DynamicResource SelectedItemImage}" Width="80" Grid.Column="0" Grid.Row="0" Grid.RowSpan="7" Margin="10 10 10 10"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Name:" Width="120" Foreground="Gainsboro" FontSize="16" />
+                <TextBlock Name="selectedItemName"  Grid.Row="0" Grid.Column="2" Width="150" Foreground="Gainsboro" FontSize="16" />
+                
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="Description:" Width="120" Foreground="Gainsboro" FontSize="16" />
+                <TextBlock Name="selectedItemDescription" Grid.Row="1" Grid.Column="2" Width="120" Foreground="Gainsboro" FontSize="16" />
+                
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="Type:" Width="120" Foreground="Gainsboro" FontSize="16" />
+                <TextBlock Name="selectedItemType" Grid.Row="2" Grid.Column="2" Width="150" Foreground="Gainsboro" FontSize="16" />
+
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="Level:" Width="120" Foreground="Gainsboro" FontSize="16" />
+                <TextBlock Name="selectedItemLevel" Grid.Row="3" Grid.Column="2" Width="150" Foreground="Gainsboro" FontSize="16" />
+
+                <TextBlock Grid.Row="0" Grid.Column="4" Text="Rarity:" Width="120" Foreground="Gainsboro" FontSize="16" />
+                <TextBlock Name="selectedItemRarity" Grid.Row="0" Grid.Column="5" Width="150" Foreground="Gainsboro" FontSize="16" />
+
+                <TextBlock Grid.Row="1" Grid.Column="4" Text="Vendor value:" Width="120" Foreground="Gainsboro" FontSize="16" />
+                <TextBlock Name="selectedItemVendorValue" Grid.Row="1" Grid.Column="5" Width="150" Foreground="Gainsboro" FontSize="16" />
+
+            </Grid>
+        </Grid>
+        
+        
+    </Grid>
+</UserControl>
