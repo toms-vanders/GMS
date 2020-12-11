@@ -127,6 +127,7 @@ namespace GMS___API.Controllers
         }
 
         [HttpPost("account/username")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<ChangeUsernameModel> ChangeUsername([FromBody] ChangeUsernameModel user)
         {
