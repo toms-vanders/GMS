@@ -1,63 +1,93 @@
 ﻿using Dapper;
 using GMS___Model;
+using NLog;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 
 namespace GMS___Data_Access_Layer
 {
     public class AuctionAccess : AuctionAccessIF
     {
-        IDbConnection GetConnection()
+        private readonly Logger log = LogManager.GetCurrentClassLogger();
+        public int InsertAuction(Auction auction)
         {
-            return new SqlConnection("Server=hildur.ucn.dk;Database=dmaj0919_1081496;User Id=dmaj0919_1081496;Password=Password1!;");
-        }
 
-        public int InsertAuction(Auction action)
-        {
+            if (!DBConnection.IsConnectionAvailable())
+            {
+                log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return -1;
+            }
+
             int affectedRows = -1;
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 try
                 {
-                    string sqlCommand = "INSERT INTO Auction (creatorID, eventID, itemID)";
-                    sqlCommand += " VALUES (@CreatorID, @EventID, @ItemID)";
-                    affectedRows = conn.Execute(sqlCommand, action);
+                    log.Info("Inserting auction to database with creator ID : @creatorID",auction.CreatorID);
+                    affectedRows = conn.Execute("INSERT INTO Auction (creatorID, eventID, itemID) VALUES (@CreatorID, @EventID, @ItemID)", auction);
+                    log.Info("Successfully inserted auction to database.");
                 } catch (SqlException ex)
                 {
-                    Console.WriteLine(ex.ToString()); // TODO change exception handling
+                    log.Trace("SQLException while inserting auction to database.");
+                    log.Error(ex,"Unable to insert auction to database.");
                 }
             }
             return affectedRows;
         }
         public Auction GetAuctionFromDatabase(int auctionID)
         {
-            using (IDbConnection conn = GetConnection())
+
+            if (!DBConnection.IsConnectionAvailable())
             {
-                // TODO this is not the best way to pass single parameter, not the best way to pass multiple parameters in a query
-                List<Auction> auctions = conn.Query<Auction>("SELECT * FROM Auction WHERE auctionID in @ids", new { ids = new[] { auctionID } }).ToList();
-                if (auctions.Count() != 1)
+                log.Error(exception: new Exception(), "No connection to either the internet or the database available.");
+                return null;
+            }
+
+            using (IDbConnection conn = DBConnection.GetConnection())
+            {
+                try
                 {
-                    return (Auction)null;
-                } else
+                    log.Info("Retrieving auction from the database with auction ID: @auctionID", auctionID);
+                    if (conn.QueryFirst<Auction>("SELECT * FROM Auction WHERE auctionID in @AuctionID", new { AuctionID = auctionID }) is Auction auction)
+                    {
+                        log.Info("Sucessfully retrieved auction from database.");
+                        return auction;
+                    } else
+                    {
+                        log.Error(new Exception(), "Unable to retrieve auction from database.");
+                        return null;
+                        
+                    }
+                } catch(SqlException ex)
                 {
-                    return auctions[0];
+                    log.Trace("SQLException encountered while retrieving the auction from the database.");
+                    log.Error(ex, "Unable to retrieve auction from database.");
+                    return null;
                 }
             }
         }
         public int DeleteByCreatorID(int CreatorID)
         {
+
+            if (!DBConnection.IsConnectionAvailable())
+            {
+                log.Error(exception: new Exception(), "No connection to either the internet or the database available.");
+                return -1;
+            }
+
             int affectedRows = -1;
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 try
                 {
-                    affectedRows = conn.Execute(@"DELETE FROM Auction WHERE creatorID = @id", new { id = new[] { CreatorID } });
+                    log.Info("Deleting auction from database with creator ID: @creatorID", CreatorID);
+                    affectedRows = conn.Execute(@"DELETE FROM Auction WHERE creatorID = @id", new { id = CreatorID });
+                    log.Info("Successfully deleted auction from the database.");
                 } catch (SqlException ex)
                 {
-                    Console.WriteLine(ex.ToString()); // TODO change exception handling
+                    log.Trace("SQLException encountered while deleting the auction from the database.");
+                    log.Error(ex, "Unable to delete auction from database.");
                 }
             }
             return affectedRows;

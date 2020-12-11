@@ -5,7 +5,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>GMS___Desktop_Client</RootNamespace>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\quaggans\cheer_quaggan.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\quaggans\cheer_quaggan.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.0.1" />
@@ -13,6 +22,7 @@
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="4.8.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NLog" Version="4.7.6" />
     <PackageReference Include="WpfAnimatedGif" Version="2.0.0" />
   </ItemGroup>
 

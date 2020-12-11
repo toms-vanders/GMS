@@ -1,18 +1,18 @@
 ﻿using GMS___Model;
-using Newtonsoft.Json;
-using System;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Windows.Navigation;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Reflection;
-using System.Threading.Tasks;
+using System.Windows.Navigation;
 
 namespace GMS___Desktop_Client
 {
@@ -26,14 +26,20 @@ namespace GMS___Desktop_Client
         public LogInScreen()
         {
             InitializeComponent();
-            client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44377/");
+            client = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:44377/")
+            };
             var path = Environment.CurrentDirectory;
-            var uriPath = new Uri(path.Substring(0,path.LastIndexOf("bin"))+ @"\Images\bg.png", UriKind.RelativeOrAbsolute);
+            var uriPath = new Uri(path.Substring(0, path.LastIndexOf("bin")) + @"\Images\bg.png", UriKind.RelativeOrAbsolute);
             this.Resources["BackgroundPath"] = new BitmapImage(uriPath);
+
+            //icon
+            var iconUriPath = new Uri(path.Substring(0, path.LastIndexOf("bin")) + @"\icon.ico", UriKind.RelativeOrAbsolute);
+            this.Resources["LogoPath"] = new BitmapImage(iconUriPath);
         }
 
-        private async void logInButton_Click(object sender, RoutedEventArgs e)
+        private async void LogInButton_Click(object sender, RoutedEventArgs e)
         {
             var controller = await this.ShowProgressAsync("Please wait...", "Logging in...", false);
             var userName = userEmailText.Text;
@@ -50,42 +56,59 @@ namespace GMS___Desktop_Client
                 User user = new User() { UserName = userName, Password = password, EmailAddress = emailAddress };
 
                 controller.SetMessage("Sending login information.");
-                var login = client.PostAsJsonAsync("api/user/login", user).Result;
-                controller.SetProgress(0.2);
-
-                if (login.StatusCode == HttpStatusCode.OK)
+                try
                 {
-                    controller.SetMessage("Retrieving authorization token.");
-                    string authToken = login.Content.ReadAsStringAsync().Result;
-                    controller.SetProgress(0.3);
-                    client.DefaultRequestHeaders.Add("Authorization", authToken);
-                    controller.SetMessage("Retrieving user information.");
-                    var userInfo = client.GetAsync("api/user").Result;
-                    controller.SetProgress(0.4);
-                    controller.SetMessage("Creating user object.");
-                    User returnUser = JsonConvert.DeserializeObject<User>(userInfo.Content.ReadAsStringAsync().Result);
-                    controller.SetProgress(0.5);
-                    controller.SetMessage("Saving authentication token.");
-                    App.Current.Properties["AuthToken"] = authToken;
-                    controller.SetProgress(0.6);
-                    //TODO if apikey null
+                    var login = client.PostAsJsonAsync("api/user/login", user).Result;
+                    controller.SetProgress(0.2);
 
-                    if (returnUser.ApiKey == "")
+                    if (login.StatusCode == HttpStatusCode.OK)
                     {
-                        MessageBox.Show("Account does not have an API Key", "Characters", MessageBoxButton.OK, MessageBoxImage.Information);
+                        controller.SetMessage("Retrieving authorization token.");
+                        string authToken = login.Content.ReadAsStringAsync().Result;
+                        controller.SetProgress(0.3);
+
+                        client.DefaultRequestHeaders.Add("Authorization", authToken);
+
+                        controller.SetMessage("Retrieving user information.");
+                        var userInfo = client.GetAsync("api/user").Result;
+                        controller.SetProgress(0.4);
+
+                        controller.SetMessage("Creating user object.");
+                        User returnUser = JsonConvert.DeserializeObject<User>(userInfo.Content.ReadAsStringAsync().Result);
+                        controller.SetProgress(0.5);
+
+                        controller.SetMessage("Saving authentication token.");
+                        App.Current.Properties["AuthToken"] = authToken;
+                        controller.SetProgress(0.6);
+
+                        //TODO if apikey null
+
+                        if (returnUser.ApiKey == "")
+                        {
+                            this.ShowMessageAsync("No API Key", "This account does not have an API Key associated with it.\nTherefore many features of this application will not be available", MessageDialogStyle.Affirmative);
+                            Process.Start(new ProcessStartInfo(new Uri("").AbsoluteUri) { UseShellExecute = true });
+                        }
+
+                        controller.SetMessage("Saving application properties.");
+                        // Set neeed properties for the scope of the application
+                        SetAppProperties(returnUser);
+                        controller.SetProgress(0.7);
+
+                        //Get User Characters
+                        controller.SetMessage("Retrieving GW2 characters info.");
+                        GetCharacters(returnUser);
+                        GetDefaultCharacter();
+                        controller.SetProgress(1.0);
+
+                        loggingResult = true;
                     }
+                } catch (TimeoutException)
+                {
+                    this.ShowMessageAsync("Service unavailable", "An error occurred while contacting the server please try again later.", MessageDialogStyle.Affirmative);
 
-                    controller.SetMessage("Saving application properties.");
-                    // Set neeed properties for the scope of the application
-                    SetAppProperties(returnUser);
-                    controller.SetProgress(0.7);
-
-                    //Get User Characters
-                    controller.SetMessage("Retrieving GW2 characters info.");
-                    GetCharacters(returnUser);
-                    GetDefaultCharacter();
-                    controller.SetProgress(1.0);
-                    loggingResult = true;
+                } catch (WebException)
+                {
+                    this.ShowMessageAsync("Web service error", "An error occured contacting the web service please try again later.", MessageDialogStyle.Affirmative);
                 }
             });
 
@@ -101,7 +124,7 @@ namespace GMS___Desktop_Client
                 };
                 MainWindow.Show();
                 Close();
-            } 
+            }
             else
             {
                 await this.ShowMessageAsync("Logging in", "Logging in failed.");

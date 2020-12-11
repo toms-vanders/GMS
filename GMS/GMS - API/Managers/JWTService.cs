@@ -1,9 +1,9 @@
-﻿using System;
-using System.Security.Claims;
-using System.Collections.Generic;
-using AuthenticationService.Models;
+﻿using AuthenticationService.Models;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace AuthenticationService.Managers
 {
@@ -41,8 +41,7 @@ namespace AuthenticationService.Managers
             {
                 ClaimsPrincipal tokenValid = jwtSecurityTokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validatedToken);
                 return true;
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 return false;
             }
@@ -94,8 +93,7 @@ namespace AuthenticationService.Managers
             {
                 ClaimsPrincipal tokenValid = jwtSecurityTokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validatedToken);
                 return tokenValid.Claims;
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 throw ex;
             }

@@ -1,15 +1,16 @@
 ﻿using GMS___Model;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.ComponentModel;
+using MessageBoxImage = GMS___Desktop_Client.WpfMessageBox.MsgCl.MessageBoxImage;
 
 namespace GMS___Desktop_Client.UserControls
 {
@@ -19,6 +20,7 @@ namespace GMS___Desktop_Client.UserControls
     public partial class SearchEventUserControl : UserControl
     {
         private readonly HttpClient client;
+        private readonly MetroWindow parentWindow = (MetroWindow)App.Current.MainWindow;
         IEnumerable<Event> eventList;
         IEnumerable<Event> joinedEvents;
 
@@ -34,11 +36,13 @@ namespace GMS___Desktop_Client.UserControls
                 BaseAddress = new Uri("https://localhost:44377/")
             };
             client.DefaultRequestHeaders.Add("Authorization", (string)App.Current.Properties["AuthToken"]);
+
             eventSearchBox.IsReadOnly = true;
             filterByEventTypeBox.IsEnabled = false;
             filterByRoleBox.IsEnabled = false;
             eventGrid.Visibility = Visibility.Hidden;
             dataGridMessage.Visibility = Visibility.Visible;
+            
             FillDataGrid();
 
         }
@@ -47,11 +51,22 @@ namespace GMS___Desktop_Client.UserControls
         {
             if (!string.IsNullOrEmpty((string)App.Current.Properties["CharacterGuildID"]))
             {
-                string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
+                try
+                {
+                    string responseBody = await client.GetStringAsync("api/Guild/" + App.Current.Properties["CharacterGuildID"]);
 
-                eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
+                    eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
+                } catch (TimeoutException)
+                {
+                    await parentWindow.ShowMessageAsync("Service unavailable", "An error occurred while contacting the server please try again later.", MessageDialogStyle.Affirmative);
+
+                } catch (WebException)
+                {
+                    await parentWindow.ShowMessageAsync("Web service error", "An error occured contacting the web service please try again later.", MessageDialogStyle.Affirmative);
+                }
+
                 eventGrid.ItemsSource = eventList;
-                
+
                 eventGrid.Items.Refresh();
                 GetJoinedEventsAsync();
 
@@ -91,13 +106,11 @@ namespace GMS___Desktop_Client.UserControls
                     }
 
                     eventGrid.ItemsSource = filterByEventType;
-                }
-                else
+                } else
                 {
                     eventGrid.ItemsSource = filterByName;
                 }
-            }
-            else
+            } else
             {
                 eventGrid.Visibility = Visibility.Hidden;
             }
@@ -117,12 +130,10 @@ namespace GMS___Desktop_Client.UserControls
                 e.PropertyName == "Participants" || e.PropertyName == "WaitingList" || e.PropertyName == "MaxNumberOfCharacters")
             {
                 e.Cancel = true;
-            }
-            else if (e.PropertyName == "EventID")
+            } else if (e.PropertyName == "EventID")
             {
                 e.Column.Header = "ID";
-            }
-            else if (e.PropertyName == "EventType")
+            } else if (e.PropertyName == "EventType")
             {
                 e.Column.Header = "Event Type";
             }
@@ -140,19 +151,17 @@ namespace GMS___Desktop_Client.UserControls
             var response = client.DeleteAsync("api/Guild/events/remove/" + selectedEvent.EventID).Result;
             if (response.IsSuccessStatusCode)
             {
-                MessageBox.Show("Event " + selectedEvent.EventID + " deleted!");
+                WpfMessageBox.Show("Successfully deleted", "Event " + selectedEvent.EventID + " deleted!", MessageBoxButton.OK, MessageBoxImage.Information);
                 FillDataGrid();
-            }
-            else
+            } else
             {
-                MessageBox.Show("Error Code" +
-                response.StatusCode + " : Message - " + response.ReasonPhrase);
+                WpfMessageBox.Show("Error", "Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void EditEventButton_Click(object sender, RoutedEventArgs e)
         {
-            Window editEventWindow = new EditEventWindow(this,SelectedEventID());
+            Window editEventWindow = new EditEventWindow(this, SelectedEventID());
             editEventWindow.ShowDialog();
         }
 
@@ -167,10 +176,9 @@ namespace GMS___Desktop_Client.UserControls
 
                 Window joinEventWindow = new JoinEventWindow(this, eventID, eventName, rowID);
                 joinEventWindow.ShowDialog();
-            }
-            else
+            } else
             {
-                if (MessageBox.Show("You are already part of this event, do you wish to cancel your participation?", "Already participating", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (WpfMessageBox.Show("Already participating", "You are already part of this event, do you wish to cancel your participation?",  MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     CancelParticipation(SelectedEventID().EventID, (string)App.Current.Properties["SelectedCharacter"]);
                     FillDataGrid();
@@ -196,11 +204,10 @@ namespace GMS___Desktop_Client.UserControls
             var response = await client.DeleteAsync("api/guild/events/withdraw");
             if (response.IsSuccessStatusCode)
             {
-                MessageBox.Show("You have successfully cancelled your partition in the event", "Cancelled participation", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
+                WpfMessageBox.Show("Cancelled participation", "You have successfully cancelled your partition in the event", MessageBoxButton.OK, MessageBoxImage.Information);
+            } else
             {
-                MessageBox.Show("There seems to have been an error cancelling your participation please try again later.", "Error cancelling participation", MessageBoxButton.OK, MessageBoxImage.Error);
+                WpfMessageBox.Show("Error cancelling participation", "There seems to have been an error cancelling your participation please try again later.", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }

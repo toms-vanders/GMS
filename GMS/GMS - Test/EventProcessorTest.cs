@@ -42,13 +42,13 @@ namespace GMS___Test
             {
                 InsertCompleted = ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID);
-            } catch (Exception ex)
+            } catch (Exception)
             {
                 TestThrewException = true;
             } finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 
@@ -64,7 +64,7 @@ namespace GMS___Test
             int thirdResult = -1;
             string name1 = "";
             string name2 = "";
-            Boolean TestThrewException = false;
+            bool TestThrewException = false;
             try
             {
                 ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
@@ -79,13 +79,13 @@ namespace GMS___Test
                 thirdResult = thirdSearch.Count();
                 name1 = firstSearch[0].Name;
                 name2 = secondSearch[0].Name;
-            } catch (Exception ex)
+            } catch (Exception)
             {
                 TestThrewException = true;
             } finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 
@@ -103,12 +103,12 @@ namespace GMS___Test
             Event event1 = new Event();
             bool test1 = false;
             bool test2 = true;
-            Boolean TestThrewException = false;
+            bool TestThrewException = false;
             try
             {
                 ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID);
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 Event eventToBeUpdated = ((List<Event>)ep.GetEventByID(id))[0];
                 eventToBeUpdated.Location = "Update";
                 test1 = ep.UpdateEvent(eventToBeUpdated.EventID, eventToBeUpdated.Name, eventToBeUpdated.EventType,
@@ -120,13 +120,13 @@ namespace GMS___Test
                     eventToBeUpdated.Location, eventToBeUpdated.Date, eventToBeUpdated.Description,
                     eventToBeUpdated.MaxNumberOfCharacters, eventToBeUpdated.GuildID, eventToBeUpdated.RowId);
                 event1 = ((List<Event>)ep.GetEventByID(id))[0];
-            } catch (Exception ex)
+            } catch (Exception)
             {
                 TestThrewException = true;
             } finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 

@@ -1,11 +1,12 @@
 ﻿using GMS___Desktop_Client.UserControls;
 using GMS___Model;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
+using MessageBoxImage = GMS___Desktop_Client.WpfMessageBox.MsgCl.MessageBoxImage;
 
 namespace GMS___Desktop_Client
 {
@@ -18,7 +19,7 @@ namespace GMS___Desktop_Client
         private readonly HttpClient client;
         private readonly SearchEventUserControl DataGrid;
 
-        public JoinEventWindow(SearchEventUserControl dataGrid,int eventID, string eventName, byte[] rowID)
+        public JoinEventWindow(SearchEventUserControl dataGrid, int eventID, string eventName, byte[] rowID)
         {
             InitializeComponent();
 
@@ -29,17 +30,17 @@ namespace GMS___Desktop_Client
             {
                 BaseAddress = new Uri("https://localhost:44377/")
             };
-            client.DefaultRequestHeaders.Add("Authorization",(string)App.Current.Properties["AuthToken"]);
-            client.DefaultRequestHeaders.Add("x-rowid",JsonSerializer.Serialize(rowID));
+            client.DefaultRequestHeaders.Add("Authorization", (string)App.Current.Properties["AuthToken"]);
+            client.DefaultRequestHeaders.Add("x-rowid", JsonSerializer.Serialize(rowID));
         }
 
-        private async void JoinEventButton_Click(object sender, RoutedEventArgs e)
+        private void JoinEventButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrEmpty(characterRoleBox.Text))
+            if (!string.IsNullOrEmpty(characterRoleBox.Text))
             {
                 EventCharacter newEventCharacter = new EventCharacter()
                 {
-                    EventID = Int32.Parse(eventIDBox.Text),
+                    EventID = int.Parse(eventIDBox.Text),
                     CharacterName = (string)App.Current.Properties["SelectedCharacter"],
                     CharacterRole = characterRoleBox.Text,
                     SignUpDateTime = DateTime.Now,
@@ -50,16 +51,15 @@ namespace GMS___Desktop_Client
 
                 if (response.IsSuccessStatusCode)
                 {
-                    await this.ShowMessageAsync("Successfully joined event", "You have successfully joined this event!",MessageDialogStyle.Affirmative);
+                    WpfMessageBox.Show("Successfully joined event", "You have successfully joined this event!", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 } else
                 {
-                    await this.ShowMessageAsync("Something went wrong", 
-                        "An error has occured while joining the event\nError code : " + response.StatusCode + "\n Error message : " + response.ReasonPhrase, MessageDialogStyle.Affirmative);
+                    WpfMessageBox.Show("Something went wrong", "An error has occured while joining the event\n Error code : " + response.ReasonPhrase, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             } else
             {
-                await this.ShowMessageAsync("No role specified", "Please fill in your role for this event!", MessageDialogStyle.Affirmative);
+                WpfMessageBox.Show("No role specified", "Please fill in your role for this event!", MessageBoxButton.OK, MessageBoxImage.Question);
             }
             DataGrid.FillDataGrid();
             Close();
