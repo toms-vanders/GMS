@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -73,9 +74,18 @@ namespace GMS___Desktop_Client.UserControls
             FillWrapPanel();
         }
 
-        private void FillWrapPanel()
+        private void FillWrapPanel([Optional] List<Item> itemList)
         {
-            foreach (var item in items)
+            List<Item> itemListToTraverse;
+            if (!(itemList is null))
+            {
+                itemListToTraverse = itemList;
+            } else
+            {
+                itemListToTraverse = items;
+            }
+
+            foreach (var item in itemListToTraverse)
             {
                 // Item image
                 Image item1Image = new Image();
@@ -153,8 +163,11 @@ namespace GMS___Desktop_Client.UserControls
             {
                 // Todo extract grid instead, and filter it, instead of filtering items List.
                 var filterByName = items.Where(ev => ev.Name.IndexOf(searchField.Text, (StringComparison)CompareOptions.IgnoreCase) >= 0);
-                   
+                List<Item> itemList = filterByName.ToList();
+
                 // Remove or add items to wrapPanel
+                itemsWrapPanel.Children.Clear();
+                FillWrapPanel(itemList);
             }
         }
     }
