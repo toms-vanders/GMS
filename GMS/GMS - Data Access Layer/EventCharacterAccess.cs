@@ -280,15 +280,5 @@ namespace GMS___Data_Access_Layer
                 }
             }
         }
-        public int FreeSpacesInEvent(int eventID)
-        {
-            using (IDbConnection conn = DBConnection.GetConnection())
-            {
-                int maxAmount = conn.ExecuteScalar<int>("SELECT maxNumberOfCharacters FROM Event WHERE eventID = @EventID", new { EventID = eventID });
-                int signedUpCount = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacter WHERE eventID = @EventID", new { EventID = eventID });
-
-                return maxAmount - signedUpCount;
-            }
-        }
     }
 }

@@ -11,23 +11,5 @@ namespace GMS___Business_Layer
         {
             return eventCharacterWaitingListAccess.DeleteEventCharacterByEventIDAndCharacterName(eventID, characterName);
         }
-
-        public bool MovePeopleFromWaitingList(int eventID)
-        {
-            EventCharacterAccess eca = new EventCharacterAccess();
-            int PeopleToMove;
-            int freeSpaces = eca.FreeSpacesInEvent(eventID);
-            int peopleWaiting = eventCharacterWaitingListAccess.WaitingListLength(eventID);
-            if (freeSpaces > peopleWaiting)
-            {
-                PeopleToMove = peopleWaiting;
-            }
-            else
-            {
-                PeopleToMove = freeSpaces;
-            }
-            return eventCharacterWaitingListAccess.MovePeopleFromWaitingList(eventID, PeopleToMove);
-        }
-
     }
 }

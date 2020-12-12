@@ -14,7 +14,6 @@ namespace GMS___Test
         EventProcessor ep;
         EventCharacterAccess eca;
         EventCharacterProcessor ecp;
-        EventCharacterWaitingListProcessor ecwp;
         Event testEvent;
         Character testCharacter;
 
@@ -25,7 +24,6 @@ namespace GMS___Test
             ep = new EventProcessor();
             eca = new EventCharacterAccess();
             ecp = new EventCharacterProcessor();
-            ecwp = new EventCharacterWaitingListProcessor();
 
             string eventName = "Test Raid";
             string eventType = "Raid";
@@ -52,8 +50,7 @@ namespace GMS___Test
 
             ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID);
-            testEvent.EventID = ea.getIdOfEvent(testEvent.Name);
-            testEvent.RowId = ((List<Event>)(ea.GetEventByID(testEvent.EventID)))[0].RowId;
+            testEvent.EventID = ea.GetIdOfEvent(testEvent.Name);
         }
         [TestCleanup]
         public void TestCleanup()
@@ -76,10 +73,10 @@ namespace GMS___Test
                 JoinCompleted = ecp.ContainsEntry(testEvent.EventID, testCharacter.Name);
                 List<Event> events = (List<Event>)ep.GetGuildEventsByCharacterName(testEvent.GuildID, testCharacter.Name);
                 eventName = (events[0]).Name;
-            } catch (Exception)
+            }catch (Exception)
             {
                 TestThrewException = true;
-            } finally
+            }finally
             {
                 //Cleanup
             }
@@ -101,10 +98,10 @@ namespace GMS___Test
                 ecp.JoinEvent(testEvent.EventID, testCharacter.Name, "AFK", new DateTime(2020, 12, 24));
                 afterJoin = ecp.ParticipantsInEvent(testEvent.EventID);
 
-            } catch (Exception)
+            }catch (Exception)
             {
                 TestThrewException = true;
-            } finally
+            }finally
             {
                 //Cleanup
             }
@@ -112,39 +109,6 @@ namespace GMS___Test
             Assert.AreEqual(0, beforeJoin);
             Assert.AreEqual(1, afterJoin);
             Assert.IsFalse(TestThrewException);
-        }
-
-        [TestMethod]
-        public void TestWaitingList()
-        {
-            bool TestThrewException = false;
-            bool success = false;
-            int participants = 0;
-            try
-            {
-                ep.UpdateEvent(testEvent.EventID, testEvent.Name, testEvent.EventType, testEvent.Location,
-                testEvent.Date, testEvent.Description, 0, testEvent.GuildID, testEvent.RowId);
-                ecp.JoinEvent(testEvent.EventID, testCharacter.Name, "AFK", new DateTime(2020, 12, 24));
-                ecp.JoinEvent(testEvent.EventID, "Name1", "AFK", new DateTime(2020, 12, 24));
-                ecp.JoinEvent(testEvent.EventID, "Name2", "AFK", new DateTime(2020, 12, 24));
-                testEvent.RowId = ((List<Event>)(ea.GetEventByID(testEvent.EventID)))[0].RowId;
-                ep.UpdateEvent(testEvent.EventID, testEvent.Name, testEvent.EventType, testEvent.Location,
-                testEvent.Date, testEvent.Description, 5, testEvent.GuildID, testEvent.RowId);
-                EventCharacterWaitingListAccess ecwla = new EventCharacterWaitingListAccess();
-                success = ecwp.MovePeopleFromWaitingList(testEvent.EventID, 3);
-                participants = ecp.ParticipantsInEvent(testEvent.EventID);
-            }
-            catch (Exception)
-            {
-                TestThrewException = true;
-            }
-            finally
-            {
-                //Cleanup
-            }
-            Assert.IsFalse(TestThrewException);
-            Assert.IsTrue(success);
-            Assert.AreEqual(3, participants);
         }
     }
 }

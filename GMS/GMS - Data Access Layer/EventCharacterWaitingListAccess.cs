@@ -38,26 +38,5 @@ namespace GMS___Data_Access_Layer
                 }
             }
         }
-
-        public bool MovePeopleFromWaitingList(int eventID, int noOfPeople)
-        {
-            using (IDbConnection conn = DBConnection.GetConnection())
-            {
-                int rowsAffected = conn.Execute(@"BEGIN TRANSACTION; SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; " +
-                    "INSERT INTO EventCharacter (eventID, characterName, characterRole, signUpDateTime) " +
-                    "SELECT TOP(@NoOfPeople) * FROM EventCharacterWaitingList WHERE eventID = @EventID ORDER BY signUpDateTime ASC; " +
-                    "DELETE TOP(@NoOfPeople) FROM EventCharacterWaitingList WHERE eventID = @EventID ORDER BY signUpDateTime ASC; COMMIT;", new { EventID = eventID, NoOfPeople = noOfPeople });
-                return rowsAffected == noOfPeople * 2;
-            }
-        }
-        public int WaitingListLength(int eventID)
-        {
-            using (IDbConnection conn = DBConnection.GetConnection())
-            {
-                int waiting = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM EventCharacterWaitingList WHERE eventID = @EventID", new { EventID = eventID });
-
-                return waiting;
-            }
-        }
     }
 }
