@@ -117,8 +117,18 @@
                             <Setter Property="Margin" Value="0 0 0 -1" />
                         </Style>
                     </TabControl.Resources>
-                    <TabItem x:Name="searchAuctionsTab" Header="Search" Height="39" VerticalAlignment="Top"/>
-                    <TabItem x:Name="allAuctionsTab" Header="All" Height="39" VerticalAlignment="Top"/>
+                    <TabItem x:Name="searchAuctionsTab" Header="Search" Height="39" VerticalAlignment="Top" >
+                        <Grid>
+                            <TextBlock Text="COMING SOON" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       FontSize="32" Foreground="Teal" />
+                        </Grid>
+                    </TabItem>
+                    <TabItem x:Name="allAuctionsTab" Header="All" Height="39" VerticalAlignment="Top">
+                        <Grid>
+                            <TextBlock Text="COMING SOON" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       FontSize="32" Foreground="Teal" />
+                        </Grid>
+                    </TabItem>
                 </TabControl>
             </TabItem>
         </TabControl>
