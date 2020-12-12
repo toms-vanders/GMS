@@ -34,7 +34,7 @@ namespace GMS___Desktop_Client
             client.DefaultRequestHeaders.Add("x-rowid", JsonSerializer.Serialize(rowID));
         }
 
-        private async void JoinEventButton_Click(object sender, RoutedEventArgs e)
+        private void JoinEventButton_Click(object sender, RoutedEventArgs e)
         {
             if (!String.IsNullOrEmpty(characterRoleBox.Text))
             {

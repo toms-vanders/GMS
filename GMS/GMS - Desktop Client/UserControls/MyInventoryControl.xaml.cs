@@ -29,7 +29,7 @@ namespace GMS___Desktop_Client.UserControls
     public partial class MyInventoryControl : UserControl
     {
         private readonly HttpClient client;
-        private static List<Item> items;
+        private List<Item> items;
 
         public MyInventoryControl()
         {

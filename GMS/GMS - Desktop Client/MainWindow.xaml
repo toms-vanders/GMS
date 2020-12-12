@@ -102,11 +102,11 @@
                         </Style>
                     </TabControl.Resources>
                     <TabItem x:Name="myInventoryTab" Header="My inventory" Height="39" VerticalAlignment="Top" >
-                        <local1:MyInventoryControl />
+                        <local1:MyInventoryControl/>
                     </TabItem>
                     <TabItem x:Name="onCharacterTab" Header="Hero" Height="39" VerticalAlignment="Top" >
-                        
-                    </TabItem> 
+                        <local1:HeroEquipmentControl/>
+                    </TabItem>
                 </TabControl>
             </TabItem>
             <TabItem Header="Auctions">
