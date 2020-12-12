@@ -42,13 +42,13 @@ namespace GMS___Test
             {
                 InsertCompleted = ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID);
-            } catch (Exception)
+            }catch (Exception)
             {
                 TestThrewException = true;
-            } finally
+            }finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 
@@ -61,7 +61,7 @@ namespace GMS___Test
         {
             int firstResult = -1;
             int secondResult = -1;
-            int thirdResult = -1;
+            List<Event> thirdSearch = null;
             string name1 = "";
             string name2 = "";
             bool TestThrewException = false;
@@ -72,26 +72,25 @@ namespace GMS___Test
 
                 List<Event> firstSearch = (List<Event>)ep.GetAllGuildEvents(testEvent.GuildID);
                 List<Event> secondSearch = (List<Event>)ep.GetAllGuildEventsByEventType(testEvent.GuildID, testEvent.EventType);
-                List<Event> thirdSearch = (List<Event>)ep.GetAllGuildEventsByEventType(testEvent.GuildID, "Super Raid");
+                thirdSearch = (List<Event>)ep.GetAllGuildEventsByEventType(testEvent.GuildID, "Super Raid");
 
                 firstResult = firstSearch.Count();
                 secondResult = secondSearch.Count();
-                thirdResult = thirdSearch.Count();
                 name1 = firstSearch[0].Name;
                 name2 = secondSearch[0].Name;
-            } catch (Exception)
+            }catch (Exception)
             {
                 TestThrewException = true;
-            } finally
+            }finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 
             Assert.AreEqual(1, firstResult);
             Assert.AreEqual(1, secondResult);
-            Assert.AreEqual(0, thirdResult);
+            Assert.IsNull(thirdSearch);
             Assert.AreEqual(testEvent.Name, name1);
             Assert.AreEqual(testEvent.Name, name2);
             Assert.IsFalse(TestThrewException);
@@ -108,8 +107,8 @@ namespace GMS___Test
             {
                 ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID);
-                int id = ea.getIdOfEvent(testEvent.Name);
-                Event eventToBeUpdated = ((List<Event>)ep.GetEventByID(id))[0];
+                int id = ea.GetIdOfEvent(testEvent.Name);
+                Event eventToBeUpdated = ep.GetEventByID(id);
                 eventToBeUpdated.Location = "Update";
                 test1 = ep.UpdateEvent(eventToBeUpdated.EventID, eventToBeUpdated.Name, eventToBeUpdated.EventType,
                     eventToBeUpdated.Location, eventToBeUpdated.Date, eventToBeUpdated.Description,
@@ -119,14 +118,14 @@ namespace GMS___Test
                 test2 = ep.UpdateEvent(eventToBeUpdated.EventID, eventToBeUpdated.Name, eventToBeUpdated.EventType,
                     eventToBeUpdated.Location, eventToBeUpdated.Date, eventToBeUpdated.Description,
                     eventToBeUpdated.MaxNumberOfCharacters, eventToBeUpdated.GuildID, eventToBeUpdated.RowId);
-                event1 = ((List<Event>)ep.GetEventByID(id))[0];
-            } catch (Exception)
+                event1 = ep.GetEventByID(id);
+            }catch (Exception)
             {
                 TestThrewException = true;
-            } finally
+            }finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 

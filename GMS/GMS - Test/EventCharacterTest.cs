@@ -50,7 +50,7 @@ namespace GMS___Test
 
             ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID);
-            testEvent.EventID = ea.getIdOfEvent(testEvent.Name);
+            testEvent.EventID = ea.GetIdOfEvent(testEvent.Name);
         }
         [TestCleanup]
         public void TestCleanup()
@@ -73,10 +73,10 @@ namespace GMS___Test
                 JoinCompleted = ecp.ContainsEntry(testEvent.EventID, testCharacter.Name);
                 List<Event> events = (List<Event>)ep.GetGuildEventsByCharacterName(testEvent.GuildID, testCharacter.Name);
                 eventName = (events[0]).Name;
-            } catch (Exception)
+            }catch (Exception)
             {
                 TestThrewException = true;
-            } finally
+            }finally
             {
                 //Cleanup
             }
@@ -98,10 +98,10 @@ namespace GMS___Test
                 ecp.JoinEvent(testEvent.EventID, testCharacter.Name, "AFK", new DateTime(2020, 12, 24));
                 afterJoin = ecp.ParticipantsInEvent(testEvent.EventID);
 
-            } catch (Exception)
+            }catch (Exception)
             {
                 TestThrewException = true;
-            } finally
+            }finally
             {
                 //Cleanup
             }
