@@ -47,11 +47,6 @@ namespace GMS___Desktop_Client.UserControls
             SetEquipmentSlots();
         }
 
-        //private void InitializeControl()
-        //{
-            
-        //}
-
         public void FillDefaultEquipmentSlots()
         {
             // Armor stack panel
