@@ -24,9 +24,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Account", "User")">Account</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("About", "Home")">About</a>
                     </li>
                     <li class="nav-item">
@@ -34,6 +31,9 @@
                     </li>
                     @if (HttpContext.Current.Session["Username"] == null)
                     {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Account", "User")">Account</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("LogIn", "Auth")">Log in</a>
                         </li>
