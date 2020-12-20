@@ -153,6 +153,12 @@ namespace GMS___API.Controllers
                     return BadRequest("Unauthorized Access");
                 } else
                 {
+                    if (eventProcessor.HasEventChangedRowVersion(e.EventID, e.RowId))
+                    {
+                        Event emptyEvent = new Event();
+                        return emptyEvent;
+                    }
+
                     if (eventProcessor.UpdateEvent(e.EventID, e.Name, e.EventType, e.Location, e.Date, e.Description, e.MaxNumberOfCharacters, e.GuildID, e.RowId))
                     {
                         return e;

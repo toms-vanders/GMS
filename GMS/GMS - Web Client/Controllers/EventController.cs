@@ -171,7 +171,7 @@ namespace GMS___Web_Client.Controllers
                         model.EventDescription, model.EventType, model.EventLocation, model.EventDateTime,
                         model.EventMaxNumberOfCharacters, model.rowID));
 
-                    if (tempEvent != null)
+                    if (tempEvent.RowId != null)
                     {
                         return RedirectToAction("SearchEvents", "Event", new { name = this.Session["characterName"] });
                     } else
