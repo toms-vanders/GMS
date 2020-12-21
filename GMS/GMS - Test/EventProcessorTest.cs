@@ -1,11 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GMS___Model;
+﻿using GMS___Business_Layer;
 using GMS___Data_Access_Layer;
-using GMS___Business_Layer;
-using NodaTime;
+using GMS___Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GMS___Test
@@ -22,7 +20,7 @@ namespace GMS___Test
         {
             ea = new EventAccess();
             ep = new EventProcessor();
-            
+
             string name = "Test Raid";
             string eventType = "Raid";
             string location = "266,070";
@@ -31,7 +29,7 @@ namespace GMS___Test
             int maxNumberOfCharacters = 25;
             string guildID = "99999999-9999-9999-9999-999999999999";
 
-            testEvent = new Event(guildID,name,description,eventType,location,date,maxNumberOfCharacters);
+            testEvent = new Event(guildID, name, description, eventType, location, date, maxNumberOfCharacters);
 
         }
 
@@ -44,15 +42,13 @@ namespace GMS___Test
             {
                 InsertCompleted = ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID);
-            }
-            catch(Exception ex)
+            }catch (Exception)
             {
                 TestThrewException = true;
-            }
-            finally
+            }finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 
@@ -65,10 +61,10 @@ namespace GMS___Test
         {
             int firstResult = -1;
             int secondResult = -1;
-            int thirdResult = -1;
+            List<Event> thirdSearch = null;
             string name1 = "";
             string name2 = "";
-            Boolean TestThrewException = false;
+            bool TestThrewException = false;
             try
             {
                 ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
@@ -76,28 +72,25 @@ namespace GMS___Test
 
                 List<Event> firstSearch = (List<Event>)ep.GetAllGuildEvents(testEvent.GuildID);
                 List<Event> secondSearch = (List<Event>)ep.GetAllGuildEventsByEventType(testEvent.GuildID, testEvent.EventType);
-                List<Event> thirdSearch = (List<Event>)ep.GetAllGuildEventsByEventType(testEvent.GuildID, "Super Raid");
+                thirdSearch = (List<Event>)ep.GetAllGuildEventsByEventType(testEvent.GuildID, "Super Raid");
 
                 firstResult = firstSearch.Count();
                 secondResult = secondSearch.Count();
-                thirdResult = thirdSearch.Count();
                 name1 = firstSearch[0].Name;
                 name2 = secondSearch[0].Name;
-            }
-            catch (Exception ex)
+            }catch (Exception)
             {
                 TestThrewException = true;
-            }
-            finally
+            }finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 
             Assert.AreEqual(1, firstResult);
             Assert.AreEqual(1, secondResult);
-            Assert.AreEqual(0, thirdResult);
+            Assert.IsNull(thirdSearch);
             Assert.AreEqual(testEvent.Name, name1);
             Assert.AreEqual(testEvent.Name, name2);
             Assert.IsFalse(TestThrewException);
@@ -109,36 +102,34 @@ namespace GMS___Test
             Event event1 = new Event();
             bool test1 = false;
             bool test2 = true;
-            Boolean TestThrewException = false;
+            bool TestThrewException = false;
             try
             {
                 ep.InsertEvent(testEvent.Name, testEvent.EventType, testEvent.Location,
                 testEvent.Date, testEvent.Description, testEvent.MaxNumberOfCharacters, testEvent.GuildID);
-                int id = ea.getIdOfEvent(testEvent.Name);
-                Event eventToBeUpdated = ((List<Event>)ep.GetEventByID(id))[0];
+                int id = ea.GetIdOfEvent(testEvent.Name);
+                Event eventToBeUpdated = ep.GetEventByID(id);
                 eventToBeUpdated.Location = "Update";
-                test1 = ep.UpdateEvent(eventToBeUpdated.EventID, eventToBeUpdated.Name, eventToBeUpdated.EventType, 
-                    eventToBeUpdated.Location,eventToBeUpdated.Date, eventToBeUpdated.Description, 
+                test1 = ep.UpdateEvent(eventToBeUpdated.EventID, eventToBeUpdated.Name, eventToBeUpdated.EventType,
+                    eventToBeUpdated.Location, eventToBeUpdated.Date, eventToBeUpdated.Description,
                     eventToBeUpdated.MaxNumberOfCharacters, eventToBeUpdated.GuildID, eventToBeUpdated.RowId);
                 //Since the rowID wasnt updated this update should fail
                 eventToBeUpdated.Location = "Another update";
                 test2 = ep.UpdateEvent(eventToBeUpdated.EventID, eventToBeUpdated.Name, eventToBeUpdated.EventType,
                     eventToBeUpdated.Location, eventToBeUpdated.Date, eventToBeUpdated.Description,
                     eventToBeUpdated.MaxNumberOfCharacters, eventToBeUpdated.GuildID, eventToBeUpdated.RowId);
-                event1 = ((List<Event>)ep.GetEventByID(id))[0];
-            }
-            catch (Exception ex)
+                event1 = ep.GetEventByID(id);
+            }catch (Exception)
             {
                 TestThrewException = true;
-            }
-            finally
+            }finally
             {
                 //Cleanup
-                int id = ea.getIdOfEvent(testEvent.Name);
+                int id = ea.GetIdOfEvent(testEvent.Name);
                 ea.DeleteEventByID(id);
             }
 
-            Assert.AreEqual("Update",event1.Location);
+            Assert.AreEqual("Update", event1.Location);
             Assert.IsTrue(test1);
             Assert.IsFalse(test2);
             Assert.IsFalse(TestThrewException);

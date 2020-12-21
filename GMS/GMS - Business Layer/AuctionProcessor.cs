@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GMS___Data_Access_Layer;
+﻿using GMS___Data_Access_Layer;
 using GMS___Model;
+using NLog;
+using System;
 
 namespace GMS___Business_Layer
 {
-    class AuctionProcessor : AuctionProcessorIF
+    class AuctionProcessor : IAuctionProcessor
     {
+        private readonly Logger log = LogManager.GetCurrentClassLogger();
         private AuctionAccess auctionAccess = new AuctionAccess();
 
-        public Boolean InsertNewAuction(int creatorID, int eventID, int itemID)
+        public bool InsertNewAuction(int creatorID, int eventID, int itemID)
         {
             Auction auctionToBeAdded = new Auction(creatorID, eventID, itemID);
-            return auctionAccess.InsertAuction(auctionToBeAdded) == 1 ? true : false;
+            return auctionAccess.InsertAuction(auctionToBeAdded) == 1;
         }
     }
 }

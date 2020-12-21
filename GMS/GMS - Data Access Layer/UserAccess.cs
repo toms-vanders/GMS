@@ -1,7 +1,7 @@
 using Dapper;
 using GMS___Model;
+using NLog;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,52 +9,119 @@ using System.Linq;
 
 namespace GMS___Data_Access_Layer
 {
-    public class UserAccess : UserAccessIF
+    public class UserAccess : IUserAccess
     {
-        IDbConnection GetConnection()
-        {
-            return new SqlConnection("Server=hildur.ucn.dk;Database=dmaj0919_1081496;User Id=dmaj0919_1081496;Password=Password1!;");
-        }
-
+        private readonly Logger log = LogManager.GetCurrentClassLogger();
         public IEnumerable<User> GetUsersFromDatabase()
         {
-            using (IDbConnection conn = GetConnection())
+
+            if (!DBConnection.IsConnectionAvailable())
             {
-                IEnumerable<User> users = conn.Query<User>("SELECT * FROM Users");
-                return users;
+                log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return null;
+            }
+
+            using (IDbConnection conn = DBConnection.GetConnection())
+            {
+                try
+                {
+                    log.Info("Retrieving all users from the database.");
+                    IEnumerable<User> users = conn.Query<User>("SELECT * FROM Users");
+                    log.Info("Successfully retrieved all users from the database");
+                    return users;
+                } catch (SqlException ex)
+                {
+                    log.Trace("SQLException while retrieving the users from the database.");
+                    log.Error(ex, "Unable to retrieve the users from the database.");
+                    return null;
+                }
             }
         }
 
-        public User GetUserFromDatabase(String emailAddress)
+        public User GetUserFromDatabase(string emailAddress)
         {
-            using (IDbConnection conn = GetConnection())
+
+            if (!DBConnection.IsConnectionAvailable())
             {
-                List<User> users = conn.Query<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole FROM Users where emailAddress in @emails", new { emails = new[] { emailAddress } }).ToList();
-                if (users.Count != 1)
+                log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return null;
+            }
+
+            using (IDbConnection conn = DBConnection.GetConnection())
+            {
+                try
                 {
-                    return (User) null;
-                } else
+                    log.Info("Retrieving the user with email: @email", emailAddress);
+                    if (conn.QueryFirst<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole, accountCreated FROM Users where emailAddress = @emails", new { emails = emailAddress }) is User user)
+                    {
+                        log.Info("Successfully retrieved the user with email: @email from the database", emailAddress);
+                        return user;
+                    } else
+                    {
+                        return null;
+                    }
+                } catch (SqlException ex)
                 {
-                    //users[0].EmailAddress = emailAddress;
-                    return users[0];
+                    log.Trace("SQLException while retrieving the user from the database.");
+                    log.Error(ex, "Unable to retrieve the user from the database.");
+                    return null;
+                }
+            }
+        }
+
+        public User GetUserFromDatabaseWithUsername(string username)
+        {
+
+            if (!DBConnection.IsConnectionAvailable())
+            {
+                log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return null;
+            }
+
+            using (IDbConnection conn = DBConnection.GetConnection())
+            {
+                try
+                {
+                    log.Info("Retrieving the user with username: @username", username);
+                    if (conn.QueryFirst<User>("SELECT userID, userName, emailAddress, password, apiKey, userRole, accountCreated FROM Users WHERE userName = @usernames", new { usernames = username }) is User user)
+                    {
+                        log.Info("Successfully retrieved the user wtih username: @username", username);
+                        return user;
+                    } else
+                    {
+                        return null;
+                    }
+                } catch (SqlException ex)
+                {
+                    log.Trace("SQLException while retrieving the user from the database.");
+                    log.Error(ex, "Unable to retrieve the user from the database.");
+                    return null;
                 }
             }
         }
 
         public int InsertUser(User user)
         {
+
+            if (!DBConnection.IsConnectionAvailable())
+            {
+                log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return -1;
+            }
+
             int affectedRows = -1;
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 try
                 {
-                    string sqlCommand = "INSERT INTO Users (userName, emailAddress, password, ApiKey, userRole)";
-                    sqlCommand += " VALUES (@UserName, @EmailAddress, @Password, @ApiKey, @UserRole)";
-                    affectedRows = conn.Execute(sqlCommand, user);
-                }
-                catch (SqlException ex)
+                    log.Info("Inserting user with username: @username into the database.", user.UserName);
+                    affectedRows = conn.Execute("INSERT INTO Users (userName, emailAddress, password, ApiKey, userRole) VALUES (@UserName, @EmailAddress, @Password, @ApiKey, @UserRole)", user);
+                    log.Info("Successfully inserted the user with username: @username into the database", user.UserName);
+                } catch (SqlException ex)
                 {
-                    Console.WriteLine(ex.ToString()); // TODO change exception handling
+                    log.Trace("SQLException while inserting the user to the database.");
+                    log.Error(ex, "Unable to insert the user to the database.");
+                    return affectedRows;
                 }
             }
             return affectedRows;
@@ -62,23 +129,31 @@ namespace GMS___Data_Access_Layer
 
         public int UpdateUser(User user)
         {
+
+            if (!DBConnection.IsConnectionAvailable())
+            {
+                log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return -1;
+            }
+
             int affectedRows = -1;
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 try
                 {
-                    string sqlCommand = @"
-                        UPDATE Users SET userName = @UserName
+                    log.Info("Updating the user: @username into the database.", user.UserName);
+                    affectedRows = conn.Execute(@"UPDATE Users SET userName = @UserName
                         , emailAddress = @EmailAddress
                         , password = @Password
                         , apiKey = @ApiKey
                         , userRole = @UserRole
-                        WHERE userID = @UserID";
-                    affectedRows = conn.Execute(sqlCommand, user);
-                }
-                catch (SqlException ex)
+                        WHERE userID = @UserID", user);
+                    log.Info("Successfully updated the user: @username into the database.", user.UserName);
+                } catch (SqlException ex)
                 {
-                    Console.WriteLine(ex.ToString()); // TODO change exception handling
+                    log.Trace("SQLException while updating the user into database.");
+                    log.Error(ex, "Unable to update the user into database.");
+                    return affectedRows;
                 }
             }
             return affectedRows;
@@ -86,16 +161,26 @@ namespace GMS___Data_Access_Layer
 
         public int DeleteByName(string UserName)
         {
+
+            if (!DBConnection.IsConnectionAvailable())
+            {
+                log.Error(exception: new TimeoutException(), "No connection to either the internet or the database available.");
+                return -1;
+            }
+
             int affectedRows = -1;
-            using (IDbConnection conn = GetConnection())
+            using (IDbConnection conn = DBConnection.GetConnection())
             {
                 try
                 {
-                    affectedRows = conn.Execute(@"DELETE FROM Users WHERE userName = @name", new { name = new[] { UserName } });
-                }
-                catch (SqlException ex)
+                    log.Info("Deleting the user: @username from the database,", UserName);
+                    affectedRows = conn.Execute(@"DELETE FROM Users WHERE userName = @name", new { name = UserName });
+                    log.Info("Successfully deleted the user: @username from the database.", UserName);
+                } catch (SqlException ex)
                 {
-                    Console.WriteLine(ex.ToString()); // TODO change exception handling
+                    log.Trace("SQLException while deleting the user from the database.");
+                    log.Error(ex, "Unable to delete the user from the database.");
+                    return affectedRows;
                 }
             }
             return affectedRows;

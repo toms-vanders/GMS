@@ -1,0 +1,420 @@
+﻿@model GMS___Web_Client.Models.UserModel
+
+@{
+    ViewBag.Title = "Account details";
+}
+
+
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/popper")
+@Scripts.Render("~/bundles/bootstrap")
+
+
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<label id="AccountCreatedLabel">Account created on: </label>
+<input id="AccountCreated" name="AccountCreated" class="form-control text-box single-line" type="datetime" value=@ViewBag.AccountCreated disabled />
+
+<!-- Change Username -->
+<div class="form-group">
+    @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", disabled = true } })
+        <div>
+            <a class="btn btn-primary" href="#changeUsernameModal" data-toggle="modal" data-target="#changeUsernameModal">Edit</a>
+        </div>
+    </div>
+</div>
+
+<!-- Change Email -->
+<div class="form-group">
+    @Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", disabled = true } })
+        <div class="pull-left">
+            <a class="btn btn-primary" href="#changeEmailModal" data-toggle="modal" data-target="#changeEmailModal">Edit</a>
+        </div>
+    </div>
+</div>
+
+<!-- Change API Key -->
+<div class="form-group">
+    <input type="button" class="btn btn-primary" value="Change API Key" onclick="location.href='@Url.Action("ApiForm", "User")'" />
+</div>
+
+<!-- Change Password -->
+<div class="form-group">
+    <a class="btn btn-primary" href="#changePasswordModal" data-toggle="modal" data-target="#changePasswordModal">Change Password</a>
+</div>
+
+<!-- Change Username Modal -->
+<div class="modal fade" id="changeUsernameModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Change your username</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="usernameModalForm">
+                    <div class="row">
+                        <div class="col-10">
+                            <label for="usernameInput">Username</label>
+                            <input type="text" id="usernameInput" name="usernameInput" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10">
+                            <label for="currentPasswordUsername">Current Password</label>
+                            <input type="password" id="currentPasswordUsername" name="currentPasswordUsername" class="form-control" aria-describedby="currentPasswordUsername" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="changeUsernameButton">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Email Modal -->
+<div class="modal fade" id="changeEmailModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Enter an email address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="emailModalForm">
+                    <div class="row">
+                        <div class="col-10">
+                            <label for="email">Email</label>
+                            <input type="email" id="emailInput" name="emailInput" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10">
+                            <label for="currentPasswordEmail">Current Password</label>
+                            <input type="password" id="currentPasswordEmail" name="currentPasswordEmail" class="form-control" aria-describedby="currentPasswordEmail" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="changeEmailButton">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Change your password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="passwordModalForm">
+                    <div class="row">
+                        <div class="col-10">
+                            <label for="currrentPassword">Current Password</label>
+                            <input type="password" id="currentPasswordInput" name="currentPasswordInput" class="form-control" aria-describedby="currentPassword" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPasswordInput" name="newPasswordInput" class="form-control" aria-describedby="newPassword" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPasswordInput" name="confirmPasswordInput" class="form-control" aria-describedby="confirmPassword" data-rule required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="changePasswordButton">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Username function -->
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#changeUsernameButton').click(function () {
+                var newUsername = $("#changeUsernameModal #usernameInput").val().trim();
+                var oldUsername = '@Model.UserName';
+                var password = $("#changeUsernameModal #currentPasswordUsername").val().trim();
+                var userToken = '@ViewBag.UserToken';
+                if (!$("#usernameModalForm").valid()) {
+                    return false;
+                } else {
+                    changeUsername(oldUsername, newUsername, password, userToken);
+                }
+            })
+        })
+</script>
+
+<script type="text/javascript">
+    function changeUsername(oldUsername, newUsername, password, userToken) {
+        var Username = {};
+        Username.oldUsername = oldUsername;
+        Username.newUsername = newUsername;
+        Username.password = password;
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            url: 'https://localhost:44377/api/user/account/username/',
+            headers: { 'Authorization': userToken },
+            data: JSON.stringify(Username),
+            dataType: 'json',
+            success: function () {
+                alert("You successfully changed your username.");
+                $('#changeUsernameModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                refreshPage();
+            }, error: function () {
+                alert("Error trying to change the username.");
+                refreshPage();
+            }
+        })
+    }
+</script>
+
+<!-- Validate username information function -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        jQuery.validator.addMethod("alphanumeric", function (value, element) {
+            return this.optional(element) || /^[\w.]+$/i.test(value);
+        });
+
+        $("#usernameModalForm").validate({
+            rules: {
+                usernameInput: {
+                    required: true,
+                    alphanumeric: true,
+                    minlength: 3,
+                    maxlength: 15,
+                },
+
+                currentPasswordUsername: {
+                    required: true,
+                    minlength: 10,
+                },
+            },
+
+            messages: {
+                usernameInput: {
+                    required: "Enter your new username",
+                    alphanumeric: "You can use letters, numbers, and underscores only",
+                    minlength: "Username has to be at least 3 characters long",
+                    maxlength: "Username can't be longer than 15 characters",
+                },
+                currentPasswordUsername: {
+                    required: "Enter your password",
+                    minlength: "Password has to be at least 10 characters long",
+                }
+            },
+
+        })
+    })
+</script>
+
+<!-- Change email function -->
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#changeEmailButton').click(function () {
+                var username = '@Model.UserName';
+                var emailAddress = $("#changeEmailModal #emailInput").val().trim();
+                var password = $("#changeEmailModal #currentPasswordEmail").val().trim();
+                var userToken = '@ViewBag.UserToken';
+                if (!$("#emailModalForm").valid()) {
+                    return false;
+                } else {
+                    changeEmail(username, emailAddress, password, userToken);
+                }
+            })
+        })
+</script>
+
+<script type="text/javascript">
+    function changeEmail(username, emailAddress, password, userToken) {
+
+        var Email = {};
+        Email.username = username;
+        Email.emailAddress = emailAddress;
+        Email.password = password;
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            url: 'https://localhost:44377/api/user/account/email/',
+            headers: { 'Authorization': userToken },
+            data: JSON.stringify(Email),
+            dataType: 'json',
+            success: function () {
+                alert("Your email has been updated.");
+                $('#changeEmailModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                refreshPage();
+            }, error: function () {
+                alert("Error trying to change the email.");
+                refreshPage();
+            }
+        })
+    }
+</script>
+
+<!-- Validate email information function -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#emailModalForm").validate({
+            rules: {
+                emailInput: {
+                    required: true,
+                    email: true,
+                },
+
+                currentPasswordEmail: {
+                    required: true,
+                    minlength: 10,
+                },
+            },
+
+            messages: {
+                emailInput: {
+                    required: "Enter your new email",
+                    email: "Your email address must be in the format of name@domain.com",
+                },
+                currentPasswordEmail: {
+                    required: "Enter your password",
+                    minlength: "Password has to be at least 10 characters long",
+                }
+            },
+
+        })
+    })
+</script>
+
+<!-- Change password function -->
+<script type="text/javascript">
+            $(document).ready(function () {
+                $('#changePasswordButton').click(function () {
+                    var username = '@Model.UserName';
+                    var currentPassword = $("#changePasswordModal #currentPasswordInput").val().trim();
+                    var newPassword = $("#changePasswordModal #newPasswordInput").val().trim();
+                    var userToken = '@ViewBag.UserToken';
+                    if (!$("#passwordModalForm").valid()) {
+                        return false;
+                    } else {
+                        changePassword(username, currentPassword, newPassword, userToken);
+                    }
+                })
+            })
+</script>
+
+<script type="text/javascript">
+    function changePassword(username, currentPassword, newPassword, userToken) {
+        var Password = {};
+        Password.username = username;
+        Password.currentPassword = currentPassword;
+        Password.newPassword = newPassword;
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            url: 'https://localhost:44377/api/user/account/password/',
+            headers: { 'Authorization': userToken },
+            data: JSON.stringify(Password),
+            dataType: 'json',
+            success: function () {
+                alert("You successfully changed the password.");
+                $('#changePasswordModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                refreshPage();
+            }, error: function () {
+                alert("Error trying to change the Password.");
+                refreshPage();
+            }
+        })
+    }
+</script>
+
+<!-- Validate new password function -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#passwordModalForm").validate({
+            rules: {
+                currentPasswordInput: {
+                    required: true,
+                    minlength: 10,
+                },
+
+                newPasswordInput: {
+                    required: true,
+                    minlength: 10,
+                },
+
+                confirmPasswordInput: {
+                    equalTo: "#newPasswordInput",
+                },
+            },
+            messages: {
+                currentPasswordInput: {
+                    required: "Enter your existing password",
+                    minlength: "Password has to be at least 10 characters long",
+                },
+                newPasswordInput: {
+                    required: "Enter your password",
+                    minlength: "Password has to be at least 10 characters long",
+                },
+                confirmPasswordInput: {
+                    equalTo: "Passwords doesn't match"
+                },
+
+            },
+        })
+    })
+</script>
+
+
+<!-- refresh page function -->
+<script type="text/javascript">
+    function refreshPage() {
+        window.location.reload();
+    }
+</script>
+
+<div>
+    @Html.ActionLink("Back to homepage", "Index")
+</div>
+

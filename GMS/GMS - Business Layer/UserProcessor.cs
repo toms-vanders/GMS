@@ -4,7 +4,7 @@ using System;
 
 namespace GMS___Business_Layer
 {
-    public class UserProcessor : UserProcessorIF
+    public class UserProcessor : IUserProcessor
     {
         private UserAccess userAccess = new UserAccess();
 
@@ -12,51 +12,113 @@ namespace GMS___Business_Layer
         {
             return userAccess.GetUserFromDatabase(email);
         }
-            public User InsertNewUser(string userName, string email, string password)
+        public User InsertNewUser(string userName, string email, string password)
         {
             User userToBeAdded = new User(userName, email, GetHashedPassword(password));
             userAccess.InsertUser(userToBeAdded);
             return userToBeAdded;
         }
-        public User LogInUser(string emailAddress, string password)
+        public User GetUserByUsername(string name)
         {
-            User user = userAccess.GetUserFromDatabase(emailAddress);
+            return userAccess.GetUserFromDatabaseWithUsername(name);
+        }
+        public User LogInUser(string username, string password)
+        {
+            User user = userAccess.GetUserFromDatabaseWithUsername(username);
             if (user is null)
             {
                 return null;
             }
-            if (user.Password == GetHashedPassword(password))
+            try
             {
-                user.EmailAddress = emailAddress;
-                return user;
+                if (BCrypt.Net.BCrypt.Verify(password, user.Password))
+                {
+                    user.UserName = username;
+                    return user;
+                }
+            } catch (Exception)
+            {
+                return null;
             }
+
             return null;
         }
-        public Boolean InsertApiKey(string emailAddress, string apiKey)
+        public bool InsertApiKey(string emailAddress, string apiKey)
         {
             User user = userAccess.GetUserFromDatabase(emailAddress);
             if (user is null)
             {
                 return false;
-            } 
+            }
             user.ApiKey = apiKey;
             return userAccess.UpdateUser(user) == 1 ? true : false;
         }
-        public string GetHashedPassword(string password)
+        public bool ChangeUsername(string oldUsername, string newUsername, string password)
         {
-            password += "salt";
-            return GetHashCode(password).ToString();
+            try
+            {
+                User user = userAccess.GetUserFromDatabaseWithUsername(oldUsername);
+                if (VerifyPassword(password, user.Password))
+                {
+                    user.UserName = newUsername;
+                    return userAccess.UpdateUser(user) == 1 ? true : false;
+                }
+            }
+            catch (Exception)
+            {
+                return false; // Need to catch the exception
+            }
+
+            return false;
+            
         }
 
-        public int GetHashCode(string original)
+        public bool ChangeEmail(string username, string newEmailAddress, string password)
         {
-            long sum = 0, mul = 1;
-            for (int i = 0; i < original.Length; i++)
+            try
             {
-                mul = (i % 4 == 0) ? 1 : mul * 256;
-                sum += original[i] * mul;
+                User user = userAccess.GetUserFromDatabaseWithUsername(username);
+                if (VerifyPassword(password, user.Password))
+                {
+                    user.EmailAddress = newEmailAddress;
+                    return userAccess.UpdateUser(user) == 1 ? true : false;
+                }
             }
-            return (int)(Math.Abs(sum) % 2147483647);
+            catch (Exception)
+            {
+                return false; // Need to catch the exception
+            }
+
+            return false;
+        }
+
+        public bool ChangePassword(string username, string currentPassword, string newPassword)
+        {
+            try
+            {
+                User user = userAccess.GetUserFromDatabaseWithUsername(username);
+                if (VerifyPassword(currentPassword, user.Password))
+                {
+                    user.Password = GetHashedPassword(newPassword);
+                    return userAccess.UpdateUser(user) == 1 ? true : false;
+                }
+            }
+            catch (Exception)
+            {
+                return false; // Need to catch the exception
+            }
+
+            return false;
+        }
+
+        public string GetHashedPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        public bool VerifyPassword(string password, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
     }
 }

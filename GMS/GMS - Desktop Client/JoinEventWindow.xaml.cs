@@ -1,74 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using GMS___Desktop_Client.UserControls;
 using GMS___Model;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using System;
+using System.Net.Http;
+using System.Text.Json;
+using System.Windows;
+using MessageBoxImage = GMS___Desktop_Client.WpfMessageBox.MsgCl.MessageBoxImage;
 
 namespace GMS___Desktop_Client
 {
     /// <summary>
     /// Interaction logic for JoinEventWindow.xaml
     /// </summary>
-    public partial class JoinEventWindow : Window
+    public partial class JoinEventWindow : MetroWindow
     {
 
         private readonly HttpClient client;
+        private readonly SearchEventUserControl DataGrid;
 
-        public JoinEventWindow(int eventID, string eventName)
+        public JoinEventWindow(SearchEventUserControl dataGrid, int eventID, string eventName, byte[] rowID)
         {
             InitializeComponent();
 
+            DataGrid = dataGrid;
             eventIDBox.Text = eventID.ToString();
             eventNameBox.Text = eventName;
-
-            client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44377/");
+            client = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:44377/")
+            };
+            client.DefaultRequestHeaders.Add("Authorization", (string)App.Current.Properties["AuthToken"]);
+            client.DefaultRequestHeaders.Add("x-rowid", JsonSerializer.Serialize(rowID));
         }
 
-        private void joinEventButton_Click(object sender, RoutedEventArgs e)
+        private void JoinEventButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrEmpty(characterRoleBox.Text))
+            if (!string.IsNullOrEmpty(characterRoleBox.Text))
             {
                 EventCharacter newEventCharacter = new EventCharacter()
                 {
-                    EventID = Int32.Parse(eventIDBox.Text),
+                    EventID = int.Parse(eventIDBox.Text),
                     CharacterName = (string)App.Current.Properties["SelectedCharacter"],
                     CharacterRole = characterRoleBox.Text,
                     SignUpDateTime = DateTime.Now,
 
                 };
-                
+
                 var response = client.PostAsJsonAsync("api/Guild/events/join", newEventCharacter).Result;
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("You joined the event");
-                    Close();
+                    WpfMessageBox.Show("Successfully joined event", "You have successfully joined this event!", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                }
-                else
+                } else
                 {
-                    MessageBox.Show("Error Code" +
-                    response.StatusCode + " : Message - " + response.ReasonPhrase);
+                    WpfMessageBox.Show("Something went wrong", "An error has occured while joining the event\n Error code : " + response.ReasonPhrase, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-            }
-            else
+            } else
             {
-                MessageBox.Show("Please input your role for the event");
+                WpfMessageBox.Show("No role specified", "Please fill in your role for this event!", MessageBoxButton.OK, MessageBoxImage.Question);
             }
-
-            
+            DataGrid.FillDataGrid();
+            Close();
         }
 
-        private void closeJoinEventButton_Click(object sender, RoutedEventArgs e)
+        private void CloseJoinEventButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }

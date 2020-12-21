@@ -6,6 +6,14 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/jquery-ui")
 
+<style>
+    .absolution {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+</style>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -102,6 +110,7 @@
     </div>
 }
 
+<img class="img-fluid mx-auto d-block absolution zoom" src="~/Content/images/aloha_quaggan.png" />
 
 <div>
     @Html.ActionLink("Back to action list", "Index")

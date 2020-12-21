@@ -33,11 +33,19 @@
 
         var characterName = '@ViewBag.Character.Name';
         var guildID = '@ViewBag.Character.Guild';
-        getAndDisplayEventsCaller(selections, keywords, characterName, guildID);
+        var userToken = '@ViewBag.UserToken'
+        getAndDisplayEventsCaller(selections, keywords, characterName, guildID, userToken);
     }
 </script>
 
 <style>
+    .absolution {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+
     .mul-select-types, mul-select-roles {
         width: 100%;
     }
@@ -77,7 +85,7 @@
                 <input id="submitButton" type="submit" class="btn btn-outline-secondary" value="Search" onclick="onSearchClick()" />
             </div>
         </div>
-        <div class="col">
+        <div class="col text-dark">
             @Html.DropDownListFor(model => model.EventType, Model.EventTypes, new { @class = "mul-select-types", @multiple = "multiple", @id = "eventTypesSelectBox" })
             <!-- TODO Html.DropDownListFor Roles -->
         </div>
@@ -143,14 +151,15 @@
             });
         });
     </script>
-    
+
     <!-- loading the events on page load -->
 
     <script type="text/javascript">
         $(document).ready(function () {
             var characterName = '@ViewBag.Character.Name';
             var guildID = '@ViewBag.Character.Guild';
-            getAndDisplayEventsCaller([], [], characterName, guildID);
+            var userToken = '@ViewBag.UserToken'
+            getAndDisplayEventsCaller([], [], characterName, guildID, userToken);
         });
     </script>
 
@@ -186,11 +195,12 @@
                 var eventID = $("#chooseRoleModal #eventIDinput").val().trim();
                 var characterRole = $("#chooseRoleModal #eventRole").val().trim();
                 var rowId = $("#chooseRoleModal #eventRowIDinput").val().trim();
+                var userToken = '@ViewBag.UserToken';
                 if (characterRole == "") {
                     alert("Character role must be filled out");
                 } else {
                     var signUpDateTime = new Date(new Date().toString() + 'Z').toISOString();
-                    joinEventWrap(eventID, characterRole, signUpDateTime, rowId);
+                    joinEventWrap(eventID, characterRole, signUpDateTime, rowId, userToken);
                     refreshPage();
                 }
             })
@@ -198,9 +208,9 @@
     </script>
 
     <script type="text/javascript">
-        function joinEventWrap(eventID, characterRole, signUpDateTime, rowId) {
+        function joinEventWrap(eventID, characterRole, signUpDateTime, rowId, userToken) {
             var characterName = '@ViewBag.Character.Name';
-            joinEvent(eventID, characterName, characterRole, signUpDateTime, rowId);
+            joinEvent(eventID, characterName, characterRole, signUpDateTime, rowId, userToken);
         }
     </script>
 
@@ -208,17 +218,18 @@
     <script type="text/javascript">
         function cancelParticipationCaller(eventID) {
             var characterName = '@ViewBag.Character.Name';
-            cancelParticipation(eventID, characterName);
+            var userToken = '@ViewBag.UserToken';
+            cancelParticipation(eventID, characterName, userToken);
             refreshPage();
         }
     </script>
 
     <!-- end joining events -->
-
     <!-- removing events -->
     <script type="text/javascript">
         function removeEventWrapper(eventID, rowId) {
-            removeEvent(eventID, rowId);
+            var userToken = '@ViewBag.UserToken';
+            removeEvent(eventID, rowId, userToken);
             refreshPage();
         }
     </script>
@@ -239,6 +250,8 @@
                 $('[data-toggle=tooltip]').tooltip();
             });
         </script>*@
+
+    <img class="img-fluid mx-auto d-block absolution zoom" src="~/Content/images/party_quaggan.png" />
 </body>
 
 @section Scripts {

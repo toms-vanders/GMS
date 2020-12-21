@@ -6,7 +6,19 @@
              xmlns:local="clr-namespace:GMS___Desktop_Client.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="150">
+    <UserControl.Resources>
+        <ImageBrush x:Key="CharacterProfession" ImageSource="{DynamicResource ProfessionIconPath}"/>
+    </UserControl.Resources>
     <Grid>
-        <ComboBox x:Name="characterSelectionBox" SelectedIndex="0" SelectionChanged="characterSelectionBox_SelectionChanged"/>
+        <StackPanel Orientation="Horizontal">
+            <Ellipse 
+                Height="30"
+                Width="30"
+                Stroke="#354056"
+                StrokeThickness="2"
+                Fill="{StaticResource CharacterProfession}">
+            </Ellipse>
+            <ComboBox x:Name="characterSelectionBox" SelectedIndex="0" SelectionChanged="CharacterSelectionBox_SelectionChanged" BorderThickness="0" Background="Transparent" Width="120" IsEditable="False" FontWeight="Bold" />
+        </StackPanel>
     </Grid>
 </UserControl>

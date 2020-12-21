@@ -1,12 +1,10 @@
 ﻿using GMS___Data_Access_Layer;
 using GMS___Model;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GMS___Business_Layer
 {
-    public class EventCharacterProcessor
+    public class EventCharacterProcessor : IEventCharacterProcessor
     {
         private EventCharacterAccess eventCharacterAccess = new EventCharacterAccess();
         public Boolean JoinEvent(int eventID, string characterName, string role, DateTime signUpDateTime)
@@ -23,6 +21,11 @@ namespace GMS___Business_Layer
         public bool ContainsEntry(int eventId, string characterName)
         {
             return eventCharacterAccess.ContainsEntry(eventId, characterName);
+        }
+
+        public int ParticipantsInEvent(int eventID)
+        {
+            return eventCharacterAccess.ParticipantsInEvent(eventID);
         }
     }
 }

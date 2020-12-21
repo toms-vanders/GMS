@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GMS___Data_Access_Layer;
+﻿using GMS___Data_Access_Layer;
 using GMS___Model;
-using NodaTime;
+using System;
+using System.Collections.Generic;
 
 namespace GMS___Business_Layer
 {
@@ -11,7 +9,7 @@ namespace GMS___Business_Layer
     {
         private EventAccess eventAccess = new EventAccess();
 
-        public IEnumerable<Event> GetEventByID(int eventID)
+        public Event GetEventByID(int eventID)
         {
             return eventAccess.GetEventByID(eventID);
         }

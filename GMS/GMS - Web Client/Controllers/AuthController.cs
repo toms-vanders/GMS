@@ -11,8 +11,6 @@ namespace GMS___Web_Client.Controllers
     public class AuthController : Controller
     {
         public static string EndPoint = "https://localhost:44377/";
-        public static string ApiKey;
-
 
         // GET: Auth
         public ActionResult Index()
@@ -50,7 +48,7 @@ namespace GMS___Web_Client.Controllers
             {
                 if (PostJson("api/user/signup", new User(model.UserName, model.EmailAddress, model.Password)) != null)
                 {
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index", "Home");
                 }
             }
             ViewBag.Error = "Invalid information was given.";
@@ -63,12 +61,16 @@ namespace GMS___Web_Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = PostJson("api/user/login", new User(model.EmailAddress, model.Password));
-                if (user != null)
+                try
                 {
-                    StartSession(user);
-                    return RedirectToAction("UserPage","User");
+                    StartSession(new User(model.Username, model.Password));
+                    return RedirectToAction("UserPage", "User");
+                } catch
+                {
+                    ViewBag.Error = "Invalid information was given.";
+                    return View();
                 }
+
             }
             ViewBag.Error = "Invalid information was given.";
             return View();
@@ -87,29 +89,55 @@ namespace GMS___Web_Client.Controllers
 
         protected void StartSession(User user)
         {
-            if (user.ApiKey == "")
+            this.Session["UserToken"] = PostLogin(user);
+            User tempUser = GetJson<User>("api/user");
+            try
             {
-                //TODO: retrieve api Key page
+                this.Session["ApiToken"] = tempUser.ApiKey;
+            } catch
+            {
+                this.Session["ApiToken"] = "";
             }
-            ApiKey = user.ApiKey;
-            this.Session["ApiToken"] = ApiKey;
-            this.Session["EmailAddress"] = user.EmailAddress;
-            this.Session["Username"] = user.UserName;
+            this.Session["EmailAddress"] = tempUser.EmailAddress;
+            this.Session["Username"] = tempUser.UserName;
+            this.Session["AccountCreated"] = tempUser.AccountCreated;
         }
 
-        //T is a generic type, need to test this more
-        public T GetJson<T>(string urlSuffix, T returnType)
+        public string PostLogin(User user)
         {
             try
             {
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.BaseAddress = EndPoint;
-                    webClient.Headers.Add("Authorization", this.Session["ApiToken"].ToString());
                     webClient.Encoding = System.Text.Encoding.UTF8;
-                    var json = webClient.DownloadString(urlSuffix);
-                    T t = JsonConvert.DeserializeObject<T>(json);
-                    return t;
+                    webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    return webClient.UploadString("api/user/login", JsonConvert.SerializeObject(user));
+                }
+            } catch (WebException ex)
+            {
+                throw ex;
+            }
+        }
+
+        //T is a generic type, need to test this more
+        public T GetJson<T>(string urlSuffix)
+        {
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.BaseAddress = EndPoint;
+                    if (urlSuffix.Contains("gw2"))
+                    {
+                        webClient.Headers.Add("Authorization", this.Session["ApiToken"].ToString());
+                    } else
+                    {
+                        webClient.Headers.Add("Authorization", this.Session["UserToken"].ToString());
+                    }
+                    webClient.Encoding = System.Text.Encoding.UTF8;
+                    return JsonConvert.DeserializeObject<T>(webClient.DownloadString(urlSuffix)); ;
                 }
             } catch (WebException ex)
             {
@@ -126,9 +154,9 @@ namespace GMS___Web_Client.Controllers
                     webClient.BaseAddress = EndPoint;
                     webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    string data = JsonConvert.SerializeObject(postObject);
-                    var response = webClient.UploadString(urlSuffix, data);
-                    return JsonConvert.DeserializeObject<T>(response);
+                    if (!(this.Session["UserToken"] is null))
+                        webClient.Headers.Add("Authorization", this.Session["UserToken"].ToString());
+                    return JsonConvert.DeserializeObject<T>(webClient.UploadString(urlSuffix, JsonConvert.SerializeObject(postObject)));
                 }
             } catch (WebException ex)
             {

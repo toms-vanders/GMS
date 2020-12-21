@@ -56,20 +56,32 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.7.6\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SqlClient, Version=4.6.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SqlClient.4.8.2\lib\net461\System.Data.SqlClient.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -143,6 +155,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -166,7 +179,22 @@
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\images\aloha_quaggan.png" />
+    <Content Include="Content\images\bear_quaggan.png" />
+    <Content Include="Content\images\bubble_quaggan.png" />
+    <Content Include="Content\images\cake_quaggan.png" />
+    <Content Include="Content\images\cheer_quaggan.png" />
+    <Content Include="Content\images\construction_quaggan.png" />
+    <Content Include="Content\images\cow_quaggan.png" />
+    <Content Include="Content\images\elf_quaggan.png" />
+    <Content Include="Content\images\error_background.jpg" />
+    <Content Include="Content\images\error_quaggan.png" />
     <Content Include="Content\images\ezgif.com-gif-maker.gif" />
+    <Content Include="Content\images\index_background.jpg" />
+    <Content Include="Content\images\lollipop_quaggan.png" />
+    <Content Include="Content\images\party_quaggan.png" />
+    <Content Include="Content\images\summer_quaggan.png" />
+    <Content Include="Content\images\vacation_quaggan.png" />
     <Content Include="Content\jquery-ui-timepicker-addon.css" />
     <Content Include="Content\jquery-ui-timepicker-addon.min.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -215,6 +243,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="JavaScript\search-table-control.js" />
+    <Content Include="JavaScript\user.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -450,7 +479,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\User\Account.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Auth\SignUp.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -470,6 +499,8 @@
     <Content Include="Views\Event\SearchEvents.cshtml" />
     <Content Include="Views\User\CharacterPage.cshtml" />
     <Content Include="Views\Event\UpdateEventForm.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

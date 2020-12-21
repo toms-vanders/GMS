@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GMS___Model;
+﻿using GMS___Model;
 
 namespace GMS___Data_Access_Layer
 {
-    interface AuctionAccessIF
+    interface IAuctionAccess
     {
         int InsertAuction(Auction action);
         Auction GetAuctionFromDatabase(int auctionID);
