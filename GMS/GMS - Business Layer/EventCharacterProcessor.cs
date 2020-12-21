@@ -4,7 +4,7 @@ using System;
 
 namespace GMS___Business_Layer
 {
-    public class EventCharacterProcessor
+    public class EventCharacterProcessor : IEventCharacterProcessor
     {
         private EventCharacterAccess eventCharacterAccess = new EventCharacterAccess();
         public Boolean JoinEvent(int eventID, string characterName, string role, DateTime signUpDateTime)

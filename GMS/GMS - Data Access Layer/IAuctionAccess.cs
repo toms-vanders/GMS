@@ -2,7 +2,7 @@
 
 namespace GMS___Data_Access_Layer
 {
-    interface AuctionAccessIF
+    interface IAuctionAccess
     {
         int InsertAuction(Auction action);
         Auction GetAuctionFromDatabase(int auctionID);

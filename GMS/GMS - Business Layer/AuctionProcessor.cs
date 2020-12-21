@@ -5,7 +5,7 @@ using System;
 
 namespace GMS___Business_Layer
 {
-    class AuctionProcessor : AuctionProcessorIF
+    class AuctionProcessor : IAuctionProcessor
     {
         private readonly Logger log = LogManager.GetCurrentClassLogger();
         private AuctionAccess auctionAccess = new AuctionAccess();
