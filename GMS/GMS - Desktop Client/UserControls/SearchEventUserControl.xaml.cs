@@ -20,7 +20,6 @@ namespace GMS___Desktop_Client.UserControls
     public partial class SearchEventUserControl : UserControl
     {
         private readonly HttpClient client;
-        private readonly MetroWindow parentWindow = (MetroWindow)App.Current.MainWindow;
         IEnumerable<Event> eventList;
         IEnumerable<Event> joinedEvents;
 
@@ -58,11 +57,11 @@ namespace GMS___Desktop_Client.UserControls
                     eventList = JsonConvert.DeserializeObject<IEnumerable<Event>>(responseBody);
                 } catch (TimeoutException)
                 {
-                    await parentWindow.ShowMessageAsync("Service unavailable", "An error occurred while contacting the server please try again later.", MessageDialogStyle.Affirmative);
+                    WpfMessageBox.Show("Service unavailable", "An error occurred while contacting the server please try again later.", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 } catch (WebException)
                 {
-                    await parentWindow.ShowMessageAsync("Web service error", "An error occured contacting the web service please try again later.", MessageDialogStyle.Affirmative);
+                    WpfMessageBox.Show("Web service error", "An error occured contacting the web service please try again later.", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
                 eventGrid.ItemsSource = eventList;

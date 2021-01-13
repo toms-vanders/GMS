@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace GMS___Data_Access_Layer
 {
-    public class UserAccess : UserAccessIF
+    public class UserAccess : IUserAccess
     {
         private readonly Logger log = LogManager.GetCurrentClassLogger();
         public IEnumerable<User> GetUsersFromDatabase()
