@@ -59,7 +59,7 @@ namespace GMS___Test
 
                 test1 = up.InsertApiKey("mail@mail.com", "key");
                 test2 = up.InsertApiKey("Non existing email address", "key");
-                User user = up.LogInUser("mail@mail.com", "password");
+                User user = up.LogInUser("name", "password");
                 apikey = user.ApiKey;
             }catch (Exception)
             {

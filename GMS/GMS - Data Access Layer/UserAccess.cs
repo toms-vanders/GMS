@@ -29,7 +29,7 @@ namespace GMS___Data_Access_Layer
                     IEnumerable<User> users = conn.Query<User>("SELECT * FROM Users");
                     log.Info("Successfully retrieved all users from the database");
                     return users;
-                } catch (SqlException ex)
+                } catch (Exception ex)
                 {
                     log.Trace("SQLException while retrieving the users from the database.");
                     log.Error(ex, "Unable to retrieve the users from the database.");
@@ -60,7 +60,7 @@ namespace GMS___Data_Access_Layer
                     {
                         return null;
                     }
-                } catch (SqlException ex)
+                } catch (Exception ex)
                 {
                     log.Trace("SQLException while retrieving the user from the database.");
                     log.Error(ex, "Unable to retrieve the user from the database.");
@@ -91,7 +91,7 @@ namespace GMS___Data_Access_Layer
                     {
                         return null;
                     }
-                } catch (SqlException ex)
+                } catch (Exception ex)
                 {
                     log.Trace("SQLException while retrieving the user from the database.");
                     log.Error(ex, "Unable to retrieve the user from the database.");
@@ -117,7 +117,7 @@ namespace GMS___Data_Access_Layer
                     log.Info("Inserting user with username: @username into the database.", user.UserName);
                     affectedRows = conn.Execute("INSERT INTO Users (userName, emailAddress, password, ApiKey, userRole) VALUES (@UserName, @EmailAddress, @Password, @ApiKey, @UserRole)", user);
                     log.Info("Successfully inserted the user with username: @username into the database", user.UserName);
-                } catch (SqlException ex)
+                } catch (Exception ex)
                 {
                     log.Trace("SQLException while inserting the user to the database.");
                     log.Error(ex, "Unable to insert the user to the database.");
@@ -149,7 +149,7 @@ namespace GMS___Data_Access_Layer
                         , userRole = @UserRole
                         WHERE userID = @UserID", user);
                     log.Info("Successfully updated the user: @username into the database.", user.UserName);
-                } catch (SqlException ex)
+                } catch (Exception ex)
                 {
                     log.Trace("SQLException while updating the user into database.");
                     log.Error(ex, "Unable to update the user into database.");
@@ -176,7 +176,7 @@ namespace GMS___Data_Access_Layer
                     log.Info("Deleting the user: @username from the database,", UserName);
                     affectedRows = conn.Execute(@"DELETE FROM Users WHERE userName = @name", new { name = UserName });
                     log.Info("Successfully deleted the user: @username from the database.", UserName);
-                } catch (SqlException ex)
+                } catch (Exception ex)
                 {
                     log.Trace("SQLException while deleting the user from the database.");
                     log.Error(ex, "Unable to delete the user from the database.");
