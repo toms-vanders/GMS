@@ -8,45 +8,29 @@ namespace GMS___Test
     [TestClass]
     public class ModelTest
     {
-        /*[TestMethod]
+        [TestMethod]
         public void TestUser()
         {
-            int userID = 43;
             string userName = "Lemon";
             string email = "lemon88@ucn.dk";
             string password = "password12345";
             string apiKey = "apiKey12345";
-            string userRole = "role";
             ArrayList characters = new ArrayList();
+            DateTime accountCreated = new DateTime(2020, 12, 20);
 
-            User user1 = new User(userID, userName, email, password, apiKey, userRole);
-            User user2 = new User(userName, password, email, apiKey, characters);
-            User user3 = new User(userName, email, password, apiKey, userRole);
-            User user4 = new User(userName, email, password);
+            User user = new User(userName, password, email, apiKey, characters, accountCreated);
+            int year = user.AccountCreated.Year;
+            int month = user.AccountCreated.Month;
+            int day = user.AccountCreated.Day;
 
-            Assert.AreEqual(43, user1.UserID);
-            Assert.AreEqual("Lemon", user1.UserName);
-            Assert.AreEqual("lemon88@ucn.dk", user1.EmailAddress);
-            Assert.AreEqual("password12345", user1.Password);
-            Assert.AreEqual("apiKey12345", user1.ApiKey);
-            Assert.AreEqual("role", user1.UserRole);
-
-            Assert.AreEqual("Lemon", user2.UserName);
-            Assert.AreEqual("lemon88@ucn.dk", user2.EmailAddress);
-            Assert.AreEqual("password12345", user2.Password);
-            Assert.AreEqual("apiKey12345", user2.ApiKey);
-
-            Assert.AreEqual("Lemon", user3.UserName);
-            Assert.AreEqual("lemon88@ucn.dk", user3.EmailAddress);
-            Assert.AreEqual("password12345", user3.Password);
-            Assert.AreEqual("apiKey12345", user3.ApiKey);
-            Assert.AreEqual("role", user3.UserRole);
-
-            Assert.AreEqual("Lemon", user4.UserName);
-            Assert.AreEqual("lemon88@ucn.dk", user4.EmailAddress);
-            Assert.AreEqual("password12345", user4.Password);
-            Assert.AreEqual("BASIC_USER", user4.UserRole);
-        }*/
+            Assert.AreEqual("Lemon", user.UserName);
+            Assert.AreEqual("lemon88@ucn.dk", user.EmailAddress);
+            Assert.AreEqual("password12345", user.Password);
+            Assert.AreEqual("apiKey12345", user.ApiKey);
+            Assert.AreEqual(2020, year);
+            Assert.AreEqual(12, month);
+            Assert.AreEqual(20, day);
+        }
 
         [TestMethod]
         public void TestItem()

@@ -24,9 +24,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Account", "User")">Account</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("About", "Home")">About</a>
                     </li>
                     <li class="nav-item">
@@ -43,6 +40,9 @@
                     }
                     else
                     {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Account", "User")">Account</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("LogOut", "Home")">Log out</a>
                         </li>

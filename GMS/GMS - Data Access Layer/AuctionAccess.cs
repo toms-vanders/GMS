@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace GMS___Data_Access_Layer
 {
-    public class AuctionAccess : AuctionAccessIF
+    public class AuctionAccess : IAuctionAccess
     {
         private readonly Logger log = LogManager.GetCurrentClassLogger();
         public int InsertAuction(Auction auction)

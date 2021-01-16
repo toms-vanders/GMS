@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Images\equipment_slots\" />
     <Folder Include="Images\professions\" />
   </ItemGroup>
 

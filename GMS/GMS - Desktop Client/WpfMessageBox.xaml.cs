@@ -86,6 +86,11 @@ namespace GMS___Desktop_Client
 
         public static MessageBoxResult Show(string caption, string text, MessageBoxButton button, MessageBoxImage image)
         {
+            if (_messageBox != null)
+            {
+                _messageBox.Close();
+                _messageBox = null;
+            }
             _messageBox = new WpfMessageBox { txtMsg = { Text = text }, MessageTitle = { Text = caption } };
             SetVisibilityOfButtons(button);
             SetImageOfMessageBox(image);

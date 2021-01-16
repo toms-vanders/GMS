@@ -53,6 +53,9 @@ div.content {
 
 .zoom {
     transition: transform 1s;
+    width: 21%;
+    height:auto;
+    z-index: -1;
 }
 
 .zoom:hover {

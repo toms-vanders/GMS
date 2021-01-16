@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace GMS___Data_Access_Layer
 {
-    public class EventCharacterWaitingListAccess
+    public class EventCharacterWaitingListAccess : IEventCharacterWaitingListAccess
     {
         private readonly Logger log = LogManager.GetCurrentClassLogger();
         public bool DeleteEventCharacterByEventIDAndCharacterName(int eventID, string characterName)

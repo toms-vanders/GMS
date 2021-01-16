@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace GMS___Data_Access_Layer
 {
-    public class EventCharacterAccess
+    public class EventCharacterAccess : IEventCharacterAccess
     {
         private readonly Logger log = LogManager.GetCurrentClassLogger();
         public bool InsertEventCharacter(EventCharacter eventParticipant)

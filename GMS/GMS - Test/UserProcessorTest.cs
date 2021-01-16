@@ -12,7 +12,7 @@ namespace GMS___Test
         [TestMethod]
         public void TestLogIn()
         {
-            User user1 = null;
+            string user1Name = "";
             User user2 = null;
             User user3 = null;
             User user4 = null;
@@ -21,22 +21,24 @@ namespace GMS___Test
             {
                 UserProcessor up = new UserProcessor();
                 up.InsertNewUser("name", "mail@mail.com", "password");
-                up.InsertNewUser("name", "Non existing email address", "password");
+                up.InsertNewUser("other name", "mail@mail.com", "password");
 
-                user1 = up.LogInUser("mail@mail.com", "password");
-                user2 = up.LogInUser("Non existing email address", "password");
-                user3 = up.LogInUser("mail@mail.com", "wrong password");
-                user4 = up.LogInUser("mail@mail.com", "Password");
-            } catch (Exception)
+                User user1 = up.LogInUser("name", "password");
+                user2 = up.LogInUser("other name", "password");
+                user3 = up.LogInUser("name", "wrong password");
+                user4 = up.LogInUser("name", "Password");
+                user1Name = user1.UserName;
+            }catch (Exception)
             {
                 noExceptionWasThrown = false;
-            } finally
+            }finally
             {
                 //CleanUp
                 UserAccess userAccess = new UserAccess();
                 userAccess.DeleteByName("name");
+                userAccess.DeleteByName("other name");
             }
-            Assert.AreEqual("name", user1.UserName);
+            Assert.AreEqual("name", user1Name);
             Assert.IsNull(user2);
             Assert.IsNull(user3);
             Assert.IsNull(user4);
@@ -59,10 +61,10 @@ namespace GMS___Test
                 test2 = up.InsertApiKey("Non existing email address", "key");
                 User user = up.LogInUser("mail@mail.com", "password");
                 apikey = user.ApiKey;
-            } catch (Exception)
+            }catch (Exception)
             {
                 noExceptionWasThrown = false;
-            } finally
+            }finally
             {
                 //CleanUp
                 UserAccess userAccess = new UserAccess();
@@ -75,10 +77,12 @@ namespace GMS___Test
         }
 
         [TestMethod]
-        public void TestGetUserByEmail()
+        public void TestGetUserByEmailOrUserName()
         {
             User user2 = null;
             string user1name = "";
+            User user4 = null;
+            string user3name = "";
             bool noExceptionWasThrown = true;
             try
             {
@@ -88,10 +92,14 @@ namespace GMS___Test
                 User user1 = up.GetUserByEmail("mail@mail.com");
                 user2 = up.GetUserByEmail("asd");
                 user1name = user1.UserName;
-            } catch (Exception)
+
+                User user3 = up.GetUserByUsername("name");
+                user4 = up.GetUserByUsername("asd");
+                user3name = user3.UserName;
+            }catch (Exception)
             {
                 noExceptionWasThrown = false;
-            } finally
+            }finally
             {
                 //CleanUp
                 UserAccess userAccess = new UserAccess();
@@ -99,6 +107,8 @@ namespace GMS___Test
             }
             Assert.AreEqual("name", user1name);
             Assert.IsNull(user2);
+            Assert.AreEqual("name", user3name);
+            Assert.IsNull(user4);
             Assert.IsTrue(noExceptionWasThrown);
         }
     }

@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="GMS___Desktop_Client.UserControls.HeroEquipmentControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GMS___Desktop_Client.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="#202B43">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        
+        <!-- Armor stack panel -->
+        <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Orientation="Vertical" Height="324" Width="54" >
+            <Image Source="{DynamicResource HeadSlot}"></Image>
+            <Image Source="{DynamicResource ShoulderSlot}"></Image>
+            <Image Source="{DynamicResource ChestSlot}"></Image>
+            <Image Source="{DynamicResource HandSlot}"></Image>
+            <Image Source="{DynamicResource LegSlot}"></Image>
+            <Image Source="{DynamicResource FeetSlot}"></Image>
+        </StackPanel>
+
+
+        <!-- Weapons stack panel -->
+        <StackPanel Grid.Column="3" Grid.Row="1" Grid.RowSpan="4" Orientation="Vertical" Height="216" Width="54" VerticalAlignment="Bottom">
+            <Image Source="{DynamicResource SwordSlotA}"></Image>
+            <Image Source="{DynamicResource ShieldSlotA}"></Image>
+            <Image Source="{DynamicResource SwordSlotB}"></Image>
+            <Image Source="{DynamicResource ShieldSlotB}"></Image>
+        </StackPanel>
+
+        <!-- Equipment worn by the character TextBlock-->
+        <TextBlock Name="equipmentTextBlock"  Grid.Column="4" Grid.Row="1" Grid.RowSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                   FontSize="18" FontWeight="Black" Foreground="Cornsilk" TextWrapping="Wrap" TextAlignment="Center" />
+
+        <!-- Back item and trinket stack panel -->
+        <StackPanel Grid.Column="5" Grid.Row="1"  Orientation="Vertical" Height="108">
+            <!-- First row -->
+            <StackPanel Orientation="Horizontal" Height="54">
+                <Image Source="{DynamicResource BackSlot}" Height="54"></Image>
+                <Image Source="{DynamicResource BearTrinketSlot}" Height="54"></Image>
+                <Image Source="{DynamicResource CubeTrinketSlot}" Height="54"></Image>
+            </StackPanel>
+            <!-- Second row -->
+            <StackPanel Orientation="Horizontal"  Height="54">
+                <Image Source="{DynamicResource AmuletSlot}" Height="54"></Image>
+                <Image Source="{DynamicResource RightRingSlot}" Height="54"></Image>
+                <Image Source="{DynamicResource LefttRingSlot}" Height="54"></Image>
+            </StackPanel> 
+        </StackPanel>
+        
+        <!-- Tools stack panel -->
+        <StackPanel Grid.Column="5" Grid.Row="3" Orientation="Horizontal" Height="54">
+            <Image Source="{DynamicResource ForagingSlot}" Width="54"></Image>
+            <Image Source="{DynamicResource LoggingSlot}" Width="54"></Image>
+            <Image Source="{DynamicResource MiningSlot}" Width="54"></Image>
+        </StackPanel>
+        
+        <!-- Aquatic stack panel -->
+        <StackPanel Grid.Column="5" Grid.Row="4" Orientation="Horizontal" Height="54">
+            <Image Source="{DynamicResource BreathingApparatusSlot}" Width="54"></Image>
+            <Image Source="{DynamicResource AquaticWeaponSlotA}" Width="54"></Image>
+            <Image Source="{DynamicResource AquaticWeaponSlotB}" Width="54"></Image>
+        </StackPanel>
+    </Grid>
+</UserControl>

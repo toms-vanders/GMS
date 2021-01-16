@@ -4,7 +4,7 @@ using System;
 
 namespace GMS___Business_Layer
 {
-    public class UserProcessor : UserProcessorIF
+    public class UserProcessor : IUserProcessor
     {
         private UserAccess userAccess = new UserAccess();
 
@@ -18,9 +18,9 @@ namespace GMS___Business_Layer
             userAccess.InsertUser(userToBeAdded);
             return userToBeAdded;
         }
-        public User GetUserByUsername(string email)
+        public User GetUserByUsername(string name)
         {
-            return userAccess.GetUserFromDatabaseWithUsername(email);
+            return userAccess.GetUserFromDatabaseWithUsername(name);
         }
         public User LogInUser(string username, string password)
         {
