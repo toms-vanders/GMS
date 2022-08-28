@@ -51,4 +51,4 @@ Guild Wars 2 guild management app aims to help guild organization regarding soci
 <!-- CONTRIBUTORS -->
 ## Acknowledgments
 
-This group project was done as part of the 3rd Semeter project for the Computer Science AP Degree at UCN.
+This group project was done as part of the 3rd Semester project for the Computer Science AP Degree at UCN.
